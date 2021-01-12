@@ -6,11 +6,11 @@ A simple CUDA and OpenCV-based command-line image processor.
 - Edit history
 - NVIDIA GPU detection on Windows
 - Cropping image
-## In work:
+## Working on:
 - Color inversion
 - Contrast correction
 - Brightness correction
 - Generating historgram
 - Histogram equalization
 - GUI
-- And more to come!
+- And more!
