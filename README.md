@@ -1,0 +1,1 @@
+*GPU-accelerated image processor (using CUDA and OpenCV)*
