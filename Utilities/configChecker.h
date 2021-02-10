@@ -1,10 +1,8 @@
 #pragma once
-#ifdef __linux__ 
-//linux code TODO
-#elif _WIN32
-#include<windows.h>
+#ifdef _WIN32
+#include <windows.h>
 #else
-
+#include <dlfcn.h>
 #endif
 
 #include <iostream>
@@ -12,7 +10,5 @@
 
 class Config {
 public:
-	static bool checkConfig();
-	bool isCUDAavailableLinux(); //TODO
-	static bool isCUDAavailableWin();
+	static bool isCUDAavailable();
 };

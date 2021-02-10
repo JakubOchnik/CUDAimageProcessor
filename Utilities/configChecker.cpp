@@ -1,24 +1,16 @@
 #include "configChecker.h"
 
-bool Config::isCUDAavailableWin() {
-	if (LoadLibraryA("nvcuda.dll") != nullptr) {
-		GPUinfo::loadGPUinfo();
+bool Config::isCUDAavailable() {
+#ifdef _WIN32
+	if (LoadLibraryA("nvcuda.dll") == nullptr) {
+		return 0;
 	}
-	return 1;
-}
-
-bool Config::checkConfig() {
-#ifdef __linux__ 
-	//TODO
-#elif _WIN32
-	return isCUDAavailableWin();
 #else
-	return 0;
+	if (dlopen("libcuda.so", RTLD_NOW) == nullptr) {
+		return 0;
+	}
 #endif
-}
-
-bool Config::isCUDAavailableLinux()
-{
-	//TODO
-	return false;
+	if (GPUinfo::loadGPUinfo())
+		return 1;
+	return 0;
 }

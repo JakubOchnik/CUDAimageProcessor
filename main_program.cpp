@@ -6,7 +6,7 @@ using namespace cv;
 using namespace std;
 
 int main() {
-	if (Config::checkConfig() == 0) {
+	if (Config::isCUDAavailable() == 0) {
 		cout << "CUDA is not available on this PC! Exiting...";
 		return 0;
 	}
