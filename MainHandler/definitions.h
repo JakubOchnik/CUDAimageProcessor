@@ -5,7 +5,8 @@ enum action {
 	brightness,
 	contrast,
 	histogram,
-	equalization
+	equalization,
+	invertion
 };
 struct edit {
 	std::string value;

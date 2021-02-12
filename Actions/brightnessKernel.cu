@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 
-__global__ void calculateBrightness(unsigned char* image, int channels, int width, int height, int shift);
+__global__ void calculateBrightness(unsigned char* image, int channels, int shift);
 
 void executeBrightnessKernel(Img* image, int shift, GPUcontroller* GPU) {
 	dim3 grid(image->getResolutionW(), image->getResolutionH());
@@ -12,13 +12,13 @@ void executeBrightnessKernel(Img* image, int shift, GPUcontroller* GPU) {
 	int width = image->getResolutionW();
 	int height = image->getResolutionH();
 	size_t size = channels * width * height * sizeof(unsigned char);
-	calculateBrightness<<<grid, 1>>>(GPU->getImgPtr(), channels, width, height, shift);
+	calculateBrightness<<<grid, 1>>>(GPU->getImgPtr(), channels, shift);
 	cudaMemcpy(image->getImg()->data, GPU->getImgPtr(),size, cudaMemcpyDeviceToHost);
 	//cudaDeviceSynchronize();
 	//printf("");
 }
 
-__global__ void calculateBrightness(unsigned char* image, int channels, int width, int height, int shift) {
+__global__ void calculateBrightness(unsigned char* image, int channels, int shift) {
 	int x = blockIdx.x;
 	int y = blockIdx.y;
 

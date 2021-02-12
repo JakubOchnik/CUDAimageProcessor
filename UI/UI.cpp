@@ -62,7 +62,7 @@ bool UI::keystrokeHandler() {
 			if (path == inputBuffer || path.length() < 2) {
 				throw commandFail;
 			}
-			if (master.updateSrcImg(path, 0)) {
+			if (master.updateSrcImg(path, 1)) {
 				eventQueue.push_back(openSuccess);
 				loaded = true;
 				return true;
@@ -113,6 +113,16 @@ bool UI::keystrokeHandler() {
 			}
 			vector<edit>* ref = master.getHistory();
 			ref->push_back(edit{ value,brightness });
+		}
+		else if (command == "i") {
+			//auto value = inputBuffer.substr(inputBuffer.find(' '));
+			//value.erase(0, 1);
+			event error = actionHandler::actionSelector(invertion, master.getDstImg(), "", master.getGPUController());
+			if (error == actionFail || error == parameterFail) {
+				throw error;
+			}
+			vector<edit>* ref = master.getHistory();
+			ref->push_back(edit{ "",invertion });
 		}
 		else {
 			throw commandFail;

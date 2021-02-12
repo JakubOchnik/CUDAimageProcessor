@@ -38,7 +38,8 @@ private:
 		"Changed brightness: ",
 		"Changed contrast: ",
 		"Generated histogram",
-		"Performed histogram equalization"
+		"Performed histogram equalization",
+		"Inverted colors"
 	};
 
 	std::string inputBuffer;

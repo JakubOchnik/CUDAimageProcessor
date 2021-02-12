@@ -1,5 +1,6 @@
 #include "actionHandler.h"
 #include "brightnessKernel.h"
+#include "invertionKernel.h"
 #include<algorithm>
 
 bool actionHandler::updateGPUmem(Img* srcImg, GPUcontroller* GPU) {
@@ -62,6 +63,17 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 			}
 			updateGPUmem(sourceName, GPUcontrol);
 			executeBrightnessKernel(sourceName, shift,GPUcontrol);
+			return actionSuccess;
+		}
+		catch (event e)
+		{
+			return e;
+		}
+	}
+	else if (name == invertion) {
+		try {
+			updateGPUmem(sourceName, GPUcontrol);
+			executeInvertionKernel(sourceName, GPUcontrol);
 			return actionSuccess;
 		}
 		catch (event e)
