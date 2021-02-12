@@ -6,12 +6,14 @@
 class GPUcontroller {
 private:
 	bool isMemAlloc;
-	unsigned char* imgPtr;
+	bool sizeUpdate;
+	unsigned char* devImgPtr;
 public:
 	GPUcontroller();
-	void updatePtr(unsigned char* newPtr);
+	void updatePtr(Img* newImg);
 	bool getGPUmemStatus() const;
+	bool sizeUpdateStatus() const;
 	unsigned char* getImgPtr();
-	bool GPUmalloc(Img srcImg);
+	bool GPUmalloc(Img* srcImg);
 	void GPUfree();
 };

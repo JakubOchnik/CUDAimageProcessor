@@ -1,11 +1,14 @@
-# GPU-accelerated image processor (using CUDA and OpenCV) [WIP]
-A simple CUDA and OpenCV-based command-line image processor.
+# GPU-accelerated image processor [WIP]
+A simple GPU-accelerated command-line image processor.
+## External libraries used:
+- NVIDIA CUDA (a capable GPU is required)
+- OpenCV
 ## Working:
 - UI
-- Importing and saving
+- Image import and save
 - Edit history
-- NVIDIA GPU detection on Windows
-- Cropping image
+- NVIDIA GPU detection on Windows and Linux
+- Image cropping
 ## In development:
 - Color inversion
 - Contrast correction

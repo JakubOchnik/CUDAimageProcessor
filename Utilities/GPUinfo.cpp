@@ -18,6 +18,6 @@ void GPUinfo::showGPUinfo(cudaDeviceProp prop) {
 	cout << "Name: " << prop.name << endl;
 	cout << "Compute capability: " << prop.major << prop.minor << endl;
 	cout << "Total global memory: " << prop.totalGlobalMem << " bytes" << endl;
-	cout << "Press enter to start program...";
+	cout << "Press any key to start...";
 	cin.get();
 }

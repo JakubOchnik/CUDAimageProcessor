@@ -2,6 +2,15 @@
 #include "brightnessKernel.h"
 #include<algorithm>
 
+bool actionHandler::updateGPUmem(Img* srcImg, GPUcontroller* GPU) {
+	if (!GPU->getGPUmemStatus()) {
+		GPU->GPUmalloc(srcImg);
+	}
+	else if(GPU->sizeUpdateStatus()) {
+		GPU->updatePtr(srcImg);
+	}
+	return 1;
+}
 
 bool actionHandler::cropping(cv::Rect area, Img* srcImg) {
 	cv::Mat newImg(*srcImg->getImg());
@@ -49,9 +58,11 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 				shift *= (-1);
 			}
 			else {
-				shift = stoi(value.substr(0, value.length() - 1));
+				shift = stoi(value.substr(0, value.length()));
 			}
-			executeBrightnessKernel(sourceName, shift);
+			updateGPUmem(sourceName, GPUcontrol);
+			executeBrightnessKernel(sourceName, shift,GPUcontrol);
+			return actionSuccess;
 		}
 		catch (event e)
 		{
@@ -59,16 +70,4 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 		}
 	}
 	return commandFail;
-}
-
-bool actionHandler::brightnessChange(Img* srcImg, GPUcontroller* GPU) {
-	if (!GPU->getGPUmemStatus()) {
-		GPU->GPUmalloc(*srcImg);
-	}
-	else {
-		GPU->updatePtr(srcImg->getImg()->data);
-	}
-
-	//external kernel
-	return 1;
 }

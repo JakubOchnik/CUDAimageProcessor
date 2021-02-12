@@ -8,5 +8,5 @@ private:
 public:
 	static event actionSelector(action name, Img* sourceImage, std::string value, GPUcontroller* GPUcontrol);
 	static bool cropping(cv::Rect area, Img* srcImg);
-	static bool brightnessChange(Img* srcImg, GPUcontroller* GPU);
+	static bool updateGPUmem(Img* srcImg, GPUcontroller* GPU);
 };

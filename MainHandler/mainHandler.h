@@ -1,9 +1,9 @@
 #pragma once
 #include "../ImgHandling/ImgInfo.h"
-#include"../ImgHandling/ImgLoader.h"
-#include"../MainHandler/definitions.h"
+#include "../ImgHandling/ImgLoader.h"
+#include "../MainHandler/definitions.h"
 #include "../Utilities/GPUcontrol.h"
-#include<vector>
+#include <vector>
 class mainHandler {
 private:
 	Img srcImg;
