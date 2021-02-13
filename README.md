@@ -1,19 +1,22 @@
 # GPU-accelerated image processor
-A simple GPU-accelerated command-line image processor.
+A simple GPU-accelerated command-line image processor. Image editing operations are implemented on a GPU using CUDA, which can significantly speed-up hi-res image processing.
 ## External libraries used:
 - NVIDIA CUDA (a capable GPU is required)
 - OpenCV
 ## Working:
-- UI
-- Image import and save
+- Command-line UI
+- Image importing and saving
 - Edit history
-- NVIDIA GPU driver and availability detection on Windows and Linux
+- NVIDIA GPU driver detection and CUDA availability checking on Windows and Linux
 - Image cropping
 - Color inversion
 - Brightness correction
 ## In development:
 - Contrast correction
-- Generating historgram
+- Histogram
 - Histogram equalization
+- Image preview
+- Image resize
+- Batch image processing
 - GUI
 - And more!

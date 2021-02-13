@@ -16,4 +16,5 @@ public:
 	unsigned char* getImgPtr();
 	bool GPUmalloc(Img* srcImg);
 	void GPUfree();
+	~GPUcontroller();
 };
