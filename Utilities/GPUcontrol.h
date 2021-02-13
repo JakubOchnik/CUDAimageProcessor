@@ -8,6 +8,7 @@ private:
 	bool isMemAlloc;
 	bool sizeUpdate;
 	unsigned char* devImgPtr;
+	unsigned int memSize;
 public:
 	GPUcontroller();
 	void updatePtr(Img* newImg);

@@ -22,7 +22,7 @@ private:
 
 	std::vector<std::string> eventPrompts = {
 		"File opened successfully",
-		"File open failed",
+		"File open failed. Check the path, extension or dimensions (they can't exceed 65535).",
 		"File saved successfully",
 		"File save failed",
 		"Invalid command",

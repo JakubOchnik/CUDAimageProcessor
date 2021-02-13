@@ -4,7 +4,7 @@ UI::UI() {
 	quit = false;
 	menu = true;
 	loaded = false;
-	menuText = "i: invert colors\nc: enhance contrast\nb: enhance brightness\nh: generate histogram\nhg: histogram equalization\nc: crop\n -----------------\nl: load image\ns: save image\nhistory: view edit history\ncl: clear\nq: quit";
+	menuText = "invert: invert colors\ncontrast: enhance contrast\nbrightness: enhance brightness\nhistogram: generate histogram\nequalize: histogram equalization\ncrop: crop image\n -----------------\nload: load image\nsave: save image\nhistory: view edit history\nclear: clear notifications\nquit: quit";
 	infoResolution = "Image resolution:";
 	infoChannels = "Image color channels:";
 	prompt = "IP>";
@@ -50,11 +50,11 @@ void UI::draw() {
 bool UI::keystrokeHandler() {
 	try {
 		auto command = inputBuffer.substr(0, inputBuffer.find(' '));
-		if (command == "q") {
+		if (command == "quit") {
 			quit = true;
 		}
-		else if (command == "l") {
-			if (inputBuffer.length() < 2) {
+		else if (command == "load") {
+			if (inputBuffer.length() < 5) {
 				throw commandFail;
 			}
 			auto path = inputBuffer.substr(inputBuffer.find(' '));
@@ -71,11 +71,11 @@ bool UI::keystrokeHandler() {
 				throw openFail;
 			}
 		}
-		else if (command == "cl") {
+		else if (command == "clear") {
 			clearEvents();
 		}
-		else if (command == "s") {
-			if (inputBuffer.length() < 2) {
+		else if (command == "save") {
+			if (inputBuffer.length() < 5) {
 				throw commandFail;
 			}
 			auto path = inputBuffer.substr(inputBuffer.find(' '));
@@ -94,7 +94,10 @@ bool UI::keystrokeHandler() {
 		else if (command == "history") {
 			editHistoryScreen();
 		}
-		else if (command == "c") {
+		else if (command == "crop") {
+			if (inputBuffer.length() < 5) {
+				throw commandFail;
+			}
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
 			event error = actionHandler::actionSelector(crop, master.getDstImg(), value, master.getGPUController());
@@ -104,7 +107,10 @@ bool UI::keystrokeHandler() {
 			vector<edit>* ref = master.getHistory();
 			ref->push_back(edit{ value,crop });
 		}
-		else if (command == "b") {
+		else if (command == "brightness") {
+			if (inputBuffer.length() < 11) {
+				throw commandFail;
+			}
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
 			event error = actionHandler::actionSelector(brightness, master.getDstImg(), value, master.getGPUController());
@@ -114,7 +120,7 @@ bool UI::keystrokeHandler() {
 			vector<edit>* ref = master.getHistory();
 			ref->push_back(edit{ value,brightness });
 		}
-		else if (command == "i") {
+		else if (command == "invert") {
 			//auto value = inputBuffer.substr(inputBuffer.find(' '));
 			//value.erase(0, 1);
 			event error = actionHandler::actionSelector(invertion, master.getDstImg(), "", master.getGPUController());

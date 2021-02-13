@@ -8,7 +8,7 @@ Img::Img(cv::Mat img, std::string path): image(img) {
 	initiated = true;
 }
 
-Img::Img():initiated(false), image(cv::Mat()) {}
+Img::Img():initiated(false), image(cv::Mat()), colorChannels(0), resolutionH(0), resolutionW(0) {}
 
 std::string Img::getPath() const {
 	return path;
