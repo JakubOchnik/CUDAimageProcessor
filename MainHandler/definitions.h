@@ -6,7 +6,8 @@ enum action {
 	contrast,
 	histogram,
 	equalization,
-	invertion
+	invertion,
+	resize
 };
 struct edit {
 	std::string value;
@@ -21,5 +22,6 @@ enum event {
 	commandFail,
 	actionSuccess,
 	actionFail,
-	parameterFail
+	parameterFail,
+	windowFail
 };

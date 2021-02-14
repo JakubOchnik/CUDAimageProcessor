@@ -11,12 +11,12 @@ A simple GPU-accelerated command-line image processor. Image editing operations 
 - Image cropping
 - Color inversion
 - Brightness correction
+- Image resize
+- Image preview
 ## In development:
 - Contrast correction
 - Histogram
 - Histogram equalization
-- Image preview
-- Image resize
 - Batch image processing
 - GUI
 - And more!

@@ -6,7 +6,15 @@
 #include"../MainHandler/mainHandler.h"
 #include"../MainHandler/definitions.h"
 #include "../Actions/actionHandler.h"
-#include<vector>
+#include <vector>
+#include <iomanip>
+#include <sstream>
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <X11/Xlib.h>
+#endif
 class UI {
 private:
 	bool quit;
@@ -19,6 +27,7 @@ private:
 	std::string prompt;
 	std::string notLoaded;
 	std::string textSeparator;
+	std::string previewWindowName;
 
 	std::vector<std::string> eventPrompts = {
 		"File opened successfully",
@@ -28,7 +37,8 @@ private:
 		"Invalid command",
 		"Action performed successfully",
 		"Action failed",
-		"Invalid action parameters"
+		"Invalid action parameters",
+		"Image has not been imported yet"
 	};
 
 	std::vector<int> eventQueue;
@@ -39,7 +49,8 @@ private:
 		"Changed contrast: ",
 		"Generated histogram",
 		"Performed histogram equalization",
-		"Inverted colors"
+		"Inverted colors",
+		"Resized image: "
 	};
 
 	std::string inputBuffer;
@@ -53,5 +64,6 @@ public:
 	std::string printEvents();
 	void clearEvents();
 	void editHistoryScreen();
+	bool showPreview(unsigned int scale=0);
 	~UI();
 };

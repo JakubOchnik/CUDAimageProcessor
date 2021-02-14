@@ -4,7 +4,7 @@ UI::UI() {
 	quit = false;
 	menu = true;
 	loaded = false;
-	menuText = "invert: invert colors\ncontrast: enhance contrast\nbrightness: enhance brightness\nhistogram: generate histogram\nequalize: histogram equalization\ncrop: crop image\n -----------------\nload: load image\nsave: save image\nhistory: view edit history\nclear: clear notifications\nquit: quit";
+	menuText = "invert: invert colors\ncontrast: enhance contrast\nbrightness: enhance brightness\nhistogram: generate histogram\nequalize: histogram equalization\ncrop: crop image resize: resize image\n -----------------\nload: load image\nsave: save image\nhistory: view edit history\nclear: clear notifications\nquit: quit";
 	infoResolution = "Image resolution:";
 	infoChannels = "Image color channels:";
 	prompt = "IP>";
@@ -12,6 +12,7 @@ UI::UI() {
 	pathText = "File path: ";
 	textSeparator = "--------------------------------------------------";
 	master = mainHandler();
+	previewWindowName = "imgEditor";
 }
 
 void UI::UIHandler() {
@@ -70,6 +71,17 @@ bool UI::keystrokeHandler() {
 			else {
 				throw openFail;
 			}
+		} else if (command == "show") {
+			int scale = 0;
+			if (!inputBuffer.find(' ') == string::npos) {
+				auto value = inputBuffer.substr(inputBuffer.find(' '));
+				value.erase(0, 1);
+				scale = stoi(value);
+			}
+
+			if (!showPreview(scale)) {
+				throw windowFail;
+			}
 		}
 		else if (command == "clear") {
 			clearEvents();
@@ -106,6 +118,19 @@ bool UI::keystrokeHandler() {
 			}
 			vector<edit>* ref = master.getHistory();
 			ref->push_back(edit{ value,crop });
+		}
+		else if (command == "resize") {
+			if (inputBuffer.length() < 6) {
+				throw commandFail;
+			}
+			auto value = inputBuffer.substr(inputBuffer.find(' '));
+			value.erase(0, 1);
+			event error = actionHandler::actionSelector(resize, master.getDstImg(), value, master.getGPUController());
+			if (error == actionFail || error == parameterFail) {
+				throw error;
+			}
+			vector<edit>* ref = master.getHistory();
+			ref->push_back(edit{ value,resize });
 		}
 		else if (command == "brightness") {
 			if (inputBuffer.length() < 11) {
@@ -164,6 +189,67 @@ void UI::editHistoryScreen() {
 	cin.get();
 	draw();
 	return;
+}
+
+bool UI::showPreview(unsigned int scale) {
+	if (!master.getDstImg()->getStatus())
+		return false;
+	string windowName = master.getDstImg()->getPath() + " (" + to_string(master.getDstImg()->getResolutionW()) + "x" + to_string(master.getDstImg()->getResolutionH()) + ")";
+	cout << "Press any key to close the window...";
+	// image scaling to fit on a current monitor
+	cv::Mat tempImg;
+	
+	if (scale == 0) {
+		unsigned int x=0, y=0;
+		unsigned int height, width;
+		// max 80% of height
+#ifdef _WIN32
+		x = GetSystemMetrics(SM_CXSCREEN);
+		y = GetSystemMetrics(SM_CYSCREEN);
+#else
+		Display* d = XOpenDisplay(NULL);
+		Screen* s = DefaultScreenOfDisplay(d);
+		x = s->width;
+		y = s->height;
+#endif
+		bool changed = false;
+		float newScale;
+		if (master.getDstImg()->getResolutionH() > 0.8*y) {
+
+			height = 0.8 * y;
+			width = (master.getDstImg()->getResolutionW() * 0.8 * y) / master.getDstImg()->getResolutionH();
+			changed = true;
+		}
+
+		if (master.getDstImg()->getResolutionW() > 0.95 * x) {
+			width = 0.95 * x;
+			height = (master.getDstImg()->getResolutionH() * 0.95 * x) / master.getDstImg()->getResolutionH();
+			changed = true;
+		}
+		if (changed) {
+			cv::resize(*master.getDstImg()->getImg(), tempImg, cv::Size(width, height));
+			newScale = (float)width / master.getDstImg()->getResolutionW() * 100;
+			std::stringstream stream;
+			stream << std::fixed << std::setprecision(2) << newScale;
+			std::string s = stream.str();
+			windowName = windowName + "@" + s + "%";
+		}
+		else {
+			tempImg = *master.getDstImg()->getImg();
+			windowName = windowName + "@100%";
+		}
+	}
+	else {
+		unsigned int width = master.getDstImg()->getResolutionW() * scale/100;
+		unsigned int height = master.getDstImg()->getResolutionH()*scale/100;
+		cv::resize(*master.getDstImg()->getImg(), tempImg, cv::Size(width, height));
+		windowName = windowName + "@"+ to_string(scale) +"%";
+	}
+	windowName += (" - " + previewWindowName);
+	cv::imshow(windowName, tempImg);
+	cv::waitKey(0);
+	cv::destroyWindow(windowName);
+	return true;
 }
 
 UI::~UI() {

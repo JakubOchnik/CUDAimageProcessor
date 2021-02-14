@@ -20,6 +20,13 @@ bool actionHandler::cropping(cv::Rect area, Img* srcImg) {
 	return true;
 }
 
+bool actionHandler::resizing(unsigned int x, unsigned int y, Img* srcImg) {
+	cv::Mat newImg(*srcImg->getImg());
+	cv::resize(*srcImg->getImg(), newImg, cv::Size(x, y));
+	srcImg->updateAll(newImg);
+	return true;
+}
+
 event actionHandler::actionSelector(action name, Img* sourceName, std::string value, GPUcontroller* GPUcontrol) {
 	if (name == crop) {
 		// x y width height
@@ -49,8 +56,28 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 			return e;
 		}
 		return actionSuccess;
-	}
-	else if (name == brightness) {
+	} else if (name == resize) {
+		// x y width height
+		try {
+			int x1 = value.find(' ');
+			if (x1 <= 0 || x1 == value.length()) {
+				throw parameterFail;
+			}
+			unsigned int x = stoi((value.substr(0, x1)));
+			unsigned int y = stoi((value.substr(x1, value.length())));
+			if (x <= 0 || y <= 0) {
+				throw parameterFail;
+			}
+			// zlec wykonanie funkcji
+			if (!resizing(x,y,sourceName)) {
+				throw actionFail;
+			}
+		}
+		catch (event e) {
+			return e;
+		}
+		return actionSuccess;
+	} else if (name == brightness) {
 		try {
 			int shift = 0;
 			if (value[0] == '-') {

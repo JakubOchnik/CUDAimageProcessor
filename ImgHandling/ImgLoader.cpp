@@ -1,6 +1,6 @@
 #include "ImgLoader.h"
 
-bool checkImgDims(int x, int y) {
+bool ImgLoader::checkImgDims(int x, int y) {
 	int maxWidth, maxHeight;
 	tie(maxWidth, maxHeight) = GPUinfo::getMaxDimensions();
 	if (x > maxWidth || y > maxHeight) {
@@ -29,7 +29,7 @@ Img ImgLoader::loadImg(std::string path, int type) {
 		return Img();
 	return Img(img, path);
 }
-Img loadImg(std::string path) {
+Img ImgLoader::loadImg(std::string path) {
 	cv::Mat img = cv::imread(path, 0);
 	if (!checkImgDims(img.size().width, img.size().height))
 		return Img();
