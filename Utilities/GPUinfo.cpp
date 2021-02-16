@@ -32,6 +32,7 @@ std::tuple<int, int> GPUinfo::getMaxDimensions() {
 }
 
 void GPUinfo::showGPUinfo(cudaDeviceProp prop) {
+	cout << "CUDA IMAGE PROCESSOR\nJakub Ochnik 2021\n------------------------------\n";
 	cout << "GPU device info:" << endl;
 	cout << "Name: " << prop.name << endl;
 	cout << "Compute capability: " << prop.major <<"."<< prop.minor << endl;

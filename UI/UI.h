@@ -31,14 +31,16 @@ private:
 
 	std::vector<std::string> eventPrompts = {
 		"File opened successfully",
-		"File open failed. Check the path, extension or dimensions (they can't exceed 65535).",
+		"File open failed. Check the path, extension or dimensions (they cannot exceed 65535x65535).",
 		"File saved successfully",
 		"File save failed",
 		"Invalid command",
 		"Action performed successfully",
 		"Action failed",
 		"Invalid action parameters",
-		"Image has not been imported yet"
+		"Image has not been imported yet",
+		"Can't undo - there are no performed operations yet",
+		"Can't redo - there are no newer operations"
 	};
 
 	std::vector<int> eventQueue;

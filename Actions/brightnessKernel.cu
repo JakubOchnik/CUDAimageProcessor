@@ -7,9 +7,6 @@
 __global__ void calculateBrightness(unsigned char* image, int channels, int shift);
 
 void executeBrightnessKernel(Img* image, int shift, GPUcontroller* GPU) {
-	cv::imshow("kernel img", *image->getImg());
-	cv::waitKey(0);
-	cv::destroyWindow("kernel img");
 	dim3 grid(image->getResolutionW(), image->getResolutionH());
 	int channels = image->getChannelNum();
 	int width = image->getResolutionW();

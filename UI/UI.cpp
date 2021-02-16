@@ -4,7 +4,7 @@ UI::UI() {
 	quit = false;
 	menu = true;
 	loaded = false;
-	menuText = "invert: invert colors\ncontrast: enhance contrast\nbrightness: enhance brightness\nhistogram: generate histogram\nequalize: histogram equalization\ncrop: crop image resize: resize image\n -----------------\nload: load image\nsave: save image\nhistory: view edit history\nclear: clear notifications\nquit: quit";
+	menuText = "invert: invert colors\ncontrast: enhance contrast\nbrightness: enhance brightness\nhistogram: generate histogram\nequalize: histogram equalization\ncrop: crop image\nresize: resize image\n -----------------\nload: load image\nsave: save image\nhistory: view edit history\nclear: clear notifications\nquit: quit";
 	infoResolution = "Image resolution:";
 	infoChannels = "Image color channels:";
 	prompt = "IP>";
@@ -73,7 +73,12 @@ bool UI::keystrokeHandler() {
 			}
 		}
 		else if (command == "undo") {
-			master.actionUndo();
+			if(!master.actionUndo())
+				throw undoFail;
+		}
+		else if (command == "redo") {
+			if(!master.actionRedo())
+				throw redoFail;
 		}
 		else if (command == "show") {
 			int scale = 0;

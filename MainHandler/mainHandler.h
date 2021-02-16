@@ -10,12 +10,13 @@ private:
 	Img srcImg;
 	Img dstImg;
 	std::vector<edit> history;
+	std::vector<edit> redoHistory;
 	GPUcontroller GPUControl;
 
 public:
 	mainHandler();
-	void actionRevert(int number);
-	void actionUndo();
+	bool actionRedo();
+	bool actionUndo();
 
 	Img* getSrcImg();
 	Img* getDstImg();

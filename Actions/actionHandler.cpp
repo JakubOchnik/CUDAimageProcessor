@@ -88,13 +88,7 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 				shift = stoi(value.substr(0, value.length()));
 			}
 			updateGPUmem(sourceName, GPUcontrol, forceUpdate);
-			cv::imshow("actionhandler", *sourceName->getImg());
-			cv::waitKey(0);
-			cv::destroyWindow("actionhandler");
 			executeBrightnessKernel(sourceName, shift,GPUcontrol);
-			cv::imshow("actionhandler post", *sourceName->getImg());
-			cv::waitKey(0);
-			cv::destroyWindow("actionhandler post");
 			return actionSuccess;
 		}
 		catch (event e)
