@@ -49,7 +49,7 @@ void GPUcontroller::updatePtr(Img* newImg) {
 		GPUmalloc(newImg);
 	}
 	else {
-		cudaMemcpy(devImgPtr, newImg->getImg()->data, newSize, cudaMemcpyDeviceToHost);
+		cudaMemcpy(devImgPtr, newImg->getImg()->data, newSize, cudaMemcpyHostToDevice);
 	}
 }
 

@@ -11,6 +11,7 @@ private:
 public:
 	Img();
 	Img(cv::Mat img, std::string path);
+	Img& operator=(const Img& other);
 	std::string getPath() const;
 	unsigned int getResolutionH() const;
 	unsigned int getResolutionW() const;

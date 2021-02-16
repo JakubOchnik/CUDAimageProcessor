@@ -10,6 +10,17 @@ Img::Img(cv::Mat img, std::string path): image(img) {
 
 Img::Img():initiated(false), image(cv::Mat()), colorChannels(0), resolutionH(0), resolutionW(0) {}
 
+Img& Img::operator=(const Img& other) {
+	this->colorChannels = other.colorChannels;
+	this->initiated = other.initiated;
+	this->resolutionH = other.resolutionH;
+	this->resolutionW = other.resolutionW;
+	this->path = other.path;
+	this->image = other.image.clone();
+	return *this;
+}
+
+
 std::string Img::getPath() const {
 	return path;
 }

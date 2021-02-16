@@ -3,6 +3,7 @@
 #include "../ImgHandling/ImgLoader.h"
 #include "../MainHandler/definitions.h"
 #include "../Utilities/GPUcontrol.h"
+#include "../Actions/actionHandler.h"
 #include <vector>
 class mainHandler {
 private:
@@ -13,7 +14,6 @@ private:
 
 public:
 	mainHandler();
-	void actionHandler(enum action act);
 	void actionRevert(int number);
 	void actionUndo();
 

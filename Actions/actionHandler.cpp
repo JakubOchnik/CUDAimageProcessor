@@ -3,11 +3,10 @@
 #include "invertionKernel.h"
 #include<algorithm>
 
-bool actionHandler::updateGPUmem(Img* srcImg, GPUcontroller* GPU) {
+bool actionHandler::updateGPUmem(Img* srcImg, GPUcontroller* GPU, bool forceUpdate) {
 	if (!GPU->getGPUmemStatus()) {
 		GPU->GPUmalloc(srcImg);
-	}
-	else if(GPU->sizeUpdateStatus()) {
+	} else if (forceUpdate || GPU->sizeUpdateStatus()){
 		GPU->updatePtr(srcImg);
 	}
 	return 1;
@@ -27,7 +26,7 @@ bool actionHandler::resizing(unsigned int x, unsigned int y, Img* srcImg) {
 	return true;
 }
 
-event actionHandler::actionSelector(action name, Img* sourceName, std::string value, GPUcontroller* GPUcontrol) {
+event actionHandler::actionSelector(action name, Img* sourceName, std::string value, GPUcontroller* GPUcontrol, bool forceUpdate) {
 	if (name == crop) {
 		// x y width height
 		try {
@@ -88,8 +87,14 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 			else {
 				shift = stoi(value.substr(0, value.length()));
 			}
-			updateGPUmem(sourceName, GPUcontrol);
+			updateGPUmem(sourceName, GPUcontrol, forceUpdate);
+			cv::imshow("actionhandler", *sourceName->getImg());
+			cv::waitKey(0);
+			cv::destroyWindow("actionhandler");
 			executeBrightnessKernel(sourceName, shift,GPUcontrol);
+			cv::imshow("actionhandler post", *sourceName->getImg());
+			cv::waitKey(0);
+			cv::destroyWindow("actionhandler post");
 			return actionSuccess;
 		}
 		catch (event e)
@@ -99,7 +104,7 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 	}
 	else if (name == invertion) {
 		try {
-			updateGPUmem(sourceName, GPUcontrol);
+			updateGPUmem(sourceName, GPUcontrol, forceUpdate);
 			executeInvertionKernel(sourceName, GPUcontrol);
 			return actionSuccess;
 		}

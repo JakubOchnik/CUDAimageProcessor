@@ -71,7 +71,11 @@ bool UI::keystrokeHandler() {
 			else {
 				throw openFail;
 			}
-		} else if (command == "show") {
+		}
+		else if (command == "undo") {
+			master.actionUndo();
+		}
+		else if (command == "show") {
 			int scale = 0;
 			if (!inputBuffer.find(' ') == string::npos) {
 				auto value = inputBuffer.substr(inputBuffer.find(' '));
