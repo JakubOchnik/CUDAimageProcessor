@@ -4,15 +4,15 @@ UI::UI() {
 	quit = false;
 	menu = true;
 	loaded = false;
-	menuText = "invert: invert colors\ncontrast: enhance contrast\nbrightness: enhance brightness\nhistogram: generate histogram\nequalize: histogram equalization\ncrop: crop image\nresize: resize image\n -----------------\nload: load image\nsave: save image\nhistory: view edit history\nclear: clear notifications\nquit: quit";
-	infoResolution = "Image resolution:";
-	infoChannels = "Image color channels:";
-	prompt = "IP>";
-	notLoaded = "Image not loaded";
-	pathText = "File path: ";
-	textSeparator = "--------------------------------------------------";
+	//menuText = "invert: invert colors\ncontrast: enhance contrast\nbrightness: enhance brightness\nhistogram: generate histogram\nequalize: histogram equalization\ncrop: crop image\nresize: resize image\n -----------------\nload: load image\nsave: save image\nhistory: view edit history\nclear: clear notifications\nquit: quit";
+	//infoResolution = "Image resolution:";
+	//infoChannels = "Image color channels:";
+	//prompt = "IP>";
+	//notLoaded = "Image not loaded";
+	//pathText = "File path: ";
+	//textSeparator = "--------------------------------------------------";
 	master = mainHandler();
-	previewWindowName = "imgEditor";
+	//previewWindowName = "imgEditor";
 }
 
 void UI::UIHandler() {
@@ -82,7 +82,7 @@ bool UI::keystrokeHandler() {
 		}
 		else if (command == "show") {
 			int scale = 0;
-			if (!inputBuffer.find(' ') == string::npos) {
+			if (inputBuffer.find(' ') != string::npos) {
 				auto value = inputBuffer.substr(inputBuffer.find(' '));
 				value.erase(0, 1);
 				scale = stoi(value);
@@ -114,6 +114,9 @@ bool UI::keystrokeHandler() {
 		}
 		else if (command == "history") {
 			editHistoryScreen();
+		}
+		else if (command == "help") {
+			helpScreen();
 		}
 		else if (command == "crop") {
 			if (inputBuffer.length() < 5) {
@@ -188,6 +191,7 @@ void UI::clearEvents() {
 }
 
 void UI::editHistoryScreen() {
+	system("cls");
 	cout << endl;
 	int i = 1;
 	for (auto userAction : *master.getHistory()) {
@@ -195,6 +199,15 @@ void UI::editHistoryScreen() {
 		i++;
 	}
 	cout << "Press any key to return to main menu...";
+	cin.get();
+	draw();
+	return;
+}
+
+void UI::helpScreen() {
+	system("cls");
+	cout << helpText << endl;
+	cout << "Press ENTER to return to main menu...";
 	cin.get();
 	draw();
 	return;
@@ -210,7 +223,7 @@ bool UI::showPreview(unsigned int scale) {
 	
 	if (scale == 0) {
 		unsigned int x=0, y=0;
-		unsigned int height, width;
+		unsigned int height = master.getDstImg()->getResolutionH(), width = master.getDstImg()->getResolutionW();
 		// max 80% of height
 #ifdef _WIN32
 		x = GetSystemMetrics(SM_CXSCREEN);
@@ -223,14 +236,14 @@ bool UI::showPreview(unsigned int scale) {
 #endif
 		bool changed = false;
 		float newScale;
-		if (master.getDstImg()->getResolutionH() > 0.8*y) {
+		if (height > 0.8*y) {
 
 			height = 0.8 * y;
 			width = (master.getDstImg()->getResolutionW() * 0.8 * y) / master.getDstImg()->getResolutionH();
 			changed = true;
 		}
 
-		if (master.getDstImg()->getResolutionW() > 0.95 * x) {
+		if (width > 0.95 * x) {
 			width = 0.95 * x;
 			height = (master.getDstImg()->getResolutionH() * 0.95 * x) / master.getDstImg()->getResolutionH();
 			changed = true;

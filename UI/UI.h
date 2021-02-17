@@ -20,14 +20,14 @@ private:
 	bool quit;
 	bool menu;
 	bool loaded;
-	std::string menuText;
-	std::string infoResolution;
-	std::string infoChannels;
-	std::string pathText;
-	std::string prompt;
-	std::string notLoaded;
-	std::string textSeparator;
-	std::string previewWindowName;
+	std::string menuText = "CUDA IMAGE PROCESSOR\nJakub Ochnik 2021";
+	std::string infoResolution = "Image resolution:";
+	std::string infoChannels = "Image color channels:";
+	std::string pathText = "File path: ";
+	std::string prompt = "IP>";
+	std::string notLoaded = "Image not loaded";
+	std::string textSeparator = "--------------------------------------------------";
+	std::string previewWindowName = "imgEditor";
 
 	std::vector<std::string> eventPrompts = {
 		"File opened successfully",
@@ -55,17 +55,21 @@ private:
 		"Resized image: "
 	};
 
+	std::string helpText = "-- HELP --\n\nGENERAL FUNCTIONS:\n- quit - Exits the program\n- load [file_path] - Loads the image from the selected path\n- save [file_path] - Saves the edited image to the selected path\n- undo - Reverts the latest change\n- redo - Performs the latest reverted action\n- show [~scale] - Opens the image preview window. If the custom scale (in percentage, i.e. 75 % ->scale = 75) is not specified, the window will be automatically scaled to fit 80 % of main screen's vertical resolution.\n- history - Shows the history of changes\n- clear - Clears the notification area\n\nACTIONS:\n- brightness [value] - Changes brightness of the image by the specified value (it can be either negative or positive)\n- invert - Inverts colors of the image\n- crop [x] [y] [width] [height] - Trims the image from the coordinates (x, y) to (x + width, y + height). Constraints : x + width < full width; y + height < full height.\n- resize [width] [height] - Resizes the image to the specified size\n\n(~- optional)";
+
 	std::string inputBuffer;
 
 	mainHandler master;
-public:
-	UI();
-	void UIHandler();
-	bool keystrokeHandler();
+	void helpScreen();
 	void draw();
+	bool keystrokeHandler();
 	std::string printEvents();
 	void clearEvents();
 	void editHistoryScreen();
-	bool showPreview(unsigned int scale=0);
+	bool showPreview(unsigned int scale = 0);
+public:
+	UI();
+	void UIHandler();
+
 	~UI();
 };
