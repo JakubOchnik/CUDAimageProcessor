@@ -4,15 +4,13 @@ UI::UI() {
 	quit = false;
 	menu = true;
 	loaded = false;
-	//menuText = "invert: invert colors\ncontrast: enhance contrast\nbrightness: enhance brightness\nhistogram: generate histogram\nequalize: histogram equalization\ncrop: crop image\nresize: resize image\n -----------------\nload: load image\nsave: save image\nhistory: view edit history\nclear: clear notifications\nquit: quit";
-	//infoResolution = "Image resolution:";
-	//infoChannels = "Image color channels:";
-	//prompt = "IP>";
-	//notLoaded = "Image not loaded";
-	//pathText = "File path: ";
-	//textSeparator = "--------------------------------------------------";
 	master = mainHandler();
-	//previewWindowName = "imgEditor";
+	std::string title = baseWindowName;
+#ifdef _WIN32
+	SetConsoleTitle(TEXT(title.c_str()));
+#else
+	std::cout << "\033]0;" << title << "\007";
+#endif
 }
 
 void UI::UIHandler() {
@@ -32,6 +30,12 @@ void UI::draw() {
 			std::cout << pathText << master.getDstImg()->getPath() << endl;
 			std::cout << infoResolution << " " << master.getDstImg()->getResolutionW() << " x " << master.getDstImg()->getResolutionH() << std::endl;
 			std::cout << infoChannels << " " << master.getDstImg()->getChannelNum() << std::endl;
+			std::string title = master.getDstImg()->getPath() + " - " + baseWindowName;
+#ifdef _WIN32
+			SetConsoleTitle(TEXT(title.c_str()));
+#else
+			std::cout << "\033]0;" << title << "\007";
+#endif
 		}
 		else {
 			std::cout << notLoaded << std::endl;
@@ -63,6 +67,7 @@ bool UI::keystrokeHandler() {
 			if (path == inputBuffer || path.length() < 2) {
 				throw commandFail;
 			}
+			cout << imgLoading << endl;
 			if (master.updateSrcImg(path, 1)) {
 				eventQueue.push_back(openSuccess);
 				loaded = true;
@@ -267,7 +272,7 @@ bool UI::showPreview(unsigned int scale) {
 		cv::resize(*master.getDstImg()->getImg(), tempImg, cv::Size(width, height));
 		windowName = windowName + "@"+ to_string(scale) +"%";
 	}
-	windowName += (" - " + previewWindowName);
+	windowName += (" - " + baseWindowName);
 	cv::imshow(windowName, tempImg);
 	cv::waitKey(0);
 	cv::destroyWindow(windowName);

@@ -25,9 +25,11 @@ private:
 	std::string infoChannels = "Image color channels:";
 	std::string pathText = "File path: ";
 	std::string prompt = "IP>";
+	std::string imgLoading = "Loading image, please wait...";
 	std::string notLoaded = "Image not loaded";
 	std::string textSeparator = "--------------------------------------------------";
-	std::string previewWindowName = "imgEditor";
+	std::string baseWindowName = "imgEditor";
+	std::string consoleName = baseWindowName;
 
 	std::vector<std::string> eventPrompts = {
 		"File opened successfully",

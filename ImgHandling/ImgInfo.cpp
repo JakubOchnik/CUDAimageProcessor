@@ -2,8 +2,8 @@
 
 Img::Img(cv::Mat img, std::string path): image(img) {
 	this->path = path;
-	resolutionH = img.size().width;
-	resolutionW = img.size().height;
+	resolutionH = img.size().height;
+	resolutionW = img.size().width;
 	colorChannels = img.channels();
 	initiated = true;
 }
