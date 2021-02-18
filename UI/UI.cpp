@@ -94,7 +94,7 @@ bool UI::keystrokeHandler() {
 			}
 
 			if (!showPreview(scale)) {
-				throw windowFail;
+				throw noImage;
 			}
 		}
 		else if (command == "clear") {
@@ -130,7 +130,7 @@ bool UI::keystrokeHandler() {
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
 			event error = actionHandler::actionSelector(crop, master.getDstImg(), value, master.getGPUController());
-			if (error == actionFail || error == parameterFail) {
+			if (error == actionFail || error == parameterFail || error == noImage) {
 				throw error;
 			}
 			vector<edit>* ref = master.getHistory();
@@ -143,7 +143,7 @@ bool UI::keystrokeHandler() {
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
 			event error = actionHandler::actionSelector(resize, master.getDstImg(), value, master.getGPUController());
-			if (error == actionFail || error == parameterFail) {
+			if (error == actionFail || error == parameterFail || error == noImage) {
 				throw error;
 			}
 			vector<edit>* ref = master.getHistory();
@@ -156,7 +156,7 @@ bool UI::keystrokeHandler() {
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
 			event error = actionHandler::actionSelector(brightness, master.getDstImg(), value, master.getGPUController());
-			if (error == actionFail || error == parameterFail) {
+			if (error == actionFail || error == parameterFail || error == noImage) {
 				throw error;
 			}
 			vector<edit>* ref = master.getHistory();
@@ -166,7 +166,7 @@ bool UI::keystrokeHandler() {
 			//auto value = inputBuffer.substr(inputBuffer.find(' '));
 			//value.erase(0, 1);
 			event error = actionHandler::actionSelector(invertion, master.getDstImg(), "", master.getGPUController());
-			if (error == actionFail || error == parameterFail) {
+			if (error == actionFail || error == parameterFail || error == noImage) {
 				throw error;
 			}
 			vector<edit>* ref = master.getHistory();

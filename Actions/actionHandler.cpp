@@ -1,7 +1,6 @@
 #include "actionHandler.h"
 #include "brightnessKernel.h"
 #include "invertionKernel.h"
-#include<algorithm>
 
 bool actionHandler::updateGPUmem(Img* srcImg, GPUcontroller* GPU, bool forceUpdate) {
 	if (!GPU->getGPUmemStatus()) {
@@ -26,14 +25,43 @@ bool actionHandler::resizing(unsigned int x, unsigned int y, Img* srcImg) {
 	return true;
 }
 
+bool actionHandler::isNumber(std::string value) {
+	std::string::iterator end_pos = std::remove(value.begin(), value.end(), ' ');
+	value.erase(end_pos, value.end());
+	if (value.empty())
+		return false;
+	std::stringstream ss;
+	ss << value;
+	int number;
+	ss >> number;
+	if (ss.good()) {
+		return false;
+	}
+	else if (number == 0 && value[0] != '0') {
+		return false;
+	}
+	else {
+		return true;
+	}
+	return true;
+}
+
+
 event actionHandler::actionSelector(action name, Img* sourceName, std::string value, GPUcontroller* GPUcontrol, bool forceUpdate) {
 	if (name == crop) {
 		// x y width height
 		try {
+			if (!sourceName->getStatus()) {
+				throw noImage;
+			}
 			int x1 = value.find(' ');
 			int x2 = value.find(' ', x1 + 1);
 			int x3 = value.find(' ', x2 + 1);
 			if (x1 <= 0 || x1 == x2 || x2 <= 0 || x2 == x3 || x3 <= 0) {
+				throw parameterFail;
+			}
+			if (!isNumber(value.substr(0, x1)) || !isNumber(value.substr(x1, x2)) || !isNumber(value.substr(x2, x3)) || !isNumber(value.substr(x3, value.length() - 1))) {
+				// check if all parameters are numbers
 				throw parameterFail;
 			}
 			int x = stoi((value.substr(0, x1)));
@@ -58,8 +86,15 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 	} else if (name == resize) {
 		// x y width height
 		try {
+			if (!sourceName->getStatus()) {
+				throw noImage;
+			}
 			int x1 = value.find(' ');
 			if (x1 <= 0 || x1 == value.length()) {
+				throw parameterFail;
+			}
+			if (!isNumber(value.substr(0, x1)) || !isNumber(value.substr(x1, value.length()))) {
+				// check if all parameters are numbers
 				throw parameterFail;
 			}
 			unsigned int x = stoi((value.substr(0, x1)));
@@ -78,7 +113,14 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 		return actionSuccess;
 	} else if (name == brightness) {
 		try {
+			if (!sourceName->getStatus()) {
+				throw noImage;
+			}
 			int shift = 0;
+			if (!isNumber(value)) {
+				// check if parameter is a number
+				throw parameterFail;
+			}
 			if (value[0] == '-') {
 				
 				shift = stoi(value.substr(1, value.length() - 1));
@@ -98,6 +140,9 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 	}
 	else if (name == invertion) {
 		try {
+			if (!sourceName->getStatus()) {
+				throw noImage;
+			}
 			updateGPUmem(sourceName, GPUcontrol, forceUpdate);
 			executeInvertionKernel(sourceName, GPUcontrol);
 			return actionSuccess;

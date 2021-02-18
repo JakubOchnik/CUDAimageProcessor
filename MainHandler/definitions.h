@@ -23,7 +23,7 @@ enum event {
 	actionSuccess,
 	actionFail,
 	parameterFail,
-	windowFail,
+	noImage,
 	undoFail,
 	redoFail
 };
