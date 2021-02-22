@@ -70,6 +70,7 @@ bool UI::keystrokeHandler() {
 			cout << imgLoading << endl;
 			if (master.updateSrcImg(path, 1)) {
 				eventQueue.push_back(openSuccess);
+				master.getHistory()->clear();
 				loaded = true;
 				return true;
 			}
@@ -172,6 +173,16 @@ bool UI::keystrokeHandler() {
 			vector<edit>* ref = master.getHistory();
 			ref->push_back(edit{ "",invertion });
 		}
+		else if (command == "equalize") {
+		//auto value = inputBuffer.substr(inputBuffer.find(' '));
+		//value.erase(0, 1);
+		event error = actionHandler::actionSelector(equalization, master.getDstImg(), "", master.getGPUController(),true);
+		if (error == actionFail || error == parameterFail || error == noImage) {
+			throw error;
+		}
+		vector<edit>* ref = master.getHistory();
+		ref->push_back(edit{ "",equalization });
+		}
 		else {
 			throw commandFail;
 		}
@@ -197,7 +208,10 @@ void UI::clearEvents() {
 
 void UI::editHistoryScreen() {
 	system("cls");
-	cout << endl;
+	cout << "-- EDITS HISTORY -- " << endl;
+	if(master.getHistory()->empty()){
+		cout << "History is empty." << endl;;
+	}
 	int i = 1;
 	for (auto userAction : *master.getHistory()) {
 		cout << "[" << i << "] " << actionNames[userAction.actionType] << " " << userAction.value << std::endl;

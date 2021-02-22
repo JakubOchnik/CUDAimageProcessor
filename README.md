@@ -3,20 +3,20 @@ A simple GPU-accelerated command-line image processor. Image editing operations 
 ## External libraries used:
 - NVIDIA CUDA (a capable GPU is required)
 - OpenCV
-## Working:
+## Features:
 - Command-line UI
-- Image importing and saving
 - Edit history (with undo and redo functions)
 - NVIDIA GPU driver detection and CUDA availability checking on Windows and Linux
-- Image cropping
+- Basic operations, such as image cropping, color inversion
 - Color inversion
 - Brightness correction
 - Image resize
 - Image preview
-## In development:
-- Contrast correction
-- Histogram
 - Histogram equalization
+## In development:
+- Manual contrast correction
+- Generating histogram
+- Applying LUTs
 - Batch image processing
 - GUI
 - And more!
@@ -38,6 +38,7 @@ Actions:
 - invert - Inverts colors of the image
 - crop [x] [y] [width] [height] - Trims the image from the coordinates (x,y) to (x+width, y+height). Constraints: x+width < full width; y+height < full height.
 - resize [width] [height] - Resizes the image to the specified size
+- equalize - Performs histogram equalization
 
 (~ - optional)
 ```

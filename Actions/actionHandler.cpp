@@ -1,6 +1,7 @@
 #include "actionHandler.h"
 #include "brightnessKernel.h"
 #include "invertionKernel.h"
+#include "equalizationKernel.h"
 
 bool actionHandler::updateGPUmem(Img* srcImg, GPUcontroller* GPU, bool forceUpdate) {
 	if (!GPU->getGPUmemStatus()) {
@@ -149,6 +150,19 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 		}
 		catch (event e)
 		{
+			return e;
+		}
+	}
+	else if (name == equalization) {
+		try {
+			if (!sourceName->getStatus()) {
+				throw noImage;
+			}
+			updateGPUmem(sourceName, GPUcontrol, forceUpdate);
+			executeEqualizationKernel(sourceName, GPUcontrol);
+			return actionSuccess;
+		}
+		catch (event e) {
 			return e;
 		}
 	}
