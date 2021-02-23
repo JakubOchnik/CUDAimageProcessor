@@ -12,7 +12,7 @@ void executeContrastKernel(Img* image, int value, GPUcontroller* GPU) {
 	int width = image->getResolutionW();
 	int height = image->getResolutionH();
 	size_t size = channels * width * height * sizeof(unsigned char);
-	float factor = (259 * (value + 255)) / (255 * (259 - value)); //TODO
+	float factor = (259 * (value + 255)) / (float)(255 * (259 - value));
 	calculateContrast <<<grid, 1 >>> (GPU->getImgPtr(), channels, factor);
 	cudaMemcpy(image->getImg()->data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
 }

@@ -185,6 +185,9 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 			else {
 				contr = stoi(value.substr(0, value.length()));
 			}
+			if (contr < -255 || contr >255) {
+				throw parameterFail;
+			}
 			updateGPUmem(sourceName, GPUcontrol, forceUpdate);
 			executeContrastKernel(sourceName, contr, GPUcontrol);
 			return actionSuccess;
