@@ -9,7 +9,6 @@ A simple GPU-accelerated command-line image processor. Image processing features
 - NVIDIA GPU driver detection and CUDA availability checking on Windows and Linux
 - Basic image processing operations
 ## In development:
-- Manual contrast correction
 - Histogram generation
 - Applying custom LUTs
 - Batch image processing
@@ -29,11 +28,12 @@ General functions:
 - help - Shows the help screen
 
 Actions:
-- brightness [value] - Changes brightness of the image by the specified value (it can be either negative or positive)
+- brightness [value] - Changes brightness of the image by specified value (it can be either negative or positive)
 - invert - Inverts colors of the image
 - crop [x] [y] [width] [height] - Trims the image from the coordinates (x,y) to (x+width, y+height). Constraints: x+width < full width; y+height < full height.
 - resize [width] [height] - Resizes the image to the specified size
 - equalize - Performs histogram equalization
+- contrast [value] - Changes contrast of the image by specified value (it can be in range <-255,255>)
 
 (~ - optional)
 ```

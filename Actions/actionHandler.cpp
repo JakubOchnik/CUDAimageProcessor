@@ -2,6 +2,7 @@
 #include "brightnessKernel.h"
 #include "invertionKernel.h"
 #include "equalizationKernel.h"
+#include "contrastKernel.h"
 
 bool actionHandler::updateGPUmem(Img* srcImg, GPUcontroller* GPU, bool forceUpdate) {
 	if (!GPU->getGPUmemStatus()) {
@@ -160,6 +161,32 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 			}
 			updateGPUmem(sourceName, GPUcontrol, forceUpdate);
 			executeEqualizationKernel(sourceName, GPUcontrol);
+			return actionSuccess;
+		}
+		catch (event e) {
+			return e;
+		}
+	}
+	else if (name == contrast) {
+		try {
+			if (!sourceName->getStatus()) {
+				throw noImage;
+			}
+			int contr = 0;
+			if (!isNumber(value)) {
+				// check if parameter is a number
+				throw parameterFail;
+			}
+			if (value[0] == '-') {
+
+				contr = stoi(value.substr(1, value.length() - 1));
+				contr *= (-1);
+			}
+			else {
+				contr = stoi(value.substr(0, value.length()));
+			}
+			updateGPUmem(sourceName, GPUcontrol, forceUpdate);
+			executeContrastKernel(sourceName, contr, GPUcontrol);
 			return actionSuccess;
 		}
 		catch (event e) {

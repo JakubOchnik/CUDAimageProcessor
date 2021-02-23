@@ -174,14 +174,27 @@ bool UI::keystrokeHandler() {
 			ref->push_back(edit{ "",invertion });
 		}
 		else if (command == "equalize") {
-		//auto value = inputBuffer.substr(inputBuffer.find(' '));
-		//value.erase(0, 1);
-		event error = actionHandler::actionSelector(equalization, master.getDstImg(), "", master.getGPUController(),true);
-		if (error == actionFail || error == parameterFail || error == noImage) {
-			throw error;
+			//auto value = inputBuffer.substr(inputBuffer.find(' '));
+			//value.erase(0, 1);
+			event error = actionHandler::actionSelector(equalization, master.getDstImg(), "", master.getGPUController(),true);
+			if (error == actionFail || error == parameterFail || error == noImage) {
+				throw error;
+			}
+			vector<edit>* ref = master.getHistory();
+			ref->push_back(edit{ "",equalization });
 		}
-		vector<edit>* ref = master.getHistory();
-		ref->push_back(edit{ "",equalization });
+		else if (command == "contrast") {
+			if (inputBuffer.length() < 8) {
+				throw commandFail;
+			}
+			auto value = inputBuffer.substr(inputBuffer.find(' '));
+			value.erase(0, 1);
+			event error = actionHandler::actionSelector(contrast, master.getDstImg(), value, master.getGPUController());
+			if (error == actionFail || error == parameterFail || error == noImage) {
+				throw error;
+			}
+			vector<edit>* ref = master.getHistory();
+			ref->push_back(edit{ value,contrast });
 		}
 		else {
 			throw commandFail;
