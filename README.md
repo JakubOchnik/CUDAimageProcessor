@@ -1,4 +1,5 @@
 # GPU-accelerated image processor
+![Screenshot](Docs/Img/screenshot.png)
 A simple GPU-accelerated command-line image processor. Image processing features are implemented on a GPU using CUDA, which can significantly speed-up hi-res image processing.
 ## External libraries used:
 - NVIDIA CUDA (a capable GPU is required)
