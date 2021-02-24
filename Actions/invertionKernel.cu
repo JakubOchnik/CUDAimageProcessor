@@ -14,8 +14,6 @@ void executeInvertionKernel(Img* image, GPUcontroller* GPU) {
 	size_t size = channels * width * height * sizeof(unsigned char);
 	invertImage << <grid, 1 >> > (GPU->getImgPtr(), channels);
 	cudaMemcpy(image->getImg()->data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
-	//cudaDeviceSynchronize();
-	//printf("");
 }
 
 __global__ void invertImage(unsigned char* image, int channels) {

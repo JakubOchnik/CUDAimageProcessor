@@ -2,7 +2,12 @@
 #include "../ImgHandling/ImgInfo.h"
 #include "../MainHandler/definitions.h"
 #include "../Utilities/GPUcontrol.h"
+
 #include "brightnessKernel.h"
+#include "invertionKernel.h"
+#include "equalizationKernel.h"
+#include "contrastKernel.h"
+
 #include <sstream>
 #include <algorithm>
 class actionHandler {

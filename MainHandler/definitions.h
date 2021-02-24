@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-enum action {
+const enum action {
 	crop,
 	brightness,
 	contrast,
@@ -14,7 +14,7 @@ struct edit {
 	action actionType;
 };
 
-enum event {
+const enum event {
 	openSuccess,
 	openFail,
 	saveSuccess,

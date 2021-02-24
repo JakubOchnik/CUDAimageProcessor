@@ -14,19 +14,26 @@ __global__ void calculateEdgeBrightness(unsigned char* image, int channels, int*
 __global__ void calculateEqualization(unsigned char* image, int channels, int* min, int* max);
 __device__ int getEqualizedValue(unsigned char value, int min, int max);
 
-// TODO
 
-void executeEqualizationKernel(Img* image, GPUcontroller* GPU) {
+bool executeEqualizationKernel(Img* image, GPUcontroller* GPU) {
 	int channels = image->getChannelNum();
 	int width = image->getResolutionW();
 	int height = image->getResolutionH();
-	int* min = (int*)malloc(channels * sizeof(int));//new int[channels];
-	int* max = (int*)malloc(channels * sizeof(int));//new int[channels];
+	int* min;
+	int* max;
+	// memory allocation with error checking
+	min = new (std::nothrow) int[channels];
+	if (!min) {
+		return false;
+	}
+	max = new (std::nothrow) int[channels];
+	if (!max) {
+		return false;
+	}
 	for (int i = 0; i < channels; i++) {
 		min[i] = 255;
 		max[i] = 0;
 	}
-
 	int* dev_min = nullptr;
 	int* dev_max = nullptr;
 	cudaMalloc((void**)&dev_min, channels * sizeof(int));
@@ -42,10 +49,13 @@ void executeEqualizationKernel(Img* image, GPUcontroller* GPU) {
 	cudaMemcpy(min, dev_min, channels * sizeof(int), cudaMemcpyDeviceToHost);
 	cudaMemcpy(max, dev_max, channels * sizeof(int), cudaMemcpyDeviceToHost);
 	calculateEqualization<<<grid,1>>>(GPU->getImgPtr(), channels, dev_min, dev_max);
-	//calculateBrightness <<<grid, 1 >>> (GPU->getImgPtr(), channels, shift);
+
 	cudaMemcpy(image->getImg()->data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
-	//cudaDeviceSynchronize();
-	//printf("");
+	cudaFree(dev_min);
+	cudaFree(dev_max);
+	delete[] min;
+	delete[] max;
+	return true;
 }
 
 __global__ void calculateEdgeBrightness(unsigned char* image, int channels, int* min, int* max) {

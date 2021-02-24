@@ -9,8 +9,8 @@ bool mainHandler::actionRedo() {
 		return false;
 
 	actionHandler::actionSelector(redoHistory.front().actionType, &dstImg, redoHistory.front().value, &GPUControl, true);
-
 	actionHandler::updateGPUmem(&dstImg, &GPUControl, true);
+
 	history.push_back(redoHistory.front());
 	redoHistory.erase(redoHistory.begin());
 	return true;
@@ -19,6 +19,7 @@ bool mainHandler::actionUndo() {
 	Img newImg;
 	newImg = srcImg;
 	int i = 0;
+	// perform all of the operations on source image besides from the latest one
 	if (history.size() > 1)
 	{
 		for (auto a : history) {
@@ -37,7 +38,7 @@ bool mainHandler::actionUndo() {
 
 	actionHandler::updateGPUmem(&dstImg, &GPUControl, true);
 	redoHistory.insert(redoHistory.begin(),history.back());
-	// history
+	// remove the lastest operation from the history
 	history.pop_back();
 	return true;
 }

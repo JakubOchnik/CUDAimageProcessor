@@ -54,10 +54,13 @@ void UI::draw() {
 
 bool UI::keystrokeHandler() {
 	try {
+		// GET COMMAND NAME FROM INPUT STRING
 		auto command = inputBuffer.substr(0, inputBuffer.find(' '));
+		// QUIT
 		if (command == "quit") {
 			quit = true;
 		}
+		// LOAD
 		else if (command == "load") {
 			if (inputBuffer.length() < 5) {
 				throw commandFail;
@@ -164,8 +167,6 @@ bool UI::keystrokeHandler() {
 			ref->push_back(edit{ value,brightness });
 		}
 		else if (command == "invert") {
-			//auto value = inputBuffer.substr(inputBuffer.find(' '));
-			//value.erase(0, 1);
 			event error = actionHandler::actionSelector(invertion, master.getDstImg(), "", master.getGPUController());
 			if (error == actionFail || error == parameterFail || error == noImage) {
 				throw error;
@@ -174,8 +175,6 @@ bool UI::keystrokeHandler() {
 			ref->push_back(edit{ "",invertion });
 		}
 		else if (command == "equalize") {
-			//auto value = inputBuffer.substr(inputBuffer.find(' '));
-			//value.erase(0, 1);
 			event error = actionHandler::actionSelector(equalization, master.getDstImg(), "", master.getGPUController(),true);
 			if (error == actionFail || error == parameterFail || error == noImage) {
 				throw error;
@@ -206,7 +205,7 @@ bool UI::keystrokeHandler() {
 	}
 }
 
-std::string UI::printEvents() {
+const std::string UI::printEvents() const {
 	std::string out;
 	for (auto i : eventQueue) {
 		out += eventPrompts[i];

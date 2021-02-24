@@ -8,7 +8,9 @@ Img::Img(cv::Mat img, std::string path): image(img) {
 	initiated = true;
 }
 
-Img::Img():initiated(false), image(cv::Mat()), colorChannels(0), resolutionH(0), resolutionW(0) {}
+Img::Img():initiated(false), image(cv::Mat()), colorChannels(0), resolutionH(0), resolutionW(0) {
+
+}
 
 Img& Img::operator=(const Img& other) {
 	this->colorChannels = other.colorChannels;
@@ -19,7 +21,6 @@ Img& Img::operator=(const Img& other) {
 	this->image = other.image.clone();
 	return *this;
 }
-
 
 std::string Img::getPath() const {
 	return path;
@@ -61,6 +62,7 @@ void Img::updateAll(std::string newPath, cv::Mat& newMat) {
 	setChannelNum(newMat.depth());
 	initiated = true;
 }
+
 void Img::updateAll(cv::Mat& newMat) {
 	setImg(newMat);
 	setResolutionW(newMat.size().width);

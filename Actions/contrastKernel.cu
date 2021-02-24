@@ -6,6 +6,7 @@
 
 __global__ void calculateContrast(unsigned char* image, int channels, float factor);
 __device__ unsigned char truncate(float value);
+
 void executeContrastKernel(Img* image, int value, GPUcontroller* GPU) {
 	dim3 grid(image->getResolutionW(), image->getResolutionH());
 	int channels = image->getChannelNum();

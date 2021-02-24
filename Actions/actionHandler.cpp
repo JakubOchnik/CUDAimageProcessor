@@ -1,8 +1,4 @@
 #include "actionHandler.h"
-#include "brightnessKernel.h"
-#include "invertionKernel.h"
-#include "equalizationKernel.h"
-#include "contrastKernel.h"
 
 bool actionHandler::updateGPUmem(Img* srcImg, GPUcontroller* GPU, bool forceUpdate) {
 	if (!GPU->getGPUmemStatus()) {
@@ -51,21 +47,24 @@ bool actionHandler::isNumber(std::string value) {
 
 event actionHandler::actionSelector(action name, Img* sourceName, std::string value, GPUcontroller* GPUcontrol, bool forceUpdate) {
 	if (name == crop) {
-		// x y width height
+		// PARAMETERS: x y width height
 		try {
 			if (!sourceName->getStatus()) {
 				throw noImage;
 			}
+			// getting all the parameters
 			int x1 = value.find(' ');
 			int x2 = value.find(' ', x1 + 1);
 			int x3 = value.find(' ', x2 + 1);
-			if (x1 <= 0 || x1 == x2 || x2 <= 0 || x2 == x3 || x3 <= 0) {
+			// error checking
+			if (x1 == std::string::npos || x2 == std::string::npos || x3 == std::string::npos || x1 <= 0 || x1 == x2 || x2 <= 0 || x2 == x3 || x3 <= 0) {
 				throw parameterFail;
 			}
 			if (!isNumber(value.substr(0, x1)) || !isNumber(value.substr(x1, x2)) || !isNumber(value.substr(x2, x3)) || !isNumber(value.substr(x3, value.length() - 1))) {
 				// check if all parameters are numbers
 				throw parameterFail;
 			}
+			// extract the parameters from string
 			int x = stoi((value.substr(0, x1)));
 			int y = stoi((value.substr(x1, x2)));
 			int w = stoi((value.substr(x2, x3)));
@@ -76,7 +75,7 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 			if (x + w > sourceName->getResolutionW() || y + h > sourceName->getResolutionH()) {
 				throw parameterFail;
 			}
-			// zlec wykonanie funkcji
+			// execute the action
 			if (!cropping(cv::Rect(x, y, w, h), sourceName)) {
 				throw actionFail;
 			}
@@ -86,13 +85,13 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 		}
 		return actionSuccess;
 	} else if (name == resize) {
-		// x y width height
+		// parameters: width height
 		try {
 			if (!sourceName->getStatus()) {
 				throw noImage;
 			}
 			int x1 = value.find(' ');
-			if (x1 <= 0 || x1 == value.length()) {
+			if (x1==std::string::npos || x1 <= 0 || x1 == value.length()) {
 				throw parameterFail;
 			}
 			if (!isNumber(value.substr(0, x1)) || !isNumber(value.substr(x1, value.length()))) {
@@ -160,7 +159,9 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 				throw noImage;
 			}
 			updateGPUmem(sourceName, GPUcontrol, forceUpdate);
-			executeEqualizationKernel(sourceName, GPUcontrol);
+			if (!executeEqualizationKernel(sourceName, GPUcontrol)) {
+				return actionFail;
+			}
 			return actionSuccess;
 		}
 		catch (event e) {
