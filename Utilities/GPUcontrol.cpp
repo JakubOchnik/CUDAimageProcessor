@@ -1,4 +1,5 @@
 #include "GPUcontrol.h"
+#include<windows.h>
 
 GPUcontroller::GPUcontroller() {
 	isMemAlloc = false;
@@ -42,15 +43,18 @@ void GPUcontroller::GPUfree() {
 	memSize = 0;
 }
 
-void GPUcontroller::updatePtr(Img* newImg) {
+bool GPUcontroller::updatePtr(Img* newImg) {
 	size_t newSize = newImg->getResolutionH() * newImg->getResolutionW() * newImg->getChannelNum() * sizeof(unsigned char);
 	if (memSize != newSize) {
 		GPUfree();
-		GPUmalloc(newImg);
+		if (!GPUmalloc(newImg)) {
+			return 0;
+		};
 	}
 	else {
 		cudaMemcpy(devImgPtr, newImg->getImg()->data, newSize, cudaMemcpyHostToDevice);
 	}
+	return 1;
 }
 
 unsigned char* GPUcontroller::getImgPtr() {
@@ -60,6 +64,7 @@ unsigned char* GPUcontroller::getImgPtr() {
 GPUcontroller::~GPUcontroller() {
 	if (isMemAlloc) {
 		printf("Freeing memory allocated on GPU (%d KB)...", memSize/1024);
+		Sleep(1000);
 		GPUfree();
 	}
 }

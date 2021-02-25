@@ -11,7 +11,7 @@ private:
 	unsigned int memSize;
 public:
 	GPUcontroller();
-	void updatePtr(Img* newImg);
+	bool updatePtr(Img* newImg);
 	bool getGPUmemStatus() const;
 	bool sizeUpdateStatus() const;
 	unsigned char* getImgPtr();

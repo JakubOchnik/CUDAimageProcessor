@@ -42,7 +42,8 @@ private:
 		"Invalid action parameters",
 		"Image has not been imported yet",
 		"Can't undo - there are no performed operations yet",
-		"Can't redo - there are no newer operations"
+		"Can't redo - there are no newer operations",
+		"Cannot perform operation - insufficient video memory"
 	};
 
 	std::vector<int> eventQueue;

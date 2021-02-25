@@ -25,5 +25,6 @@ const enum event {
 	parameterFail,
 	noImage,
 	undoFail,
-	redoFail
+	redoFail,
+	GPUmallocFail
 };

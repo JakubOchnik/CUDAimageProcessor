@@ -2,11 +2,13 @@
 
 bool actionHandler::updateGPUmem(Img* srcImg, GPUcontroller* GPU, bool forceUpdate) {
 	if (!GPU->getGPUmemStatus()) {
-		GPU->GPUmalloc(srcImg);
+		if (!GPU->GPUmalloc(srcImg)) {
+			return false;
+		};
 	} else if (forceUpdate || GPU->sizeUpdateStatus()){
 		GPU->updatePtr(srcImg);
 	}
-	return 1;
+	return true;
 }
 
 bool actionHandler::cropping(cv::Rect area, Img* srcImg) {
@@ -130,7 +132,9 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 			else {
 				shift = stoi(value.substr(0, value.length()));
 			}
-			updateGPUmem(sourceName, GPUcontrol, forceUpdate);
+			if (!updateGPUmem(sourceName, GPUcontrol, forceUpdate)) {
+				throw GPUmallocFail;
+			};
 			executeBrightnessKernel(sourceName, shift,GPUcontrol);
 			return actionSuccess;
 		}
@@ -144,7 +148,9 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 			if (!sourceName->getStatus()) {
 				throw noImage;
 			}
-			updateGPUmem(sourceName, GPUcontrol, forceUpdate);
+			if (!updateGPUmem(sourceName, GPUcontrol, forceUpdate)) {
+				throw GPUmallocFail;
+			};
 			executeInvertionKernel(sourceName, GPUcontrol);
 			return actionSuccess;
 		}
@@ -158,7 +164,9 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 			if (!sourceName->getStatus()) {
 				throw noImage;
 			}
-			updateGPUmem(sourceName, GPUcontrol, forceUpdate);
+			if (!updateGPUmem(sourceName, GPUcontrol, forceUpdate)) {
+				throw GPUmallocFail;
+			};
 			if (!executeEqualizationKernel(sourceName, GPUcontrol)) {
 				return actionFail;
 			}
@@ -189,7 +197,9 @@ event actionHandler::actionSelector(action name, Img* sourceName, std::string va
 			if (contr < -255 || contr >255) {
 				throw parameterFail;
 			}
-			updateGPUmem(sourceName, GPUcontrol, forceUpdate);
+			if (!updateGPUmem(sourceName, GPUcontrol, forceUpdate)) {
+				throw GPUmallocFail;
+			};
 			executeContrastKernel(sourceName, contr, GPUcontrol);
 			return actionSuccess;
 		}

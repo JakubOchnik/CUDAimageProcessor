@@ -9,7 +9,9 @@ bool mainHandler::actionRedo() {
 		return false;
 
 	actionHandler::actionSelector(redoHistory.front().actionType, &dstImg, redoHistory.front().value, &GPUControl, true);
-	actionHandler::updateGPUmem(&dstImg, &GPUControl, true);
+	if (!actionHandler::updateGPUmem(&dstImg, &GPUControl, true)) {
+		return false;
+	};
 
 	history.push_back(redoHistory.front());
 	redoHistory.erase(redoHistory.begin());
@@ -36,7 +38,9 @@ bool mainHandler::actionUndo() {
 
 	dstImg = newImg;
 
-	actionHandler::updateGPUmem(&dstImg, &GPUControl, true);
+	if (!actionHandler::updateGPUmem(&dstImg, &GPUControl, true)) {
+		throw GPUmallocFail;
+	};
 	redoHistory.insert(redoHistory.begin(),history.back());
 	// remove the lastest operation from the history
 	history.pop_back();
