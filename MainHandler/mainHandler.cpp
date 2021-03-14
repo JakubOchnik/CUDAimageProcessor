@@ -1,15 +1,15 @@
 #include "mainHandler.h"
 
-mainHandler::mainHandler():srcImg(Img()), dstImg(Img()) {
+MainHandler::MainHandler():srcImg(Img()), dstImg(Img()) {
 
 }
 
-bool mainHandler::actionRedo() {
+bool MainHandler::actionRedo() {
 	if (redoHistory.size()<1)
 		return false;
 
-	actionHandler::actionSelector(redoHistory.front().actionType, &dstImg, redoHistory.front().value, &GPUControl, true);
-	if (!actionHandler::updateGPUmem(&dstImg, &GPUControl, true)) {
+	ActionHandler::actionSelector(redoHistory.front().actionType, &dstImg, redoHistory.front().value, &GPUControl, true);
+	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true)) {
 		return false;
 	};
 
@@ -17,7 +17,7 @@ bool mainHandler::actionRedo() {
 	redoHistory.erase(redoHistory.begin());
 	return true;
 }
-bool mainHandler::actionUndo() {
+bool MainHandler::actionUndo() {
 	Img newImg;
 	newImg = srcImg;
 	int i = 0;
@@ -25,7 +25,7 @@ bool mainHandler::actionUndo() {
 	if (history.size() > 1)
 	{
 		for (auto a : history) {
-			actionHandler::actionSelector(a.actionType, &newImg, a.value, &GPUControl,true);
+			ActionHandler::actionSelector(a.actionType, &newImg, a.value, &GPUControl,true);
 
 			i++;
 			if (i >= history.size() - 1) {
@@ -38,7 +38,7 @@ bool mainHandler::actionUndo() {
 
 	dstImg = newImg;
 
-	if (!actionHandler::updateGPUmem(&dstImg, &GPUControl, true)) {
+	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true)) {
 		throw GPUmallocFail;
 	};
 	redoHistory.insert(redoHistory.begin(),history.back());
@@ -47,22 +47,22 @@ bool mainHandler::actionUndo() {
 	return true;
 }
 
-Img* mainHandler::getSrcImg() {
+Img* MainHandler::getSrcImg() {
 	return &srcImg;
 }
-Img* mainHandler::getDstImg() {
+Img* MainHandler::getDstImg() {
 	return &dstImg;
 }
 
-GPUcontroller* mainHandler::getGPUController() {
+GPUcontroller* MainHandler::getGPUController() {
 	return &GPUControl;
 }
 
-void mainHandler::updateDstImg(Img newImage) {
+void MainHandler::updateDstImg(Img newImage) {
 	dstImg = newImage;
 }
 
-bool mainHandler::updateSrcImg(std::string newPath, int mode) {
+bool MainHandler::updateSrcImg(std::string newPath, int mode) {
 	Img newSrc = ImgLoader::loadImg(newPath, mode);
 	if (newSrc.getImg()->empty()) {
 		return false;
@@ -73,7 +73,7 @@ bool mainHandler::updateSrcImg(std::string newPath, int mode) {
 	return true;
 }
 
-bool mainHandler::imgSave(std::string path) {
+bool MainHandler::imgSave(std::string path) {
 	if (dstImg.getStatus() && cv::imwrite(path, *dstImg.getImg())) {
 		dstImg.setPath(path);
 		return true;
@@ -81,6 +81,6 @@ bool mainHandler::imgSave(std::string path) {
 	return false;
 }
 
-std::vector<edit>* mainHandler::getHistory() {
+std::vector<edit>* MainHandler::getHistory() {
 	return &history;
 }

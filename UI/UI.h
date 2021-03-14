@@ -62,7 +62,7 @@ private:
 
 	std::string inputBuffer;
 
-	mainHandler master;
+	MainHandler master;
 	void helpScreen();
 	void draw();
 	bool keystrokeHandler();

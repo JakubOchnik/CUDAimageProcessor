@@ -4,7 +4,7 @@ UI::UI() {
 	quit = false;
 	menu = true;
 	loaded = false;
-	master = mainHandler();
+	master = MainHandler();
 	std::string title = baseWindowName;
 #ifdef _WIN32
 	SetConsoleTitle(TEXT(title.c_str()));
@@ -22,16 +22,20 @@ void UI::UIHandler() {
 }
 
 void UI::draw() {
+#ifdef _WIN32
 	system("cls");
+#else
+	std::cout << "\033[2J\033[1;1H";
+#endif
 	if (menu) {
 		std::cout << menuText << std::endl << textSeparator << std::endl;
 		if (loaded) {
 			std::cout << "Target image info: " << std::endl;
 			std::cout << pathText << master.getDstImg()->getPath() << endl;
-			std::cout << infoResolution << " " << master.getDstImg()->getResolutionW() << " x " << master.getDstImg()->getResolutionH() << std::endl;
+			std::cout << infoResolution << " " << master.getDstImg()->getResolutionW() << " x " << master.getDstImg()->getResolutionH() << std::endl;;
+#ifdef _WIN32
 			std::cout << infoChannels << " " << master.getDstImg()->getChannelNum() << std::endl;
 			std::string title = master.getDstImg()->getPath() + " - " + baseWindowName;
-#ifdef _WIN32
 			SetConsoleTitle(TEXT(title.c_str()));
 #else
 			std::cout << "\033]0;" << title << "\007";
@@ -133,7 +137,7 @@ bool UI::keystrokeHandler() {
 			}
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
-			event error = actionHandler::actionSelector(crop, master.getDstImg(), value, master.getGPUController());
+			event error = ActionHandler::actionSelector(crop, master.getDstImg(), value, master.getGPUController());
 			if (error == actionFail || error == parameterFail || error == noImage) {
 				throw error;
 			}
@@ -146,7 +150,7 @@ bool UI::keystrokeHandler() {
 			}
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
-			event error = actionHandler::actionSelector(resize, master.getDstImg(), value, master.getGPUController());
+			event error = ActionHandler::actionSelector(resize, master.getDstImg(), value, master.getGPUController());
 			if (error == actionFail || error == parameterFail || error == noImage) {
 				throw error;
 			}
@@ -159,7 +163,7 @@ bool UI::keystrokeHandler() {
 			}
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
-			event error = actionHandler::actionSelector(brightness, master.getDstImg(), value, master.getGPUController());
+			event error = ActionHandler::actionSelector(brightness, master.getDstImg(), value, master.getGPUController());
 			if (error == actionFail || error == parameterFail || error == noImage) {
 				throw error;
 			}
@@ -167,7 +171,7 @@ bool UI::keystrokeHandler() {
 			ref->push_back(edit{ value,brightness });
 		}
 		else if (command == "invert") {
-			event error = actionHandler::actionSelector(invertion, master.getDstImg(), "", master.getGPUController());
+			event error = ActionHandler::actionSelector(invertion, master.getDstImg(), "", master.getGPUController());
 			if (error == actionFail || error == parameterFail || error == noImage) {
 				throw error;
 			}
@@ -175,7 +179,7 @@ bool UI::keystrokeHandler() {
 			ref->push_back(edit{ "",invertion });
 		}
 		else if (command == "equalize") {
-			event error = actionHandler::actionSelector(equalization, master.getDstImg(), "", master.getGPUController(),true);
+			event error = ActionHandler::actionSelector(equalization, master.getDstImg(), "", master.getGPUController(),true);
 			if (error == actionFail || error == parameterFail || error == noImage) {
 				throw error;
 			}
@@ -188,7 +192,7 @@ bool UI::keystrokeHandler() {
 			}
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
-			event error = actionHandler::actionSelector(contrast, master.getDstImg(), value, master.getGPUController());
+			event error = ActionHandler::actionSelector(contrast, master.getDstImg(), value, master.getGPUController());
 			if (error == actionFail || error == parameterFail || error == noImage) {
 				throw error;
 			}
@@ -219,7 +223,11 @@ void UI::clearEvents() {
 }
 
 void UI::editHistoryScreen() {
+#ifdef _WIN32
 	system("cls");
+#else
+	std::cout << "\033[2J\033[1;1H";
+#endif
 	cout << "-- EDITS HISTORY -- " << endl;
 	if(master.getHistory()->empty()){
 		cout << "History is empty." << endl;;
@@ -236,7 +244,11 @@ void UI::editHistoryScreen() {
 }
 
 void UI::helpScreen() {
+#ifdef _WIN32
 	system("cls");
+#else
+	std::cout << "\033[2J\033[1;1H";
+#endif
 	cout << helpText << endl;
 	cout << "Press ENTER to return to main menu...";
 	cin.get();

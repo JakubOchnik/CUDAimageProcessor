@@ -5,7 +5,7 @@
 #include "../Utilities/GPUcontrol.h"
 #include "../Actions/actionHandler.h"
 #include <vector>
-class mainHandler {
+class MainHandler {
 private:
 	Img srcImg;
 	Img dstImg;
@@ -14,7 +14,7 @@ private:
 	GPUcontroller GPUControl;
 
 public:
-	mainHandler();
+	MainHandler();
 	bool actionRedo();
 	bool actionUndo();
 

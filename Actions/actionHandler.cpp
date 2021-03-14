@@ -1,6 +1,6 @@
-#include "actionHandler.h"
+#include "ActionHandler.h"
 
-bool actionHandler::updateGPUmem(Img* srcImg, GPUcontroller* GPU, bool forceUpdate) {
+bool ActionHandler::updateGPUmem(Img* srcImg, GPUcontroller* GPU, bool forceUpdate) {
 	if (!GPU->getGPUmemStatus()) {
 		if (!GPU->GPUmalloc(srcImg)) {
 			return false;
@@ -11,21 +11,21 @@ bool actionHandler::updateGPUmem(Img* srcImg, GPUcontroller* GPU, bool forceUpda
 	return true;
 }
 
-bool actionHandler::cropping(cv::Rect area, Img* srcImg) {
+bool ActionHandler::cropping(cv::Rect area, Img* srcImg) {
 	cv::Mat newImg(*srcImg->getImg());
 	newImg = newImg(area);
 	srcImg->updateAll(newImg);
 	return true;
 }
 
-bool actionHandler::resizing(unsigned int x, unsigned int y, Img* srcImg) {
+bool ActionHandler::resizing(unsigned int x, unsigned int y, Img* srcImg) {
 	cv::Mat newImg(*srcImg->getImg());
 	cv::resize(*srcImg->getImg(), newImg, cv::Size(x, y));
 	srcImg->updateAll(newImg);
 	return true;
 }
 
-bool actionHandler::isNumber(std::string value) {
+bool ActionHandler::isNumber(std::string value) {
 	std::string::iterator end_pos = std::remove(value.begin(), value.end(), ' ');
 	value.erase(end_pos, value.end());
 	if (value.empty())
@@ -47,7 +47,7 @@ bool actionHandler::isNumber(std::string value) {
 }
 
 
-event actionHandler::actionSelector(action name, Img* sourceName, std::string value, GPUcontroller* GPUcontrol, bool forceUpdate) {
+event ActionHandler::actionSelector(action name, Img* sourceName, std::string value, GPUcontroller* GPUcontrol, bool forceUpdate) {
 	if (name == crop) {
 		// PARAMETERS: x y width height
 		try {
