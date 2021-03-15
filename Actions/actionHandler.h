@@ -10,8 +10,8 @@
 
 #include <sstream>
 #include <algorithm>
+
 class ActionHandler {
-private:
 public:
 	static event actionSelector(action name, Img* sourceImage, std::string value, GPUcontroller* GPUcontrol, bool forceUpdate = 0);
 	static bool cropping(cv::Rect area, Img* srcImg);

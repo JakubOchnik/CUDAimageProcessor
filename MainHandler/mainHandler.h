@@ -4,7 +4,9 @@
 #include "../MainHandler/definitions.h"
 #include "../Utilities/GPUcontrol.h"
 #include "../Actions/ActionHandler.h"
+
 #include <vector>
+
 class MainHandler {
 private:
 	Img srcImg;

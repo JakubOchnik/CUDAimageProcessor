@@ -14,6 +14,7 @@ UI::UI() {
 }
 
 void UI::UIHandler() {
+	// Main loop
 	while (!quit) {
 		draw();
 		std::getline(std::cin, inputBuffer);
@@ -55,16 +56,15 @@ void UI::draw() {
 }
 
 
-
+// TODO: Make this function shorter, possibly split into smaller ones
 bool UI::keystrokeHandler() {
 	try {
-		// GET COMMAND NAME FROM INPUT STRING
+		// GET THE COMMAND NAME FROM THE INPUT STRING
 		auto command = inputBuffer.substr(0, inputBuffer.find(' '));
 		// QUIT
 		if (command == "quit") {
 			quit = true;
 		}
-		// LOAD
 		else if (command == "load") {
 			if (inputBuffer.length() < 5) {
 				throw commandFail;
@@ -207,6 +207,7 @@ bool UI::keystrokeHandler() {
 	catch (event e) {
 		eventQueue.push_back(e);
 	}
+	return true;
 }
 
 const std::string UI::printEvents() const {
@@ -256,6 +257,8 @@ void UI::helpScreen() {
 	return;
 }
 
+
+// TODO: Possibly shorten this function
 bool UI::showPreview(unsigned int scale) {
 	if (!master.getDstImg()->getStatus())
 		return false;

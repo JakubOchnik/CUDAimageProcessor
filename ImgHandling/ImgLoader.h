@@ -1,7 +1,8 @@
 #pragma once
-#include <opencv2/opencv.hpp>
 #include "ImgInfo.h"
 #include "../Utilities/GPUinfo.h"
+
+#include <opencv2/opencv.hpp>
 #include <tuple>
 
 class ImgLoader {

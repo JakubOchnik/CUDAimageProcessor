@@ -3,6 +3,7 @@
 #include "device_launch_parameters.h"
 #include "../MainHandler/definitions.h"
 #include "../ImgHandling/ImgInfo.h"
+
 class GPUcontroller {
 private:
 	bool isMemAlloc;
@@ -11,11 +12,15 @@ private:
 	unsigned int memSize;
 public:
 	GPUcontroller();
-	bool updatePtr(Img* newImg);
+
+	unsigned char* getImgPtr();
 	bool getGPUmemStatus() const;
 	bool sizeUpdateStatus() const;
-	unsigned char* getImgPtr();
+
+	bool updatePtr(Img* newImg);
+
 	bool GPUmalloc(Img* srcImg);
 	void GPUfree();
+
 	~GPUcontroller();
 };
