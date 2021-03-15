@@ -3,7 +3,7 @@
 #include "../ImgHandling/ImgLoader.h"
 #include "../MainHandler/definitions.h"
 #include "../Utilities/GPUcontrol.h"
-#include "../Actions/actionHandler.h"
+#include "../Actions/ActionHandler.h"
 #include <vector>
 class MainHandler {
 private:

@@ -1,4 +1,4 @@
-#include "mainHandler.h"
+#include "MainHandler.h"
 
 MainHandler::MainHandler():srcImg(Img()), dstImg(Img()) {
 
