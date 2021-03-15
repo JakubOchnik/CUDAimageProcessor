@@ -1,4 +1,4 @@
-#include "configChecker.h"
+#include "ConfigChecker.h"
 
 bool Config::isCUDAavailable() {
 #ifdef _WIN32

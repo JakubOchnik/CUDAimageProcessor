@@ -1,9 +1,9 @@
 #pragma once
 
 #include"../ImgHandling/ImgInfo.h"
-#include"../MainHandler/mainHandler.h"
+#include"../MainHandler/MainHandler.h"
 #include"../MainHandler/definitions.h"
-#include "../Actions/actionHandler.h"
+#include "../Actions/ActionHandler.h"
 #include "UIdefinitions.h"
 
 #include <stdlib.h>

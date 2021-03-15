@@ -1,5 +1,5 @@
 #include "GPUcontrol.h"
-#include<windows.h>
+#include <windows.h>
 
 GPUcontroller::GPUcontroller() {
 	isMemAlloc = false;
