@@ -10,12 +10,13 @@
 #define atomicMax();
 #endif
 
-__global__ void calculateEdgeBrightness(unsigned char* image, int channels, int* min, int* max);
-__global__ void calculateEqualization(unsigned char* image, int channels, int* min, int* max);
+__global__ void calculateEdgeBrightness(unsigned char *image, int channels, int *min, int *max);
+__global__ void calculateEqualization(unsigned char *image, int channels, int *min, int *max);
 __device__ int getEqualizedValue(unsigned char value, int min, int max);
 
 
-bool executeEqualizationKernel(Img* image, GPUcontroller* GPU) {
+bool executeEqualizationKernel(Img *image, GPUcontroller *GPU) 
+{
 	int channels = image->getChannelNum();
 	int width = image->getResolutionW();
 	int height = image->getResolutionH();
@@ -58,29 +59,33 @@ bool executeEqualizationKernel(Img* image, GPUcontroller* GPU) {
 	return true;
 }
 
-__global__ void calculateEdgeBrightness(unsigned char* image, int channels, int* min, int* max) {
+__global__ void calculateEdgeBrightness(unsigned char *image, int channels, int *min, int *max) 
+{
 	int x = blockIdx.x;
 	int y = blockIdx.y;
 	int imageIdx = (x + y * gridDim.x) * channels;
 
-	for (int i = 0; i < channels; i++) {
+	for (int i = 0; i < channels; i++) 
+	{
 		atomicMin(&min[i], image[imageIdx + i]);
 		atomicMax(&max[i], image[imageIdx + i]);
 	}
 }
 
-__global__ void calculateEqualization(unsigned char* image, int channels, int* min, int* max) {
+__global__ void calculateEqualization(unsigned char *image, int channels, int *min, int *max) {
 	int x = blockIdx.x;
 	int y = blockIdx.y;
 
 	int image_idx = (x + y * gridDim.x) * channels;
 
-	for (int i = 0; i < channels; i++) {
+	for (int i = 0; i < channels; i++) 
+	{
 		image[image_idx + i] = getEqualizedValue(image[image_idx + i], min[i], max[i]);
 	}
 }
 
-__device__ int getEqualizedValue(unsigned char value, int min, int max) {
+__device__ int getEqualizedValue(unsigned char value, int min, int max) 
+{
 	int target_min = 0;
 	int target_max = 255;
 

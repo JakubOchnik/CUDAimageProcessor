@@ -7,7 +7,8 @@
 
 #include <vector>
 
-class MainHandler {
+class MainHandler
+{
 private:
 	Img srcImg;
 	Img dstImg;
@@ -20,15 +21,14 @@ public:
 	bool actionRedo();
 	bool actionUndo();
 
-	Img* getSrcImg();
-	Img* getDstImg();
-	GPUcontroller* getGPUController();
+	Img *getSrcImg();
+	Img *getDstImg();
+	GPUcontroller *getGPUController();
 
-	std::vector<edit>* getHistory();
+	std::vector<edit> *getHistory();
 
 	void updateDstImg(Img newImage);
 	bool updateSrcImg(std::string newPath, int mode);
 
 	bool imgSave(std::string path);
-
 };

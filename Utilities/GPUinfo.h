@@ -8,7 +8,8 @@
 #include <iostream>
 using namespace std;
 
-class GPUinfo {
+class GPUinfo
+{
 public:
 	static std::tuple<int, int> getMaxDimensions();
 	static bool loadGPUinfo();

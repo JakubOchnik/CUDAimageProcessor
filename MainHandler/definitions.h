@@ -1,7 +1,8 @@
 #pragma once
 #include <iostream>
 
-enum action {
+enum action
+{
 	crop,
 	brightness,
 	contrast,
@@ -12,12 +13,14 @@ enum action {
 };
 
 // A struct which represents a specific edit (used in edit history)
-struct edit {
+struct edit
+{
 	std::string value;
 	action actionType;
 };
 
-enum event {
+enum event
+{
 	openSuccess,
 	openFail,
 	saveSuccess,

@@ -6,7 +6,8 @@
 
 __global__ void calculateBrightness(unsigned char* image, int channels, int shift);
 
-void executeBrightnessKernel(Img* image, int shift, GPUcontroller* GPU) {
+void executeBrightnessKernel(Img* image, int shift, GPUcontroller* GPU) 
+{
 	dim3 grid(image->getResolutionW(), image->getResolutionH());
 	int channels = image->getChannelNum();
 	int width = image->getResolutionW();
@@ -17,7 +18,8 @@ void executeBrightnessKernel(Img* image, int shift, GPUcontroller* GPU) {
 	cudaMemcpy(image->getImg()->data, GPU->getImgPtr(),size, cudaMemcpyDeviceToHost);
 }
 
-__global__ void calculateBrightness(unsigned char* image, int channels, int shift) {
+__global__ void calculateBrightness(unsigned char* image, int channels, int shift) 
+{
 	int x = blockIdx.x;
 	int y = blockIdx.y;
 

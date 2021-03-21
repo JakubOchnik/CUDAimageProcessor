@@ -4,9 +4,10 @@
 
 #include <stdio.h>
 
-__global__ void invertImage(unsigned char* image, int channels);
+__global__ void invertImage(unsigned char *image, int channels);
 
-void executeInvertionKernel(Img* image, GPUcontroller* GPU) {
+void executeInvertionKernel(Img *image, GPUcontroller *GPU) 
+{
 	dim3 grid(image->getResolutionW(), image->getResolutionH());
 	int channels = image->getChannelNum();
 	int width = image->getResolutionW();
@@ -16,7 +17,8 @@ void executeInvertionKernel(Img* image, GPUcontroller* GPU) {
 	cudaMemcpy(image->getImg()->data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
 }
 
-__global__ void invertImage(unsigned char* image, int channels) {
+__global__ void invertImage(unsigned char *image, int channels) 
+{
 	int x = blockIdx.x;
 	int y = blockIdx.y;
 

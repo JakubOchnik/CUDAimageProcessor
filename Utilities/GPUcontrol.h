@@ -4,22 +4,24 @@
 #include "../MainHandler/definitions.h"
 #include "../ImgHandling/ImgInfo.h"
 
-class GPUcontroller {
+class GPUcontroller
+{
 private:
 	bool isMemAlloc;
 	bool sizeUpdate;
-	unsigned char* devImgPtr;
+	unsigned char *devImgPtr;
 	unsigned int memSize;
+
 public:
 	GPUcontroller();
 
-	unsigned char* getImgPtr();
+	unsigned char *getImgPtr();
 	bool getGPUmemStatus() const;
 	bool sizeUpdateStatus() const;
 
-	bool updatePtr(Img* newImg);
+	bool updatePtr(Img *newImg);
 
-	bool GPUmalloc(Img* srcImg);
+	bool GPUmalloc(Img *srcImg);
 	void GPUfree();
 
 	~GPUcontroller();

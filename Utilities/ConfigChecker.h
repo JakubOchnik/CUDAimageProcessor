@@ -8,7 +8,8 @@
 #include <dlfcn.h>
 #endif
 
-class Config {
+class Config
+{
 public:
 	static bool isCUDAavailable();
 };

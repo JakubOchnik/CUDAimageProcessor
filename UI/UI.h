@@ -1,8 +1,8 @@
 #pragma once
 
-#include"../ImgHandling/ImgInfo.h"
-#include"../MainHandler/MainHandler.h"
-#include"../MainHandler/definitions.h"
+#include "../ImgHandling/ImgInfo.h"
+#include "../MainHandler/MainHandler.h"
+#include "../MainHandler/definitions.h"
 #include "../Actions/ActionHandler.h"
 #include "UIdefinitions.h"
 
@@ -18,7 +18,8 @@
 #include <X11/Xlib.h>
 #endif
 
-class UI {
+class UI
+{
 private:
 	bool quit;
 	bool menu;
@@ -36,6 +37,7 @@ private:
 	void clearEvents();
 	void editHistoryScreen();
 	bool showPreview(unsigned int scale = 0);
+
 public:
 	UI();
 	void UIHandler();

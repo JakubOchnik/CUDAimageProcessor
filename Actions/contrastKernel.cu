@@ -4,10 +4,11 @@
 
 #include <stdio.h>
 
-__global__ void calculateContrast(unsigned char* image, int channels, float factor);
+__global__ void calculateContrast(unsigned char *image, int channels, float factor);
 __device__ unsigned char truncate(float value);
 
-void executeContrastKernel(Img* image, int value, GPUcontroller* GPU) {
+void executeContrastKernel(Img *image, int value, GPUcontroller *GPU) 
+{
 	dim3 grid(image->getResolutionW(), image->getResolutionH());
 	int channels = image->getChannelNum();
 	int width = image->getResolutionW();
@@ -18,18 +19,21 @@ void executeContrastKernel(Img* image, int value, GPUcontroller* GPU) {
 	cudaMemcpy(image->getImg()->data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
 }
 
-__global__ void calculateContrast(unsigned char* image, int channels, float factor) {
+__global__ void calculateContrast(unsigned char *image, int channels, float factor) 
+{
 	int x = blockIdx.x;
 	int y = blockIdx.y;
 
 	int index = (x + y * gridDim.x) * channels;
 
-	for (int i = 0; i < channels; i++) {
+	for (int i = 0; i < channels; i++) 
+	{
 		image[index+i] = truncate(factor*(image[index + i]-128)+128);
 	}
 }
 
-__device__ unsigned char truncate(float value) {
+__device__ unsigned char truncate(float value) 
+{
 	if (value > 255)
 		return 255;
 	else if (value < 0)

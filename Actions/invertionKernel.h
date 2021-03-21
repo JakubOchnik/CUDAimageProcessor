@@ -2,4 +2,4 @@
 #include "../ImgHandling/ImgInfo.h"
 #include "../Utilities/GPUcontrol.h"
 
-void executeInvertionKernel(Img* image, GPUcontroller* GPU);
+void executeInvertionKernel(Img *image, GPUcontroller *GPU);

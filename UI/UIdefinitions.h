@@ -26,8 +26,7 @@ const std::vector<std::string> eventPrompts = {
 	"Image has not been imported yet",
 	"Can't undo - there are no performed operations yet",
 	"Can't redo - there are no newer operations",
-	"Cannot perform operation - insufficient video memory"
-};
+	"Cannot perform operation - insufficient video memory"};
 
 const std::vector<std::string> actionNames = {
 	"Image cropped: ",
@@ -36,7 +35,6 @@ const std::vector<std::string> actionNames = {
 	"Generated histogram",
 	"Performed histogram equalization",
 	"Inverted colors",
-	"Resized image: "
-};
+	"Resized image: "};
 
 const std::string helpText = "-- HELP --\n\nGENERAL FUNCTIONS:\n- quit - Exits the program\n- load [file_path] - Loads the image from the selected path\n- save [file_path] - Saves the edited image to the selected path\n- undo - Reverts the latest change\n- redo - Performs the latest reverted action\n- show [~scale] - Opens the image preview window. If the custom scale (in percentage, i.e. 75 % ->scale = 75) is not specified, the window will be automatically scaled to fit 80 % of main screen's vertical resolution.\n- history - Shows the history of changes\n- clear - Clears the notification area\n\nACTIONS:\n- brightness [value] - Changes brightness of the image by the specified value (it can be either negative or positive)\n- contrast [value] - Adjusts contrast (value must be in range <-255,255>)\n- invert - Inverts colors of the image\n- crop [x] [y] [width] [height] - Trims the image from the coordinates (x, y) to (x + width, y + height). Constraints: x + width < full width; y + height < full height.\n- resize [width] [height] - Resizes the image to the specified size\n- equalize - Performs histogram equalization\n\n(~- optional)";
