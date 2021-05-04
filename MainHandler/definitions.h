@@ -8,7 +8,8 @@ enum action {
 	histogram,
 	equalization,
 	invertion,
-	resize
+	resize,
+	lut3d
 };
 
 // A struct which represents a specific edit (used in edit history)

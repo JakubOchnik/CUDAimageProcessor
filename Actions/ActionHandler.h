@@ -7,6 +7,7 @@
 #include "invertionKernel.h"
 #include "equalizationKernel.h"
 #include "contrastKernel.h"
+#include "LUTtest/LUTapply.h"
 
 #include <sstream>
 #include <algorithm>

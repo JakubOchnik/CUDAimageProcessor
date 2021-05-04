@@ -1,6 +1,7 @@
 *.jpg
 *.png
 *.dll
+*.cube
 !screenshot.png
 x64/
 cuda_histogram.vcxproj

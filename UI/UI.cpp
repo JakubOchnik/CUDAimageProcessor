@@ -86,11 +86,11 @@ bool UI::keystrokeHandler() {
 			}
 		}
 		else if (command == "undo") {
-			if(!master.actionUndo())
+			if (!master.actionUndo())
 				throw undoFail;
 		}
 		else if (command == "redo") {
-			if(!master.actionRedo())
+			if (!master.actionRedo())
 				throw redoFail;
 		}
 		else if (command == "show") {
@@ -179,7 +179,7 @@ bool UI::keystrokeHandler() {
 			ref->push_back(edit{ "",invertion });
 		}
 		else if (command == "equalize") {
-			event error = ActionHandler::actionSelector(equalization, master.getDstImg(), "", master.getGPUController(),true);
+			event error = ActionHandler::actionSelector(equalization, master.getDstImg(), "", master.getGPUController(), true);
 			if (error == actionFail || error == parameterFail || error == noImage) {
 				throw error;
 			}
@@ -198,6 +198,9 @@ bool UI::keystrokeHandler() {
 			}
 			vector<edit>* ref = master.getHistory();
 			ref->push_back(edit{ value,contrast });
+		}
+		else if (command == "lut") {
+			event error = ActionHandler::actionSelector(lut3d, master.getDstImg(), "", master.getGPUController());
 		}
 		else {
 			throw commandFail;
@@ -230,7 +233,7 @@ void UI::editHistoryScreen() {
 	std::cout << "\033[2J\033[1;1H";
 #endif
 	cout << "-- EDITS HISTORY -- " << endl;
-	if(master.getHistory()->empty()){
+	if (master.getHistory()->empty()) {
 		cout << "History is empty." << endl;;
 	}
 	int i = 1;
@@ -266,9 +269,9 @@ bool UI::showPreview(unsigned int scale) {
 	cout << "Press any key to close the window...";
 	// image scaling to fit on a current monitor
 	cv::Mat tempImg;
-	
+
 	if (scale == 0) {
-		unsigned int x=0, y=0;
+		unsigned int x = 0, y = 0;
 		unsigned int height = master.getDstImg()->getResolutionH(), width = master.getDstImg()->getResolutionW();
 		// max 80% of height
 #ifdef _WIN32
@@ -282,7 +285,7 @@ bool UI::showPreview(unsigned int scale) {
 #endif
 		bool changed = false;
 		float newScale;
-		if (height > 0.8*y) {
+		if (height > 0.8 * y) {
 
 			height = 0.8 * y;
 			width = (master.getDstImg()->getResolutionW() * 0.8 * y) / master.getDstImg()->getResolutionH();
@@ -308,10 +311,10 @@ bool UI::showPreview(unsigned int scale) {
 		}
 	}
 	else {
-		unsigned int width = master.getDstImg()->getResolutionW() * scale/100;
-		unsigned int height = master.getDstImg()->getResolutionH()*scale/100;
+		unsigned int width = master.getDstImg()->getResolutionW() * scale / 100;
+		unsigned int height = master.getDstImg()->getResolutionH() * scale / 100;
 		cv::resize(*master.getDstImg()->getImg(), tempImg, cv::Size(width, height));
-		windowName = windowName + "@"+ to_string(scale) +"%";
+		windowName = windowName + "@" + to_string(scale) + "%";
 	}
 	windowName += (" - " + baseWindowName);
 	cv::imshow(windowName, tempImg);
