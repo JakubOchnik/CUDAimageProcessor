@@ -1,5 +1,5 @@
 #pragma once
-#include "GPUinfo.h"
+#include "GpuInfo.h"
 
 #include <iostream>
 #ifdef _WIN32
@@ -8,7 +8,9 @@
 #include <dlfcn.h>
 #endif
 
-class Config {
+class Config
+{
 public:
-	static bool isCUDAavailable();
+	static bool checkConfig();
+	static bool isCUDActive();
 };

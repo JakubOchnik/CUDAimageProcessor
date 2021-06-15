@@ -1,42 +1,50 @@
-#include "GPUinfo.h"
+#include "GpuInfo.h"
 
-bool GPUinfo::loadGPUinfo() {
+bool GpuInfo::isCompatible()
+{
 	cudaDeviceProp prop;
 	int devCount = 0;
 	cudaGetDeviceCount(&devCount);
-	if (devCount < 1) {
-		return 0;
+	if (devCount < 1 || cudaGetDeviceProperties(&prop, 0) != cudaSuccess)
+	{
+		return false;
 	}
-	if(cudaGetDeviceProperties(&prop, 0)!=cudaSuccess)
-		return 0;
-	showGPUinfo(prop);
-	return 1;
+	return true;
 }
 
-std::tuple<int, int> GPUinfo::getMaxDimensions() {
+// todo: change to std::optional
+std::tuple<int, int> GpuInfo::getMaxDimensions()
+{
 	cudaDeviceProp prop;
 	int devCount = 0;
 	cudaGetDeviceCount(&devCount);
-	if (devCount < 1) {
+	if (devCount < 1)
+	{
 		return { -1, -1 };
 	}
 	if (cudaGetDeviceProperties(&prop, 0) != cudaSuccess)
-		return { -1,-1 };
-	if (prop.major >= 3) {
-		return { INT_MAX,65535 };
+	{
+		return { -1, -1 };
 	}
-	else {
-		return { 65535, 65535 };
-
+	if (prop.major >= 3)
+	{
+		return { INT_MAX, 65535 };
 	}
+	return { 65535, 65535 };
 }
 
-void GPUinfo::showGPUinfo(cudaDeviceProp prop) {
-	cout << "CUDA IMAGE PROCESSOR\nJakub Ochnik 2021\n------------------------------\n";
-	cout << "GPU device info:" << endl;
-	cout << "Name: " << prop.name << endl;
-	cout << "Compute capability: " << prop.major <<"."<< prop.minor << endl;
-	cout << "Total global memory: " << prop.totalGlobalMem/(1024*1024) << " MB" << endl;
-	cout << "Press any key to start...";
+void GpuInfo::showGpuInfo()
+{
+	using namespace std;
+	cudaDeviceProp prop;
+	cudaGetDeviceProperties(&prop, 0);
+	std::tuple<int, int> maxDims = getMaxDimensions();
+	cout << "CUDA IMAGE PROCESSOR\nJakub Ochnik 2021\n------------------------------\n"
+		<< "GPU device info: \n"
+		<< "Name: " << prop.name << "\n"
+		<< "Compute capability: " << prop.major << "." << prop.minor << "\n"
+		<< "Total global memory: " << prop.totalGlobalMem / (1024 * 1024) << " MB" << "\n"
+		<< "Max supported image size: " << std::get<0>(maxDims) << " x " << std::get<1>(maxDims) << "\n"
+		<< "Press any key to start...";
 	cin.get();
 }
