@@ -4,6 +4,7 @@
 
 void applyLUT(Img* image, float opacity, std::string path, GPUcontroller* GPU)
 {
+	using namespace std;
 	CubeLUT lut;
 	enum { OK = 0, ErrorOpenInFile = 100, ErrorOpenOutFile };
 

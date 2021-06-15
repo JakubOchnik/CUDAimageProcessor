@@ -1,5 +1,4 @@
 #include "UI.h"
-using namespace std;
 UI::UI() {
 	quit = false;
 	menu = true;
@@ -23,35 +22,36 @@ void UI::UIHandler() {
 }
 
 void UI::draw() {
+	using namespace std;
 #ifdef _WIN32
 	system("cls");
 #else
 	std::cout << "\033[2J\033[1;1H";
 #endif
 	if (menu) {
-		std::cout << menuText << std::endl << textSeparator << std::endl;
+		cout << menuText << endl << textSeparator << endl;
 		if (loaded) {
-			std::cout << "Target image info: " << std::endl;
-			std::cout << pathText << master.getDstImg()->getPath() << endl;
-			std::cout << infoResolution << " " << master.getDstImg()->getResolutionW() << " x " << master.getDstImg()->getResolutionH() << std::endl;;
+			cout << "Target image info: " << endl;
+			cout << pathText << master.getDstImg()->getPath() << endl;
+			cout << infoResolution << " " << master.getDstImg()->getResolutionW() << " x " << master.getDstImg()->getResolutionH() << endl;
 #ifdef _WIN32
-			std::cout << infoChannels << " " << master.getDstImg()->getChannelNum() << std::endl;
-			std::string title = master.getDstImg()->getPath() + " - " + baseWindowName;
+			cout << infoChannels << " " << master.getDstImg()->getChannelNum() << endl;
+			string title = master.getDstImg()->getPath() + " - " + baseWindowName;
 			SetConsoleTitle(TEXT(title.c_str()));
 #else
-			std::cout << "\033]0;" << title << "\007";
+			cout << "\033]0;" << title << "\007";
 #endif
 		}
 		else {
-			std::cout << notLoaded << std::endl;
+			cout << notLoaded << endl;
 		}
 		if (!eventQueue.empty()) {
 			cout << textSeparator << endl;
-			cout << "Notifications: " << std::endl;
+			cout << "Notifications: " << endl;
 			cout << printEvents();
 		}
 		cout << textSeparator << endl;
-		std::cout << prompt;
+		cout << prompt;
 	}
 }
 
@@ -59,6 +59,7 @@ void UI::draw() {
 // TODO: Make this function shorter, possibly split into smaller ones
 bool UI::keystrokeHandler() {
 	try {
+		using namespace std;
 		// GET THE COMMAND NAME FROM THE INPUT STRING
 		auto command = inputBuffer.substr(0, inputBuffer.find(' '));
 		// QUIT
@@ -227,14 +228,15 @@ void UI::clearEvents() {
 }
 
 void UI::editHistoryScreen() {
+	using namespace std;
 #ifdef _WIN32
 	system("cls");
 #else
-	std::cout << "\033[2J\033[1;1H";
+	cout << "\033[2J\033[1;1H";
 #endif
 	cout << "-- EDITS HISTORY -- " << endl;
 	if (master.getHistory()->empty()) {
-		cout << "History is empty." << endl;;
+		cout << "History is empty." << endl;
 	}
 	int i = 1;
 	for (auto userAction : *master.getHistory()) {
@@ -248,6 +250,7 @@ void UI::editHistoryScreen() {
 }
 
 void UI::helpScreen() {
+	using namespace std;
 #ifdef _WIN32
 	system("cls");
 #else
@@ -263,6 +266,7 @@ void UI::helpScreen() {
 
 // TODO: Possibly shorten this function
 bool UI::showPreview(unsigned int scale) {
+	using namespace std;
 	if (!master.getDstImg()->getStatus())
 		return false;
 	string windowName = master.getDstImg()->getPath() + " (" + to_string(master.getDstImg()->getResolutionW()) + "x" + to_string(master.getDstImg()->getResolutionH()) + ")";

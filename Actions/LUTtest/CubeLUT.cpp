@@ -6,8 +6,9 @@
 // Cube LUT Specification 1.0
 // https://wwwimages2.adobe.com/content/dam/acom/en/products/speedgrade/cc/pdfs/cube-lut-specification-1.0.pdf
 
-string CubeLUT::ReadLine(ifstream& infile, char lineSeparator)
+std::string CubeLUT::ReadLine(std::ifstream& infile, char lineSeparator)
 {
+	using namespace std;
 	// Skip empty lines and comments
 	const char CommentMarker = '#';
 	string textLine("");
@@ -28,8 +29,9 @@ string CubeLUT::ReadLine(ifstream& infile, char lineSeparator)
 	return textLine;
 }
 
-vector<float> CubeLUT::ParseTableRow(const string& lineOfText)
+std::vector<float> CubeLUT::ParseTableRow(const std::string& lineOfText)
 {
+	using namespace std;
 	int N = 3;
 	tableRow f(N);
 	istringstream line(lineOfText);
@@ -45,8 +47,9 @@ vector<float> CubeLUT::ParseTableRow(const string& lineOfText)
 	return f;
 }
 
-CubeLUT::LUTState CubeLUT::LoadCubeFile(ifstream& infile)
+CubeLUT::LUTState CubeLUT::LoadCubeFile(std::ifstream& infile)
 {
+	using namespace std;
 	// defaults
 	status = OK;
 	title.clear();
@@ -153,10 +156,12 @@ CubeLUT::LUTState CubeLUT::LoadCubeFile(ifstream& infile)
 		}
 	}
 
-	if (status == OK && CntSize == 0)
+	if (status == OK && CntSize == 0) {
 		status = LUTSizeOutOfRange;
-	if (status == OK && domainMin[0] >= domainMax[0] || domainMin[1] >= domainMax[1] || domainMin[2] >= domainMax[2])
+	}
+	if (status == OK && domainMin[0] >= domainMax[0] || domainMin[1] >= domainMax[1] || domainMin[2] >= domainMax[2]) {
 		status = DomainBoundsReversed;
+	}
 
 	// parsowanie wczytanych danych
 
