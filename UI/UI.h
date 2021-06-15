@@ -6,7 +6,7 @@
 #include "../Actions/ActionHandler.h"
 #include "UIdefinitions.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -31,13 +31,15 @@ private:
 	MainHandler master;
 	void helpScreen();
 	void draw();
-	bool keystrokeHandler();
-	const std::string printEvents() const;
+	void keystrokeHandler();
+	std::string printEvents() const;
 	void clearEvents();
 	void editHistoryScreen();
-	bool showPreview(unsigned int scale = 0);
+	void showPreview(unsigned int scale = 0);
+	std::tuple<int, int> customScale(cv::Mat& inputImage, unsigned int scale);
+	std::tuple<int, int, float> UI::autoScale(cv::Mat& inputImage, const std::tuple<int, int>& origSize, const std::tuple<int, int>& screenSize);
 public:
 	UI();
-	void UIHandler();
+	void uiHandler();
 	~UI();
 };

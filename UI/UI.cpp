@@ -1,5 +1,7 @@
 #include "UI.h"
-UI::UI() {
+
+UI::UI()
+{
 	quit = false;
 	menu = true;
 	loaded = false;
@@ -12,271 +14,367 @@ UI::UI() {
 #endif
 }
 
-void UI::UIHandler() {
+void UI::uiHandler()
+{
 	// Main loop
-	while (!quit) {
+	while (!quit)
+	{
 		draw();
 		std::getline(std::cin, inputBuffer);
 		keystrokeHandler();
 	}
 }
 
-void UI::draw() {
+void UI::draw()
+{
 	using namespace std;
+	// clear screen
 #ifdef _WIN32
 	system("cls");
 #else
 	std::cout << "\033[2J\033[1;1H";
 #endif
-	if (menu) {
-		cout << menuText << endl << textSeparator << endl;
-		if (loaded) {
-			cout << "Target image info: " << endl;
-			cout << pathText << master.getDstImg()->getPath() << endl;
-			cout << infoResolution << " " << master.getDstImg()->getResolutionW() << " x " << master.getDstImg()->getResolutionH() << endl;
+	// show menu and set window name
+	if (menu)
+	{
+		cout << menuText << '\n' << textSeparator << '\n';
+		if (loaded)
+		{
+			cout << "Target image info: " << '\n'
+				<< pathText << master.getDstImg()->getPath() << '\n'
+				<< infoResolution << " "
+				<< master.getDstImg()->getResolutionW() << " x " << master.getDstImg()->getResolutionH() << '\n'
+				<< infoChannels << " " << master.getDstImg()->getChannelNum() << '\n';
 #ifdef _WIN32
-			cout << infoChannels << " " << master.getDstImg()->getChannelNum() << endl;
 			string title = master.getDstImg()->getPath() + " - " + baseWindowName;
 			SetConsoleTitle(TEXT(title.c_str()));
 #else
 			cout << "\033]0;" << title << "\007";
 #endif
 		}
-		else {
-			cout << notLoaded << endl;
+		else
+		{
+			cout << notLoaded << '\n';
 		}
-		if (!eventQueue.empty()) {
-			cout << textSeparator << endl;
-			cout << "Notifications: " << endl;
-			cout << printEvents();
+		if (!eventQueue.empty())
+		{
+			cout << textSeparator << '\n'
+				<< "Notifications: " << '\n'
+				<< printEvents();
 		}
-		cout << textSeparator << endl;
-		cout << prompt;
+		cout << textSeparator << '\n'
+			<< prompt;
 	}
 }
 
 
 // TODO: Make this function shorter, possibly split into smaller ones
-bool UI::keystrokeHandler() {
-	try {
+void UI::keystrokeHandler()
+{
+	try
+	{
 		using namespace std;
 		// GET THE COMMAND NAME FROM THE INPUT STRING
 		auto command = inputBuffer.substr(0, inputBuffer.find(' '));
 		// QUIT
-		if (command == "quit") {
+
+		// check if the command involves editing an image. If so, get img pointer and GPU handle
+		std::set<std::string> val = { "quit", "load", "undo", "redo", "show", "show", "clear", "save", "history" };
+		Img* dstImg;
+		GPUcontroller* gpuControl;
+		event result;
+		if (val.find(command) == val.end())
+		{
+			dstImg = master.getDstImg();
+			gpuControl = master.getGPUController();
+		}
+
+		if (command == "quit")
+		{
 			quit = true;
 		}
-		else if (command == "load") {
-			if (inputBuffer.length() < 5) {
+
+		if (command == "load")
+		{
+			if (inputBuffer.length() < 5)
+			{
 				throw commandFail;
 			}
 			auto path = inputBuffer.substr(inputBuffer.find(' '));
 			path.erase(0, 1);
-			if (path == inputBuffer || path.length() < 2) {
+			if (path == inputBuffer || path.length() < 2)
+			{
 				throw commandFail;
 			}
-			cout << imgLoading << endl;
-			if (master.updateSrcImg(path, 1)) {
+			cout << imgLoading << '\n';
+			if (master.updateSrcImg(path, 1))
+			{
 				eventQueue.push_back(openSuccess);
 				master.getHistory()->clear();
 				loaded = true;
-				return true;
+				return;
 			}
-			else {
-				throw openFail;
-			}
+			throw openFail;
 		}
-		else if (command == "undo") {
-			if (!master.actionUndo())
-				throw undoFail;
+		if (command == "undo")
+		{
+			master.actionUndo();
 		}
-		else if (command == "redo") {
-			if (!master.actionRedo())
-				throw redoFail;
+		else if (command == "redo")
+		{
+			master.actionRedo();
 		}
-		else if (command == "show") {
+		else if (command == "show")
+		{
 			int scale = 0;
-			if (inputBuffer.find(' ') != string::npos) {
+			if (inputBuffer.find(' ') != string::npos)
+			{
 				auto value = inputBuffer.substr(inputBuffer.find(' '));
 				value.erase(0, 1);
 				scale = stoi(value);
 			}
 
-			if (!showPreview(scale)) {
-				throw noImage;
-			}
+			showPreview(scale);
 		}
-		else if (command == "clear") {
+		else if (command == "clear")
+		{
 			clearEvents();
 		}
-		else if (command == "save") {
-			if (inputBuffer.length() < 5) {
+		else if (command == "save")
+		{
+			if (inputBuffer.length() < 5)
+			{
 				throw commandFail;
 			}
 			auto path = inputBuffer.substr(inputBuffer.find(' '));
 			path.erase(0, 1);
-			if (path == inputBuffer || path.length() < 2) {
+			if (path == inputBuffer || path.length() < 2)
+			{
 				throw commandFail;
 			}
-			if (master.imgSave(path)) {
+			if (master.imgSave(path))
+			{
 				eventQueue.push_back(saveSuccess);
-				return true;
 			}
-			else {
+			else
+			{
 				throw saveFail;
 			}
 		}
-		else if (command == "history") {
+		else if (command == "history")
+		{
 			editHistoryScreen();
 		}
-		else if (command == "help") {
+		else if (command == "help")
+		{
 			helpScreen();
 		}
-		else if (command == "crop") {
-			if (inputBuffer.length() < 5) {
+		else if (command == "crop")
+		{
+			if (inputBuffer.length() < 5)
+			{
 				throw commandFail;
 			}
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
-			event error = ActionHandler::actionSelector(crop, master.getDstImg(), value, master.getGPUController());
-			if (error == actionFail || error == parameterFail || error == noImage) {
-				throw error;
+			result = ActionHandler::actionSelector(crop, dstImg, value, gpuControl);
+			if (result == actionFail || result == parameterFail || result == noImage)
+			{
+				throw result;
 			}
-			vector<edit>* ref = master.getHistory();
-			ref->push_back(edit{ value,crop });
+			master.addToHistory(value, crop);
 		}
-		else if (command == "resize") {
-			if (inputBuffer.length() < 6) {
+		else if (command == "resize")
+		{
+			if (inputBuffer.length() < 6)
+			{
 				throw commandFail;
 			}
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
-			event error = ActionHandler::actionSelector(resize, master.getDstImg(), value, master.getGPUController());
-			if (error == actionFail || error == parameterFail || error == noImage) {
-				throw error;
+			result = ActionHandler::actionSelector(resize, dstImg, value, gpuControl);
+			if (result == actionFail || result == parameterFail || result == noImage)
+			{
+				throw result;
 			}
-			vector<edit>* ref = master.getHistory();
-			ref->push_back(edit{ value,resize });
+			master.addToHistory(value, resize);
 		}
-		else if (command == "brightness") {
-			if (inputBuffer.length() < 11) {
+		else if (command == "brightness")
+		{
+			if (inputBuffer.length() < 11)
+			{
 				throw commandFail;
 			}
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
-			event error = ActionHandler::actionSelector(brightness, master.getDstImg(), value, master.getGPUController());
-			if (error == actionFail || error == parameterFail || error == noImage) {
-				throw error;
+			result = ActionHandler::actionSelector(brightness, dstImg, value, gpuControl);
+			if (result == actionFail || result == parameterFail || result == noImage)
+			{
+				throw result;
 			}
-			vector<edit>* ref = master.getHistory();
-			ref->push_back(edit{ value,brightness });
+			master.addToHistory(value, brightness);
+
 		}
-		else if (command == "invert") {
-			event error = ActionHandler::actionSelector(invertion, master.getDstImg(), "", master.getGPUController());
-			if (error == actionFail || error == parameterFail || error == noImage) {
-				throw error;
+		else if (command == "invert")
+		{
+			result = ActionHandler::actionSelector(invertion, dstImg, "", gpuControl);
+			if (result == actionFail || result == parameterFail || result == noImage)
+			{
+				throw result;
 			}
-			vector<edit>* ref = master.getHistory();
-			ref->push_back(edit{ "",invertion });
+			master.addToHistory("", invertion);
 		}
-		else if (command == "equalize") {
-			event error = ActionHandler::actionSelector(equalization, master.getDstImg(), "", master.getGPUController(), true);
-			if (error == actionFail || error == parameterFail || error == noImage) {
-				throw error;
+		else if (command == "equalize")
+		{
+			result = ActionHandler::actionSelector(equalization, dstImg, "", gpuControl, true);
+			if (result == actionFail || result == parameterFail || result == noImage)
+			{
+				throw result;
 			}
-			vector<edit>* ref = master.getHistory();
-			ref->push_back(edit{ "",equalization });
+			master.addToHistory("", equalization);
 		}
-		else if (command == "contrast") {
-			if (inputBuffer.length() < 8) {
+		else if (command == "contrast")
+		{
+			if (inputBuffer.length() < 8)
+			{
 				throw commandFail;
 			}
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
-			event error = ActionHandler::actionSelector(contrast, master.getDstImg(), value, master.getGPUController());
-			if (error == actionFail || error == parameterFail || error == noImage) {
-				throw error;
+			result = ActionHandler::actionSelector(contrast, dstImg, value, gpuControl);
+			if (result == actionFail || result == parameterFail || result == noImage)
+			{
+				throw result;
 			}
-			vector<edit>* ref = master.getHistory();
-			ref->push_back(edit{ value,contrast });
+			master.addToHistory(value, contrast);
 		}
-		else if (command == "lut") {
-			event error = ActionHandler::actionSelector(lut3d, master.getDstImg(), "", master.getGPUController());
+		else if (command == "lut")
+		{
+			result = ActionHandler::actionSelector(lut3d, dstImg, "", gpuControl);
 		}
-		else {
+		else
+		{
 			throw commandFail;
 		}
-		return true;
 	}
-	catch (event e) {
+	catch (event e)
+	{
 		eventQueue.push_back(e);
 	}
-	return true;
 }
 
-const std::string UI::printEvents() const {
+std::string UI::printEvents() const
+{
 	std::string out;
-	for (auto i : eventQueue) {
+	for (auto i : eventQueue)
+	{
 		out += eventPrompts[i];
 		out += "\n";
 	}
 	return out;
 }
 
-void UI::clearEvents() {
+void UI::clearEvents()
+{
 	eventQueue.clear();
 }
 
-void UI::editHistoryScreen() {
+void UI::editHistoryScreen()
+{
 	using namespace std;
 #ifdef _WIN32
 	system("cls");
 #else
 	cout << "\033[2J\033[1;1H";
 #endif
-	cout << "-- EDITS HISTORY -- " << endl;
-	if (master.getHistory()->empty()) {
-		cout << "History is empty." << endl;
+	cout << "-- EDIT HISTORY -- " << '\n';
+	if (master.getHistory()->empty())
+	{
+		cout << "History is empty." << '\n';
 	}
 	int i = 1;
-	for (auto userAction : *master.getHistory()) {
-		cout << "[" << i << "] " << actionNames[userAction.actionType] << " " << userAction.value << std::endl;
+	for (const auto& userAction : *master.getHistory())
+	{
+		cout << "[" << i << "] " << actionNames[userAction.actionType] << " " << userAction.value << '\n';
 		i++;
 	}
 	cout << "Press any key to return to main menu...";
 	cin.get();
 	draw();
-	return;
 }
 
-void UI::helpScreen() {
+void UI::helpScreen()
+{
 	using namespace std;
 #ifdef _WIN32
 	system("cls");
 #else
 	std::cout << "\033[2J\033[1;1H";
 #endif
-	cout << helpText << endl;
-	cout << "Press ENTER to return to main menu...";
+	cout << helpText << '\n'
+		<< "Press ENTER to return to main menu...";
 	cin.get();
 	draw();
-	return;
 }
 
+std::tuple<int, int> UI::customScale(cv::Mat& inputImage, unsigned int scale)
+{
+	const unsigned int width = master.getDstImg()->getResolutionW() * scale / 100;
+	const unsigned int height = master.getDstImg()->getResolutionH() * scale / 100;
+	cv::resize(*master.getDstImg()->getImg(), inputImage, cv::Size(width, height));
+	return { width, height };
+}
 
-// TODO: Possibly shorten this function
-bool UI::showPreview(unsigned int scale) {
+std::tuple<int, int, float> UI::autoScale(cv::Mat& inputImage, const std::tuple<int, int>& origSize,
+	const std::tuple<int, int>& screenSize)
+{
+	int x, y, width, height;
+	std::tie(x, y) = screenSize;
+	std::tie(width, height) = origSize;
+	bool changed = false;
+	if (height > 0.8f * y)
+	{
+		height = 0.8f * y;
+		width = (static_cast<float>(master.getDstImg()->getResolutionW()) * 0.8f * y) / master.getDstImg()->
+			getResolutionH();
+		changed = true;
+	}
+
+	if (width > 0.95f * x)
+	{
+		width = 0.95f * x;
+		height = (master.getDstImg()->getResolutionH() * 0.95f * x) / master.getDstImg()->getResolutionH();
+		changed = true;
+	}
+	float newScale = 0.0f;
+	if (changed)
+	{
+		cv::resize(*master.getDstImg()->getImg(), inputImage, cv::Size(width, height));
+		newScale = static_cast<float>(width) / master.getDstImg()->getResolutionW() * 100;
+	}
+
+	return { width, height, newScale };
+}
+
+void UI::showPreview(unsigned int scale)
+{
 	using namespace std;
 	if (!master.getDstImg()->getStatus())
-		return false;
-	string windowName = master.getDstImg()->getPath() + " (" + to_string(master.getDstImg()->getResolutionW()) + "x" + to_string(master.getDstImg()->getResolutionH()) + ")";
+	{
+		throw noImage;
+	}
+	string windowName = master.getDstImg()->getPath() +
+		" (" + to_string(master.getDstImg()->getResolutionW()) + "x" +
+		to_string(master.getDstImg()->getResolutionH()) + ")";
 	cout << "Press any key to close the window...";
-	// image scaling to fit on a current monitor
+	// scale the image to fit to a current monitor height
 	cv::Mat tempImg;
 
-	if (scale == 0) {
-		unsigned int x = 0, y = 0;
-		unsigned int height = master.getDstImg()->getResolutionH(), width = master.getDstImg()->getResolutionW();
+	// scale = 0 -> auto scaling; scale != 0 -> custom scale factor
+	if (scale == 0)
+	{
+		int x, y;
+		int height = master.getDstImg()->getResolutionH(), width = master.getDstImg()->getResolutionW();
 		// max 80% of height
 #ifdef _WIN32
 		x = GetSystemMetrics(SM_CXSCREEN);
@@ -287,46 +385,34 @@ bool UI::showPreview(unsigned int scale) {
 		x = s->width;
 		y = s->height;
 #endif
-		bool changed = false;
+		const std::tuple origSize = std::make_pair(width, height);
+		const std::tuple screenSize = std::make_pair(x, y);
+		int newWidth, newHeight;
 		float newScale;
-		if (height > 0.8 * y) {
-
-			height = 0.8 * y;
-			width = (master.getDstImg()->getResolutionW() * 0.8 * y) / master.getDstImg()->getResolutionH();
-			changed = true;
-		}
-
-		if (width > 0.95 * x) {
-			width = 0.95 * x;
-			height = (master.getDstImg()->getResolutionH() * 0.95 * x) / master.getDstImg()->getResolutionH();
-			changed = true;
-		}
-		if (changed) {
-			cv::resize(*master.getDstImg()->getImg(), tempImg, cv::Size(width, height));
-			newScale = (float)width / master.getDstImg()->getResolutionW() * 100;
+		std::tie(newWidth, newHeight, newScale) = autoScale(tempImg, origSize, screenSize);
+		if (width != newWidth || height != newHeight)
+		{
 			std::stringstream stream;
 			stream << std::fixed << std::setprecision(2) << newScale;
-			std::string s = stream.str();
+			const std::string s = stream.str();
 			windowName = windowName + "@" + s + "%";
 		}
-		else {
+		else
+		{
 			tempImg = *master.getDstImg()->getImg();
 			windowName = windowName + "@100%";
 		}
 	}
-	else {
-		unsigned int width = master.getDstImg()->getResolutionW() * scale / 100;
-		unsigned int height = master.getDstImg()->getResolutionH() * scale / 100;
-		cv::resize(*master.getDstImg()->getImg(), tempImg, cv::Size(width, height));
+	else
+	{
+		int width, height;
+		std::tie(width, height) = customScale(tempImg, scale);
 		windowName = windowName + "@" + to_string(scale) + "%";
 	}
 	windowName += (" - " + baseWindowName);
-	cv::imshow(windowName, tempImg);
+	imshow(windowName, tempImg);
 	cv::waitKey(0);
 	cv::destroyWindow(windowName);
-	return true;
 }
 
-UI::~UI() {
-
-}
+UI::~UI() = default;

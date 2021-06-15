@@ -13,6 +13,6 @@ int main(int argc, char* argv[])
 	}
 
 	UI mainInterface;
-	mainInterface.UIHandler();
+	mainInterface.uiHandler();
 	return 0;
 }

@@ -1,23 +1,23 @@
 #include "MainHandler.h"
 
-MainHandler::MainHandler():srcImg(Img()), dstImg(Img()) {
+MainHandler::MainHandler() :srcImg(Img()), dstImg(Img()) {
 
 }
 
-bool MainHandler::actionRedo() {
-	if (redoHistory.size()<1)
-		return false;
+void MainHandler::actionRedo() {
+	if (redoHistory.empty()) {
+		throw redoFail;
+	}
 
 	ActionHandler::actionSelector(redoHistory.front().actionType, &dstImg, redoHistory.front().value, &GPUControl, true);
 	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true)) {
-		return false;
-	};
+		throw redoFail;
+	}
 
 	history.push_back(redoHistory.front());
 	redoHistory.erase(redoHistory.begin());
-	return true;
 }
-bool MainHandler::actionUndo() {
+void MainHandler::actionUndo() {
 	Img newImg;
 	newImg = srcImg;
 	int i = 0;
@@ -25,7 +25,7 @@ bool MainHandler::actionUndo() {
 	if (history.size() > 1)
 	{
 		for (auto a : history) {
-			ActionHandler::actionSelector(a.actionType, &newImg, a.value, &GPUControl,true);
+			ActionHandler::actionSelector(a.actionType, &newImg, a.value, &GPUControl, true);
 
 			i++;
 			if (i >= history.size() - 1) {
@@ -33,18 +33,18 @@ bool MainHandler::actionUndo() {
 			}
 		}
 	}
-	else if (history.size() == 0)
-		return false;
+	else if (history.empty()) {
+		throw undoFail;
+	}
 
 	dstImg = newImg;
 
 	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true)) {
 		throw GPUmallocFail;
-	};
-	redoHistory.insert(redoHistory.begin(),history.back());
+	}
+	redoHistory.insert(redoHistory.begin(), history.back());
 	// remove the lastest operation from the history
 	history.pop_back();
-	return true;
 }
 
 Img* MainHandler::getSrcImg() {
@@ -83,4 +83,10 @@ bool MainHandler::imgSave(std::string path) {
 
 std::vector<edit>* MainHandler::getHistory() {
 	return &history;
+}
+
+void MainHandler::addToHistory(const std::string& value, action type)
+{
+	std::vector<edit>* ref = getHistory();
+	ref->push_back(edit{ value, type });
 }

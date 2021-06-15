@@ -17,14 +17,15 @@ private:
 
 public:
 	MainHandler();
-	bool actionRedo();
-	bool actionUndo();
+	void actionRedo();
+	void actionUndo();
 
 	Img* getSrcImg();
 	Img* getDstImg();
 	GPUcontroller* getGPUController();
 
 	std::vector<edit>* getHistory();
+	void addToHistory(const std::string& value, action type);
 
 	void updateDstImg(Img newImage);
 	bool updateSrcImg(std::string newPath, int mode);
