@@ -15,6 +15,7 @@
 class ActionHandler {
 public:
 	static Event actionSelector(Action name, Img* sourceImage, std::string value, GPUcontroller* GPUcontrol, bool forceUpdate = 0);
+	static std::vector<int> parseLineParams(unsigned int nParams, const std::string& line);
 	static bool cropping(cv::Rect area, Img* srcImg);
 	static bool resizing(unsigned int x, unsigned int y, Img* srcImg);
 	static bool updateGPUmem(Img* srcImg, GPUcontroller* GPU, bool forceUpdate = 0);

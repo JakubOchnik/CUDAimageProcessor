@@ -27,7 +27,7 @@ bool ActionHandler::resizing(unsigned int x, unsigned int y, Img* srcImg) {
 }
 
 bool ActionHandler::isNumber(std::string value) {
-	std::string::iterator end_pos = std::remove(value.begin(), value.end(), ' ');
+	const std::string::iterator end_pos = std::remove(value.begin(), value.end(), ' ');
 	value.erase(end_pos, value.end());
 	if (value.empty())
 		return false;
@@ -38,21 +38,46 @@ bool ActionHandler::isNumber(std::string value) {
 	if (ss.good()) {
 		return false;
 	}
-	else if (number == 0 && value[0] != '0') {
+	if (number == 0 && value[0] != '0') {
 		return false;
 	}
 	return true;
 }
 
-// TODO: MOVE THE PARAMETER PARSER TO ANOTHER FUNCTION
+std::vector<int> ActionHandler::parseLineParams(const unsigned int nParams, const std::string& line)
+{
+	std::vector<int> params;
+	int prevX{ 0 };
+	int x{ 1 };
+	for (unsigned int i{ 0 }; i < nParams - 1; ++i)
+	{
+		x = line.find(' ', prevX + 1);
+		if (x == std::string::npos || x <= 0 || x == prevX || !isNumber(line.substr(prevX, x - prevX)))
+		{
+			throw Event::parameterFail;
+		}
+		params.emplace_back(stoi(line.substr(prevX, x - prevX)));
+		prevX = x;
+	}
+	// last parameter
+	if (!isNumber(line.substr(x, line.length() - 1)))
+	{
+		throw Event::parameterFail;
+	}
+	params.emplace_back(stoi(line.substr(x)));
+	return params;
+}
+
 Event ActionHandler::actionSelector(Action name, Img* sourceName, std::string value, GPUcontroller* GPUcontrol, bool forceUpdate) {
 	if (!sourceName->getStatus()) {
 		throw Event::noImage;
 	}
 	try {
 		int x1, x2, x3, x, y, w, h, contr, shift;
+		std::vector<int> params;
 		switch (name) {
 		case Action::crop:
+			params = parseLineParams(4, value);
 			// getting all the parameters
 			x1 = value.find(' ');
 			x2 = value.find(' ', x1 + 1);
