@@ -10,8 +10,8 @@
 class MainHandler {
 	Img srcImg;
 	Img dstImg;
-	std::vector<edit> history;
-	std::vector<edit> redoHistory;
+	std::vector<Edit> history;
+	std::vector<Edit> redoHistory;
 	GPUcontroller GPUControl;
 
 public:
@@ -23,8 +23,8 @@ public:
 	Img* getDstImg();
 	GPUcontroller* getGPUController();
 
-	std::vector<edit>* getHistory();
-	void addToHistory(const std::string& value, action type);
+	std::vector<Edit>* getHistory();
+	void addToHistory(const std::string& value, Action type);
 
 	void updateDstImg(Img newImage);
 	bool updateSrcImg(std::string newPath, int mode);

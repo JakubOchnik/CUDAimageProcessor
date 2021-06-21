@@ -45,25 +45,25 @@ bool ActionHandler::isNumber(std::string value) {
 }
 
 // TODO: MOVE THE PARAMETER PARSER TO ANOTHER FUNCTION
-event ActionHandler::actionSelector(action name, Img* sourceName, std::string value, GPUcontroller* GPUcontrol, bool forceUpdate) {
+Event ActionHandler::actionSelector(Action name, Img* sourceName, std::string value, GPUcontroller* GPUcontrol, bool forceUpdate) {
 	if (!sourceName->getStatus()) {
-		throw noImage;
+		throw Event::noImage;
 	}
 	try {
 		int x1, x2, x3, x, y, w, h, contr, shift;
 		switch (name) {
-		case crop:
+		case Action::crop:
 			// getting all the parameters
 			x1 = value.find(' ');
 			x2 = value.find(' ', x1 + 1);
 			x3 = value.find(' ', x2 + 1);
 			// error checking
 			if (x1 == std::string::npos || x2 == std::string::npos || x3 == std::string::npos || x1 <= 0 || x1 == x2 || x2 <= 0 || x2 == x3 || x3 <= 0) {
-				throw parameterFail;
+				throw Event::parameterFail;
 			}
 			if (!isNumber(value.substr(0, x1)) || !isNumber(value.substr(x1, x2)) || !isNumber(value.substr(x2, x3)) || !isNumber(value.substr(x3, value.length() - 1))) {
 				// check if all parameters are numbers
-				throw parameterFail;
+				throw Event::parameterFail;
 			}
 			// extract the parameters from string
 			x = stoi((value.substr(0, x1)));
@@ -71,42 +71,40 @@ event ActionHandler::actionSelector(action name, Img* sourceName, std::string va
 			w = stoi((value.substr(x2, x3)));
 			h = stoi((value.substr(x3, value.length() - 1)));
 			if (x < 0 || y < 0 || w <= 0 || h <= 0) {
-				throw parameterFail;
+				throw Event::parameterFail;
 			}
 			if (x + w > sourceName->getResolutionW() || y + h > sourceName->getResolutionH()) {
-				throw parameterFail;
+				throw Event::parameterFail;
 			}
 			// execute the action
 			if (!cropping(cv::Rect(x, y, w, h), sourceName)) {
-				throw actionFail;
+				throw Event::actionFail;
 			}
-			return actionSuccess;
-			break;
-		case resize:
+			return Event::actionSuccess;
+		case Action::resize:
 			x1 = value.find(' ');
 			if (x1 == std::string::npos || x1 <= 0 || x1 == value.length()) {
-				throw parameterFail;
+				throw Event::parameterFail;
 			}
 			if (!isNumber(value.substr(0, x1)) || !isNumber(value.substr(x1, value.length()))) {
 				// check if all parameters are numbers
-				throw parameterFail;
+				throw Event::parameterFail;
 			}
 			x = stoi((value.substr(0, x1)));
 			y = stoi((value.substr(x1, value.length())));
 			if (x <= 0 || y <= 0) {
-				throw parameterFail;
+				throw Event::parameterFail;
 			}
 			// zlec wykonanie funkcji
 			if (!resizing(x, y, sourceName)) {
-				throw actionFail;
+				throw Event::actionFail;
 			}
-			return actionSuccess;
-			break;
-		case brightness:
+			return Event::actionSuccess;
+		case Action::brightness:
 			shift = 0;
 			if (!isNumber(value)) {
 				// check if parameter is a number
-				throw parameterFail;
+				throw Event::parameterFail;
 			}
 			if (value[0] == '-') {
 
@@ -117,32 +115,29 @@ event ActionHandler::actionSelector(action name, Img* sourceName, std::string va
 				shift = stoi(value.substr(0, value.length()));
 			}
 			if (!updateGPUmem(sourceName, GPUcontrol, forceUpdate)) {
-				throw GPUmallocFail;
+				throw Event::GPUmallocFail;
 			};
 			executeBrightnessKernel(sourceName, shift, GPUcontrol);
-			return actionSuccess;
-			break;
-		case invertion:
+			return Event::actionSuccess;
+		case Action::invertion:
 			if (!updateGPUmem(sourceName, GPUcontrol, forceUpdate)) {
-				throw GPUmallocFail;
+				throw Event::GPUmallocFail;
 			};
 			executeInvertionKernel(sourceName, GPUcontrol);
-			return actionSuccess;
-			break;
-		case equalization:
+			return Event::actionSuccess;
+		case Action::equalization:
 			if (!updateGPUmem(sourceName, GPUcontrol, forceUpdate)) {
-				throw GPUmallocFail;
+				throw Event::GPUmallocFail;
 			};
 			if (!executeEqualizationKernel(sourceName, GPUcontrol)) {
-				return actionFail;
+				return Event::actionFail;
 			}
-			return actionSuccess;
-			break;
-		case contrast:
+			return Event::actionSuccess;
+		case Action::contrast:
 			contr = 0;
 			if (!isNumber(value)) {
 				// check if parameter is a number
-				throw parameterFail;
+				throw Event::parameterFail;
 			}
 			if (value[0] == '-') {
 
@@ -153,25 +148,21 @@ event ActionHandler::actionSelector(action name, Img* sourceName, std::string va
 				contr = stoi(value.substr(0, value.length()));
 			}
 			if (contr < -255 || contr >255) {
-				throw parameterFail;
+				throw Event::parameterFail;
 			}
 			if (!updateGPUmem(sourceName, GPUcontrol, forceUpdate)) {
-				throw GPUmallocFail;
+				throw Event::GPUmallocFail;
 			};
 			executeContrastKernel(sourceName, contr, GPUcontrol);
-			return actionSuccess;
-			break;
-		case lut3d:
+			return Event::actionSuccess;
+		case Action::lut3d:
 			applyLUT(sourceName, 1.0f, "M31 - Rec.709.cube", GPUcontrol);
-			break;
+			return Event::actionSuccess;
 		default:
-			return commandFail;
-			break;
-
+			return Event::commandFail;
 		}
 	}
-	catch (event e) {
+	catch (Event e) {
 		return e;
 	}
-	return commandFail;
 }

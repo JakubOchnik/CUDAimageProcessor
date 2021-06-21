@@ -6,12 +6,12 @@ MainHandler::MainHandler() :srcImg(Img()), dstImg(Img()) {
 
 void MainHandler::actionRedo() {
 	if (redoHistory.empty()) {
-		throw redoFail;
+		throw Event::redoFail;
 	}
 
 	ActionHandler::actionSelector(redoHistory.front().actionType, &dstImg, redoHistory.front().value, &GPUControl, true);
 	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true)) {
-		throw redoFail;
+		throw Event::redoFail;
 	}
 
 	history.push_back(redoHistory.front());
@@ -34,13 +34,13 @@ void MainHandler::actionUndo() {
 		}
 	}
 	else if (history.empty()) {
-		throw undoFail;
+		throw Event::undoFail;
 	}
 
 	dstImg = newImg;
 
 	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true)) {
-		throw GPUmallocFail;
+		throw Event::GPUmallocFail;
 	}
 	redoHistory.insert(redoHistory.begin(), history.back());
 	// remove the lastest operation from the history
@@ -81,12 +81,12 @@ bool MainHandler::imgSave(std::string path) {
 	return false;
 }
 
-std::vector<edit>* MainHandler::getHistory() {
+std::vector<Edit>* MainHandler::getHistory() {
 	return &history;
 }
 
-void MainHandler::addToHistory(const std::string& value, action type)
+void MainHandler::addToHistory(const std::string& value, Action type)
 {
-	std::vector<edit>* ref = getHistory();
-	ref->push_back(edit{ value, type });
+	std::vector<Edit>* ref = getHistory();
+	ref->push_back(Edit{ value, type });
 }

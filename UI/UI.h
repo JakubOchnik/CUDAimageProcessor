@@ -18,12 +18,12 @@
 #include <X11/Xlib.h>
 #endif
 
-class UI {
+class Ui {
 	bool quit = false;
 	bool menu = true;
 	bool loaded = false;
 
-	std::vector<int> eventQueue;
+	std::vector<Event> eventQueue;
 
 	std::string inputBuffer;
 
@@ -36,6 +36,7 @@ class UI {
 	void keystrokeHandler();
 	std::string [[nodiscard]] printEvents() const;
 	void clearEvents();
+	void addEvent(Event& e);
 	void editHistoryScreen();
 	void showPreview(unsigned int scale = 0);
 	std::tuple<int, int> customScale(cv::Mat& inputImage, unsigned int scale);
