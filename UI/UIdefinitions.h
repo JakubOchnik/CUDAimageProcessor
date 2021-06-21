@@ -1,20 +1,20 @@
 #pragma once
 
-#include <iostream>
+#include <string>
 #include <vector>
 
-const std::string menuText = "CUDA IMAGE PROCESSOR\nJakub Ochnik 2021";
-const std::string infoResolution = "Image resolution:";
-const std::string infoChannels = "Image color channels:";
-const std::string pathText = "File path: ";
-const std::string prompt = "IP>";
-const std::string imgLoading = "Loading image, please wait...";
-const std::string notLoaded = "Image not loaded";
-const std::string textSeparator = "--------------------------------------------------";
-const std::string baseWindowName = "imgEditor";
-const std::string consoleName = baseWindowName;
+const std::string HEADER_TEXT = "CUDA IMAGE PROCESSOR\nJakub Ochnik 2021";
+const std::string RESOLUTION_TEXT = "Image resolution:";
+const std::string CHANNELS_TEXT = "Image color channels:";
+const std::string FILEPATH_TEXT = "File path: ";
+const std::string PROMPT_TEXT = "IP>";
+const std::string FILE_LOADING_TEXT = "Loading image, please wait...";
+const std::string NOT_LOADED_TEXT = "Image not loaded";
+const std::string SEPARATOR_TEXT = "--------------------------------------------------";
+const std::string BASE_WINDOW_NAME = "imgEditor";
+const std::string CONSOLE_NAME = BASE_WINDOW_NAME;
 
-const std::vector<std::string> eventPrompts = {
+const std::vector<std::string> EVENT_TEXT_PROMPTS = {
 	"File opened successfully",
 	"File open failed. Check the path, extension or dimensions (they cannot exceed 65535x65535).",
 	"File saved successfully",
@@ -29,7 +29,7 @@ const std::vector<std::string> eventPrompts = {
 	"Cannot perform operation - insufficient video memory"
 };
 
-const std::vector<std::string> actionNames = {
+const std::vector<std::string> ACTION_TEXT_NAMES = {
 	"Image cropped: ",
 	"Changed brightness: ",
 	"Changed contrast: ",
@@ -39,4 +39,4 @@ const std::vector<std::string> actionNames = {
 	"Resized image: "
 };
 
-const std::string helpText = "-- HELP --\n\nGENERAL FUNCTIONS:\n- quit - Exits the program\n- load [file_path] - Loads the image from the selected path\n- save [file_path] - Saves the edited image to the selected path\n- undo - Reverts the latest change\n- redo - Performs the latest reverted action\n- show [~scale] - Opens the image preview window. If the custom scale (in percentage, i.e. 75 % ->scale = 75) is not specified, the window will be automatically scaled to fit 80 % of main screen's vertical resolution.\n- history - Shows the history of changes\n- clear - Clears the notification area\n\nACTIONS:\n- brightness [value] - Changes brightness of the image by the specified value (it can be either negative or positive)\n- contrast [value] - Adjusts contrast (value must be in range <-255,255>)\n- invert - Inverts colors of the image\n- crop [x] [y] [width] [height] - Trims the image from the coordinates (x, y) to (x + width, y + height). Constraints: x + width < full width; y + height < full height.\n- resize [width] [height] - Resizes the image to the specified size\n- equalize - Performs histogram equalization\n\n(~- optional)";
+const std::string HELP_TEXT_CONTENT = "-- HELP --\n\nGENERAL FUNCTIONS:\n- quit - Exits the program\n- load [file_path] - Loads the image from the selected path\n- save [file_path] - Saves the edited image to the selected path\n- undo - Reverts the latest change\n- redo - Performs the latest reverted action\n- show [~scale] - Opens the image preview window. If the custom scale (in percentage, i.e. 75 % ->scale = 75) is not specified, the window will be automatically scaled to fit 80 % of main screen's vertical resolution.\n- history - Shows the history of changes\n- clear - Clears the notification area\n\nACTIONS:\n- brightness [value] - Changes brightness of the image by the specified value (it can be either negative or positive)\n- contrast [value] - Adjusts contrast (value must be in range <-255,255>)\n- invert - Inverts colors of the image\n- crop [x] [y] [width] [height] - Trims the image from the coordinates (x, y) to (x + width, y + height). Constraints: x + width < full width; y + height < full height.\n- resize [width] [height] - Resizes the image to the specified size\n- equalize - Performs histogram equalization\n\n(~- optional)";

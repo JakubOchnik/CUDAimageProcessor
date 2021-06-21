@@ -3,7 +3,7 @@
 UI::UI()
 {
 #ifdef _WIN32
-	SetConsoleTitle(TEXT(baseWindowName.c_str()));
+	SetConsoleTitle(TEXT(BASE_WINDOW_NAME.c_str()));
 #else
 	std::cout << "\033]0;" << title << "\007";
 #endif
@@ -32,16 +32,16 @@ void UI::draw()
 	// show menu and set window name
 	if (menu)
 	{
-		cout << menuText << '\n' << textSeparator << '\n';
+		cout << HEADER_TEXT << '\n' << SEPARATOR_TEXT << '\n';
 		if (loaded)
 		{
 			cout << "Target image info: " << '\n'
-				<< pathText << master.getDstImg()->getPath() << '\n'
-				<< infoResolution << " "
+				<< FILEPATH_TEXT << master.getDstImg()->getPath() << '\n'
+				<< RESOLUTION_TEXT << " "
 				<< master.getDstImg()->getResolutionW() << " x " << master.getDstImg()->getResolutionH() << '\n'
-				<< infoChannels << " " << master.getDstImg()->getChannelNum() << '\n';
+				<< CHANNELS_TEXT << " " << master.getDstImg()->getChannelNum() << '\n';
 #ifdef _WIN32
-			const string title = master.getDstImg()->getPath() + " - " + baseWindowName;
+			const string title = master.getDstImg()->getPath() + " - " + BASE_WINDOW_NAME;
 			SetConsoleTitle(TEXT(title.c_str()));
 #else
 			cout << "\033]0;" << title << "\007";
@@ -49,16 +49,16 @@ void UI::draw()
 		}
 		else
 		{
-			cout << notLoaded << '\n';
+			cout << NOT_LOADED_TEXT << '\n';
 		}
 		if (!eventQueue.empty())
 		{
-			cout << textSeparator << '\n'
+			cout << SEPARATOR_TEXT << '\n'
 				<< "Notifications: " << '\n'
 				<< printEvents();
 		}
-		cout << textSeparator << '\n'
-			<< prompt;
+		cout << SEPARATOR_TEXT << '\n'
+			<< PROMPT_TEXT;
 	}
 }
 
@@ -100,7 +100,7 @@ void UI::keystrokeHandler()
 			{
 				throw commandFail;
 			}
-			cout << imgLoading << '\n';
+			cout << FILE_LOADING_TEXT << '\n';
 			if (master.updateSrcImg(path, 1))
 			{
 				eventQueue.push_back(openSuccess);
@@ -265,7 +265,7 @@ std::string [[nodiscard]] UI::printEvents() const
 	std::string out;
 	for (auto i : eventQueue)
 	{
-		out += eventPrompts[i];
+		out += EVENT_TEXT_PROMPTS[i];
 		out += "\n";
 	}
 	return out;
@@ -292,7 +292,7 @@ void UI::editHistoryScreen()
 	int i = 1;
 	for (const auto& userAction : *master.getHistory())
 	{
-		cout << "[" << i << "] " << actionNames[userAction.actionType] << " " << userAction.value << '\n';
+		cout << "[" << i << "] " << ACTION_TEXT_NAMES[userAction.actionType] << " " << userAction.value << '\n';
 		i++;
 	}
 	cout << "Press any key to return to main menu...";
@@ -308,7 +308,7 @@ void UI::helpScreen()
 #else
 	std::cout << "\033[2J\033[1;1H";
 #endif
-	cout << helpText << '\n'
+	cout << HELP_TEXT_CONTENT << '\n'
 		<< "Press ENTER to return to main menu...";
 	cin.get();
 	draw();
@@ -406,7 +406,7 @@ void UI::showPreview(unsigned int scale)
 		std::tie(width, height) = customScale(tempImg, scale);
 		windowName = windowName + "@" + to_string(scale) + "%";
 	}
-	windowName += (" - " + baseWindowName);
+	windowName += (" - " + BASE_WINDOW_NAME);
 	imshow(windowName, tempImg);
 	cv::waitKey(0);
 	cv::destroyWindow(windowName);
