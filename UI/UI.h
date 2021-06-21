@@ -19,25 +19,24 @@
 #endif
 
 class UI {
-private:
-	bool quit;
-	bool menu;
-	bool loaded;
+	bool quit = false;
+	bool menu = true;
+	bool loaded = false;
 
 	std::vector<int> eventQueue;
 
 	std::string inputBuffer;
 
-	MainHandler master;
+	MainHandler master = MainHandler();
 	void helpScreen();
 	void draw();
 	void keystrokeHandler();
-	std::string printEvents() const;
+	std::string [[nodiscard]] printEvents() const;
 	void clearEvents();
 	void editHistoryScreen();
 	void showPreview(unsigned int scale = 0);
 	std::tuple<int, int> customScale(cv::Mat& inputImage, unsigned int scale);
-	std::tuple<int, int, float> UI::autoScale(cv::Mat& inputImage, const std::tuple<int, int>& origSize, const std::tuple<int, int>& screenSize);
+	std::tuple<int, int, float> autoScale(cv::Mat& inputImage, const std::tuple<int, int>& origSize, const std::tuple<int, int>& screenSize);
 public:
 	UI();
 	void uiHandler();

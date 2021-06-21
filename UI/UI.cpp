@@ -2,13 +2,8 @@
 
 UI::UI()
 {
-	quit = false;
-	menu = true;
-	loaded = false;
-	master = MainHandler();
-	std::string title = baseWindowName;
 #ifdef _WIN32
-	SetConsoleTitle(TEXT(title.c_str()));
+	SetConsoleTitle(TEXT(baseWindowName.c_str()));
 #else
 	std::cout << "\033]0;" << title << "\007";
 #endif
@@ -46,7 +41,7 @@ void UI::draw()
 				<< master.getDstImg()->getResolutionW() << " x " << master.getDstImg()->getResolutionH() << '\n'
 				<< infoChannels << " " << master.getDstImg()->getChannelNum() << '\n';
 #ifdef _WIN32
-			string title = master.getDstImg()->getPath() + " - " + baseWindowName;
+			const string title = master.getDstImg()->getPath() + " - " + baseWindowName;
 			SetConsoleTitle(TEXT(title.c_str()));
 #else
 			cout << "\033]0;" << title << "\007";
@@ -75,14 +70,13 @@ void UI::keystrokeHandler()
 	{
 		using namespace std;
 		// GET THE COMMAND NAME FROM THE INPUT STRING
-		auto command = inputBuffer.substr(0, inputBuffer.find(' '));
+		const auto command = inputBuffer.substr(0, inputBuffer.find(' '));
 		// QUIT
 
 		// check if the command involves editing an image. If so, get img pointer and GPU handle
 		std::set<std::string> val = { "quit", "load", "undo", "redo", "show", "show", "clear", "save", "history" };
 		Img* dstImg;
 		GPUcontroller* gpuControl;
-		event result;
 		if (val.find(command) == val.end())
 		{
 			dstImg = master.getDstImg();
@@ -116,6 +110,9 @@ void UI::keystrokeHandler()
 			}
 			throw openFail;
 		}
+
+		event result;
+
 		if (command == "undo")
 		{
 			master.actionUndo();
@@ -263,7 +260,7 @@ void UI::keystrokeHandler()
 	}
 }
 
-std::string UI::printEvents() const
+std::string [[nodiscard]] UI::printEvents() const
 {
 	std::string out;
 	for (auto i : eventQueue)

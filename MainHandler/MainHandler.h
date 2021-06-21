@@ -8,7 +8,6 @@
 #include <vector>
 
 class MainHandler {
-private:
 	Img srcImg;
 	Img dstImg;
 	std::vector<edit> history;
