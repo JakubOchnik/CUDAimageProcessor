@@ -1,16 +1,8 @@
 #include "UI.h"
 
-UI::UI()
-{
-#ifdef _WIN32
-	SetConsoleTitle(TEXT(BASE_WINDOW_NAME.c_str()));
-#else
-	std::cout << "\033]0;" << title << "\007";
-#endif
-}
-
 void UI::uiHandler()
 {
+	setWindowName(BASE_WINDOW_NAME);
 	// Main loop
 	while (!quit)
 	{
@@ -19,16 +11,28 @@ void UI::uiHandler()
 		keystrokeHandler();
 	}
 }
-
-void UI::draw()
+void UI::setWindowName(const std::string& newName) const
 {
-	using namespace std;
-	// clear screen
+#ifdef _WIN32
+	SetConsoleTitle(TEXT(newName.c_str()));
+#else
+	cout << "\033]0;" << newName << "\007";
+#endif
+}
+
+void UI::clearScreen() const
+{
 #ifdef _WIN32
 	system("cls");
 #else
 	std::cout << "\033[2J\033[1;1H";
 #endif
+}
+
+void UI::draw()
+{
+	using namespace std;
+	clearScreen();
 	// show menu and set window name
 	if (menu)
 	{
@@ -40,12 +44,8 @@ void UI::draw()
 				<< RESOLUTION_TEXT << " "
 				<< master.getDstImg()->getResolutionW() << " x " << master.getDstImg()->getResolutionH() << '\n'
 				<< CHANNELS_TEXT << " " << master.getDstImg()->getChannelNum() << '\n';
-#ifdef _WIN32
 			const string title = master.getDstImg()->getPath() + " - " + BASE_WINDOW_NAME;
-			SetConsoleTitle(TEXT(title.c_str()));
-#else
-			cout << "\033]0;" << title << "\007";
-#endif
+			setWindowName(title);
 		}
 		else
 		{
@@ -71,7 +71,6 @@ void UI::keystrokeHandler()
 		using namespace std;
 		// GET THE COMMAND NAME FROM THE INPUT STRING
 		const auto command = inputBuffer.substr(0, inputBuffer.find(' '));
-		// QUIT
 
 		// check if the command involves editing an image. If so, get img pointer and GPU handle
 		std::set<std::string> val = { "quit", "load", "undo", "redo", "show", "show", "clear", "save", "history" };
@@ -411,5 +410,3 @@ void UI::showPreview(unsigned int scale)
 	cv::waitKey(0);
 	cv::destroyWindow(windowName);
 }
-
-UI::~UI() = default;

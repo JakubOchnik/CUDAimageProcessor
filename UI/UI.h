@@ -30,6 +30,9 @@ class UI {
 	MainHandler master = MainHandler();
 	void helpScreen();
 	void draw();
+	void setWindowName(const std::string& newName) const;
+	void clearScreen() const;
+
 	void keystrokeHandler();
 	std::string [[nodiscard]] printEvents() const;
 	void clearEvents();
@@ -38,7 +41,5 @@ class UI {
 	std::tuple<int, int> customScale(cv::Mat& inputImage, unsigned int scale);
 	std::tuple<int, int, float> autoScale(cv::Mat& inputImage, const std::tuple<int, int>& origSize, const std::tuple<int, int>& screenSize);
 public:
-	UI();
 	void uiHandler();
-	~UI();
 };
