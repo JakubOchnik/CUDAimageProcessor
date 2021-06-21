@@ -47,6 +47,14 @@ bool ActionHandler::isNumber(std::string value) {
 std::vector<int> ActionHandler::parseLineParams(const unsigned int nParams, const std::string& line)
 {
 	std::vector<int> params;
+	if (nParams == 1)
+	{
+		if (!isNumber(line))
+		{
+			throw Event::parameterFail;
+		}
+		return std::vector<int>{stoi(line)};
+	}
 	int prevX{ 0 };
 	int x{ 1 };
 	for (unsigned int i{ 0 }; i < nParams - 1; ++i)
@@ -73,28 +81,10 @@ Event ActionHandler::actionSelector(Action name, Img* sourceName, std::string va
 		throw Event::noImage;
 	}
 	try {
-		int x1, x2, x3, x, y, w, h, contr, shift;
-		std::vector<int> params;
-		switch (name) {
-		case Action::crop:
-			params = parseLineParams(4, value);
-			// getting all the parameters
-			x1 = value.find(' ');
-			x2 = value.find(' ', x1 + 1);
-			x3 = value.find(' ', x2 + 1);
-			// error checking
-			if (x1 == std::string::npos || x2 == std::string::npos || x3 == std::string::npos || x1 <= 0 || x1 == x2 || x2 <= 0 || x2 == x3 || x3 <= 0) {
-				throw Event::parameterFail;
-			}
-			if (!isNumber(value.substr(0, x1)) || !isNumber(value.substr(x1, x2)) || !isNumber(value.substr(x2, x3)) || !isNumber(value.substr(x3, value.length() - 1))) {
-				// check if all parameters are numbers
-				throw Event::parameterFail;
-			}
-			// extract the parameters from string
-			x = stoi((value.substr(0, x1)));
-			y = stoi((value.substr(x1, x2)));
-			w = stoi((value.substr(x2, x3)));
-			h = stoi((value.substr(x3, value.length() - 1)));
+		if (name == Action::crop)
+		{
+			std::vector<int> params = parseLineParams(4, value);
+			const int x{ params[0] }, y{ params[1] }, w{ params[2] }, h{ params[3] };
 			if (x < 0 || y < 0 || w <= 0 || h <= 0) {
 				throw Event::parameterFail;
 			}
@@ -105,89 +95,65 @@ Event ActionHandler::actionSelector(Action name, Img* sourceName, std::string va
 			if (!cropping(cv::Rect(x, y, w, h), sourceName)) {
 				throw Event::actionFail;
 			}
-			return Event::actionSuccess;
-		case Action::resize:
-			x1 = value.find(' ');
-			if (x1 == std::string::npos || x1 <= 0 || x1 == value.length()) {
-				throw Event::parameterFail;
-			}
-			if (!isNumber(value.substr(0, x1)) || !isNumber(value.substr(x1, value.length()))) {
-				// check if all parameters are numbers
-				throw Event::parameterFail;
-			}
-			x = stoi((value.substr(0, x1)));
-			y = stoi((value.substr(x1, value.length())));
+		}
+		else if (name == Action::resize)
+		{
+			std::vector<int> params = parseLineParams(2, value);
+			const int x{ params[0] }, y{ params[1] };
 			if (x <= 0 || y <= 0) {
 				throw Event::parameterFail;
 			}
-			// zlec wykonanie funkcji
+			// execute
 			if (!resizing(x, y, sourceName)) {
 				throw Event::actionFail;
 			}
-			return Event::actionSuccess;
-		case Action::brightness:
-			shift = 0;
-			if (!isNumber(value)) {
-				// check if parameter is a number
-				throw Event::parameterFail;
-			}
-			if (value[0] == '-') {
-
-				shift = stoi(value.substr(1, value.length() - 1));
-				shift *= (-1);
-			}
-			else {
-				shift = stoi(value.substr(0, value.length()));
-			}
+		}
+		else if (name == Action::brightness)
+		{
+			const int shift = parseLineParams(1, value)[0];
 			if (!updateGPUmem(sourceName, GPUcontrol, forceUpdate)) {
 				throw Event::GPUmallocFail;
 			};
 			executeBrightnessKernel(sourceName, shift, GPUcontrol);
-			return Event::actionSuccess;
-		case Action::invertion:
+		}
+		else if (name == Action::invertion)
+		{
 			if (!updateGPUmem(sourceName, GPUcontrol, forceUpdate)) {
 				throw Event::GPUmallocFail;
 			};
 			executeInvertionKernel(sourceName, GPUcontrol);
-			return Event::actionSuccess;
-		case Action::equalization:
+		}
+		else if (name == Action::equalization)
+		{
 			if (!updateGPUmem(sourceName, GPUcontrol, forceUpdate)) {
 				throw Event::GPUmallocFail;
 			};
 			if (!executeEqualizationKernel(sourceName, GPUcontrol)) {
 				return Event::actionFail;
 			}
-			return Event::actionSuccess;
-		case Action::contrast:
-			contr = 0;
-			if (!isNumber(value)) {
-				// check if parameter is a number
-				throw Event::parameterFail;
-			}
-			if (value[0] == '-') {
-
-				contr = stoi(value.substr(1, value.length() - 1));
-				contr *= (-1);
-			}
-			else {
-				contr = stoi(value.substr(0, value.length()));
-			}
-			if (contr < -255 || contr >255) {
+		}
+		else if (name == Action::contrast)
+		{
+			const int contrast = parseLineParams(1, value)[0];
+			if (contrast < -255 || contrast >255) {
 				throw Event::parameterFail;
 			}
 			if (!updateGPUmem(sourceName, GPUcontrol, forceUpdate)) {
 				throw Event::GPUmallocFail;
 			};
-			executeContrastKernel(sourceName, contr, GPUcontrol);
-			return Event::actionSuccess;
-		case Action::lut3d:
+			executeContrastKernel(sourceName, contrast, GPUcontrol);
+		}
+		else if (name == Action::lut3d)
+		{
 			applyLUT(sourceName, 1.0f, "M31 - Rec.709.cube", GPUcontrol);
-			return Event::actionSuccess;
-		default:
-			return Event::commandFail;
+		}
+		else
+		{
+			throw Event::commandFail;
 		}
 	}
 	catch (Event e) {
 		return e;
 	}
+	return Event::actionSuccess;
 }
