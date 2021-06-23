@@ -33,8 +33,10 @@ class Ui {
 	void setWindowName(const std::string& newName) const;
 	void clearScreen() const;
 
+	bool isActionValid(const Event result) const;
+
 	void keystrokeHandler();
-	std::string [[nodiscard]] printEvents() const;
+	[[nodiscard]] std::string printEvents() const;
 	void clearEvents();
 	void addEvent(Event& e);
 	void editHistoryScreen();

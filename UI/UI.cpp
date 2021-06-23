@@ -110,7 +110,6 @@ void Ui::keystrokeHandler()
 			throw Event::openFail;
 		}
 
-		Event result;
 
 		if (command == "undo")
 		{
@@ -173,8 +172,8 @@ void Ui::keystrokeHandler()
 			}
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
-			result = ActionHandler::actionSelector(Action::crop, dstImg, value, gpuControl);
-			if (result == Event::actionFail || result == Event::parameterFail || result == Event::noImage)
+			if (const auto result = ActionHandler::actionSelector(Action::crop, dstImg, value, gpuControl);
+				isActionValid(result))
 			{
 				throw result;
 			}
@@ -188,8 +187,8 @@ void Ui::keystrokeHandler()
 			}
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
-			result = ActionHandler::actionSelector(Action::resize, dstImg, value, gpuControl);
-			if (result == Event::actionFail || result == Event::parameterFail || result == Event::noImage)
+			if (const auto result = ActionHandler::actionSelector(Action::resize, dstImg, value, gpuControl);
+				isActionValid(result))
 			{
 				throw result;
 			}
@@ -203,8 +202,7 @@ void Ui::keystrokeHandler()
 			}
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
-			result = ActionHandler::actionSelector(Action::brightness, dstImg, value, gpuControl);
-			if (result == Event::actionFail || result == Event::parameterFail || result == Event::noImage)
+			if (const auto result = ActionHandler::actionSelector(Action::brightness, dstImg, value, gpuControl); isActionValid(result))
 			{
 				throw result;
 			}
@@ -213,8 +211,7 @@ void Ui::keystrokeHandler()
 		}
 		else if (command == "invert")
 		{
-			result = ActionHandler::actionSelector(Action::invertion, dstImg, "", gpuControl);
-			if (result == Event::actionFail || result == Event::parameterFail || result == Event::noImage)
+			if (const auto result = ActionHandler::actionSelector(Action::invertion, dstImg, "", gpuControl); isActionValid(result))
 			{
 				throw result;
 			}
@@ -222,8 +219,7 @@ void Ui::keystrokeHandler()
 		}
 		else if (command == "equalize")
 		{
-			result = ActionHandler::actionSelector(Action::equalization, dstImg, "", gpuControl, true);
-			if (result == Event::actionFail || result == Event::parameterFail || result == Event::noImage)
+			if (const auto result = ActionHandler::actionSelector(Action::equalization, dstImg, "", gpuControl, true); isActionValid(result))
 			{
 				throw result;
 			}
@@ -237,8 +233,7 @@ void Ui::keystrokeHandler()
 			}
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
-			result = ActionHandler::actionSelector(Action::contrast, dstImg, value, gpuControl);
-			if (result == Event::actionFail || result == Event::parameterFail || result == Event::noImage)
+			if (const auto result = ActionHandler::actionSelector(Action::contrast, dstImg, value, gpuControl); isActionValid(result))
 			{
 				throw result;
 			}
@@ -246,7 +241,10 @@ void Ui::keystrokeHandler()
 		}
 		else if (command == "lut")
 		{
-			result = ActionHandler::actionSelector(Action::lut3d, dstImg, "", gpuControl);
+			if (const auto result = ActionHandler::actionSelector(Action::lut3d, dstImg, "", gpuControl); isActionValid(result))
+			{
+				throw result;
+			}
 		}
 		else
 		{
@@ -257,6 +255,11 @@ void Ui::keystrokeHandler()
 	{
 		eventQueue.push_back(e);
 	}
+}
+
+bool Ui::isActionValid(const Event result) const
+{
+	return result == Event::actionFail || result == Event::parameterFail || result == Event::noImage;
 }
 
 std::string [[nodiscard]] Ui::printEvents() const
