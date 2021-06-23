@@ -183,6 +183,7 @@ void Ui::keystrokeHandler()
 		{
 			if (inputBuffer.length() < 6)
 			{
+				//throw std::exception(Event::commandFail);
 				throw Event::commandFail;
 			}
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
@@ -251,7 +252,7 @@ void Ui::keystrokeHandler()
 			throw Event::commandFail;
 		}
 	}
-	catch (Event e)
+	catch (const Event& e)
 	{
 		eventQueue.push_back(e);
 	}

@@ -152,7 +152,7 @@ Event ActionHandler::actionSelector(Action name, Img* sourceName, std::string va
 			throw Event::commandFail;
 		}
 	}
-	catch (Event e) {
+	catch (const Event& e) {
 		return e;
 	}
 	return Event::actionSuccess;
