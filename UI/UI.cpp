@@ -11,6 +11,7 @@ void Ui::uiHandler()
 		keystrokeHandler();
 	}
 }
+
 void Ui::setWindowName(const std::string& newName) const
 {
 #ifdef _WIN32
@@ -203,16 +204,17 @@ void Ui::keystrokeHandler()
 			}
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
-			if (const auto result = ActionHandler::actionSelector(Action::brightness, dstImg, value, gpuControl); isActionValid(result))
+			if (const auto result = ActionHandler::actionSelector(Action::brightness, dstImg, value, gpuControl);
+				isActionValid(result))
 			{
 				throw result;
 			}
 			master.addToHistory(value, Action::brightness);
-
 		}
 		else if (command == "invert")
 		{
-			if (const auto result = ActionHandler::actionSelector(Action::invertion, dstImg, "", gpuControl); isActionValid(result))
+			if (const auto result = ActionHandler::actionSelector(Action::invertion, dstImg, "", gpuControl);
+				isActionValid(result))
 			{
 				throw result;
 			}
@@ -220,7 +222,8 @@ void Ui::keystrokeHandler()
 		}
 		else if (command == "equalize")
 		{
-			if (const auto result = ActionHandler::actionSelector(Action::equalization, dstImg, "", gpuControl, true); isActionValid(result))
+			if (const auto result = ActionHandler::actionSelector(Action::equalization, dstImg, "", gpuControl, true);
+				isActionValid(result))
 			{
 				throw result;
 			}
@@ -234,7 +237,8 @@ void Ui::keystrokeHandler()
 			}
 			auto value = inputBuffer.substr(inputBuffer.find(' '));
 			value.erase(0, 1);
-			if (const auto result = ActionHandler::actionSelector(Action::contrast, dstImg, value, gpuControl); isActionValid(result))
+			if (const auto result = ActionHandler::actionSelector(Action::contrast, dstImg, value, gpuControl);
+				isActionValid(result))
 			{
 				throw result;
 			}
@@ -242,7 +246,8 @@ void Ui::keystrokeHandler()
 		}
 		else if (command == "lut")
 		{
-			if (const auto result = ActionHandler::actionSelector(Action::lut3d, dstImg, "", gpuControl); isActionValid(result))
+			if (const auto result = ActionHandler::actionSelector(Action::lut3d, dstImg, "", gpuControl);
+				isActionValid(result))
 			{
 				throw result;
 			}
@@ -326,7 +331,7 @@ std::tuple<int, int> Ui::customScale(cv::Mat& inputImage, unsigned int scale)
 {
 	const unsigned int width = master.getDstImg()->getResolutionW() * scale / 100;
 	const unsigned int height = master.getDstImg()->getResolutionH() * scale / 100;
-	cv::resize(*master.getDstImg()->getImg(), inputImage, cv::Size(width, height));
+	resize(*master.getDstImg()->getImg(), inputImage, cv::Size(width, height));
 	return { width, height };
 }
 
@@ -354,7 +359,7 @@ std::tuple<int, int, float> Ui::autoScale(cv::Mat& inputImage, const std::tuple<
 	float newScale = 0.0f;
 	if (changed)
 	{
-		cv::resize(*master.getDstImg()->getImg(), inputImage, cv::Size(width, height));
+		resize(*master.getDstImg()->getImg(), inputImage, cv::Size(width, height));
 		newScale = static_cast<float>(width) / master.getDstImg()->getResolutionW() * 100;
 	}
 

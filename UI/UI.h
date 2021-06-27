@@ -18,7 +18,8 @@
 #include <X11/Xlib.h>
 #endif
 
-class Ui {
+class Ui
+{
 	bool quit = false;
 	bool menu = true;
 	bool loaded = false;
@@ -33,7 +34,7 @@ class Ui {
 	void setWindowName(const std::string& newName) const;
 	void clearScreen() const;
 
-	bool isActionValid(const Event result) const;
+	bool isActionValid(Event result) const;
 
 	void keystrokeHandler();
 	[[nodiscard]] std::string printEvents() const;
@@ -42,7 +43,8 @@ class Ui {
 	void editHistoryScreen();
 	void showPreview(unsigned int scale = 0);
 	std::tuple<int, int> customScale(cv::Mat& inputImage, unsigned int scale);
-	std::tuple<int, int, float> autoScale(cv::Mat& inputImage, const std::tuple<int, int>& origSize, const std::tuple<int, int>& screenSize);
+	std::tuple<int, int, float> autoScale(cv::Mat& inputImage, const std::tuple<int, int>& origSize,
+		const std::tuple<int, int>& screenSize);
 public:
 	void uiHandler();
 };
