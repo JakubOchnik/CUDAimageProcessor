@@ -5,7 +5,8 @@
 #include <opencv2/opencv.hpp>
 #include <tuple>
 
-class ImgLoader {
+class ImgLoader
+{
 public:
 	// checks if image dimensions are within the limit
 	static bool checkImgDims(int x, int y);

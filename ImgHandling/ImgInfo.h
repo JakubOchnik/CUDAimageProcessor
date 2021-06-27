@@ -1,7 +1,8 @@
 #pragma once
 #include <opencv2/opencv.hpp>
-class Img {
-private:
+
+class Img
+{
 	std::string path;
 	unsigned int resolutionH;
 	unsigned int resolutionW;
