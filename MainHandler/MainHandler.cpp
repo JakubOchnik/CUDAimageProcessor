@@ -1,45 +1,55 @@
 #include "MainHandler.h"
 
-MainHandler::MainHandler() :srcImg(Img()), dstImg(Img()) {
-
+MainHandler::MainHandler() : srcImg(Img()), dstImg(Img())
+{
 }
 
-void MainHandler::actionRedo() {
-	if (redoHistory.empty()) {
+void MainHandler::actionRedo()
+{
+	if (redoHistory.empty())
+	{
 		throw Event::redoFail;
 	}
 
-	ActionHandler::actionSelector(redoHistory.front().actionType, &dstImg, redoHistory.front().value, &GPUControl, true);
-	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true)) {
+	ActionHandler::actionSelector(redoHistory.front().actionType, &dstImg, redoHistory.front().value, &GPUControl,
+		true);
+	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true))
+	{
 		throw Event::redoFail;
 	}
 
 	history.push_back(redoHistory.front());
 	redoHistory.erase(redoHistory.begin());
 }
-void MainHandler::actionUndo() {
+
+void MainHandler::actionUndo()
+{
 	Img newImg;
 	newImg = srcImg;
 	// perform all of the operations on source image besides from the latest one
 	if (history.size() > 1)
 	{
 		int i{ 0 };
-		for (const Edit& edit : history) {
+		for (const Edit& edit : history)
+		{
 			ActionHandler::actionSelector(edit.actionType, &newImg, edit.value, &GPUControl, true);
 
 			i++;
-			if (i >= history.size() - 1) {
+			if (i >= history.size() - 1)
+			{
 				break;
 			}
 		}
 	}
-	else if (history.empty()) {
+	else if (history.empty())
+	{
 		throw Event::undoFail;
 	}
 
 	dstImg = newImg;
 
-	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true)) {
+	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true))
+	{
 		throw Event::GPUmallocFail;
 	}
 	redoHistory.insert(redoHistory.begin(), history.back());
@@ -47,24 +57,31 @@ void MainHandler::actionUndo() {
 	history.pop_back();
 }
 
-Img* MainHandler::getSrcImg() {
+Img* MainHandler::getSrcImg()
+{
 	return &srcImg;
 }
-Img* MainHandler::getDstImg() {
+
+Img* MainHandler::getDstImg()
+{
 	return &dstImg;
 }
 
-GPUcontroller* MainHandler::getGPUController() {
+GPUcontroller* MainHandler::getGPUController()
+{
 	return &GPUControl;
 }
 
-void MainHandler::updateDstImg(const Img& newImage) {
+void MainHandler::updateDstImg(const Img& newImage)
+{
 	dstImg = newImage;
 }
 
-bool MainHandler::updateSrcImg(const std::string& newPath, int mode) {
+bool MainHandler::updateSrcImg(const std::string& newPath, int mode)
+{
 	Img newSrc = ImgLoader::loadImg(newPath, mode);
-	if (newSrc.getImg()->empty()) {
+	if (newSrc.getImg()->empty())
+	{
 		return false;
 	}
 	srcImg = newSrc;
@@ -73,15 +90,18 @@ bool MainHandler::updateSrcImg(const std::string& newPath, int mode) {
 	return true;
 }
 
-bool MainHandler::imgSave(const std::string& path) {
-	if (dstImg.getStatus() && imwrite(path, *dstImg.getImg())) {
+bool MainHandler::imgSave(const std::string& path)
+{
+	if (dstImg.getStatus() && imwrite(path, *dstImg.getImg()))
+	{
 		dstImg.setPath(path);
 		return true;
 	}
 	return false;
 }
 
-std::vector<Edit>* MainHandler::getHistory() {
+std::vector<Edit>* MainHandler::getHistory()
+{
 	return &history;
 }
 
