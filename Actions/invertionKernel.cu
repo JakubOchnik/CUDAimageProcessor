@@ -1,17 +1,19 @@
 ﻿#include "invertionKernel.h"
 
 
-void executeInvertionKernel(Img* image, GPUcontroller* GPU) {
+void executeInvertionKernel(Img* image, GPUcontroller* GPU)
+{
 	dim3 grid(image->getResolutionW(), image->getResolutionH());
-	int channels = image->getChannelNum();
-	int width = image->getResolutionW();
-	int height = image->getResolutionH();
-	size_t size = channels * width * height * sizeof(unsigned char);
+	const int channels = image->getChannelNum();
+	const int width = image->getResolutionW();
+	const int height = image->getResolutionH();
+	const size_t size = channels * width * height * sizeof(unsigned char);
 	invertImage << <grid, 1 >> > (GPU->getImgPtr(), channels);
 	cudaMemcpy(image->getImg()->data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
 }
 
-__global__ void invertImage(unsigned char* image, int channels) {
+__global__ void invertImage(unsigned char* image, int channels)
+{
 	int x = blockIdx.x;
 	int y = blockIdx.y;
 

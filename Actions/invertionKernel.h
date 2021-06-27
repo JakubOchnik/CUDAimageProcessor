@@ -6,4 +6,3 @@
 
 void executeInvertionKernel(Img* image, GPUcontroller* GPU);
 __global__ void invertImage(unsigned char* image, int channels);
-
