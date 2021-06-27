@@ -26,9 +26,9 @@ public:
 	std::vector<Edit>* getHistory();
 	void addToHistory(const std::string& value, Action type);
 
-	void updateDstImg(Img newImage);
-	bool updateSrcImg(std::string newPath, int mode);
+	void updateDstImg(const Img& newImage);
+	bool updateSrcImg(const std::string& newPath, int mode);
 
-	bool imgSave(std::string path);
+	bool imgSave(const std::string& path);
 
 };
