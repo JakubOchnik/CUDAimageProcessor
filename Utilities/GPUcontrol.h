@@ -4,7 +4,8 @@
 #include "../MainHandler/definitions.h"
 #include "../ImgHandling/ImgInfo.h"
 
-class GPUcontroller {
+class GPUcontroller
+{
 private:
 	bool isMemAlloc;
 	bool sizeUpdate;

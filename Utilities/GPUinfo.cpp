@@ -12,7 +12,6 @@ bool GpuInfo::isCompatible()
 	return true;
 }
 
-// todo: change to std::optional
 std::tuple<int, int> GpuInfo::getMaxDimensions()
 {
 	cudaDeviceProp prop;
