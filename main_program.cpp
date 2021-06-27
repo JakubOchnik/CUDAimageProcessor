@@ -1,27 +1,18 @@
-#include "UI/UI.h"
-#include "Utilities/configChecker.h"
-
 #include <opencv2/opencv.hpp>
 #include <iostream>
-#ifdef _WIN32
-#include <windows.h>
-#else
-#include <unistd.h>
-#endif
+#include "UI/Ui.h"
+#include "Utilities/configChecker.h"
 
-int main()
+int main(int argc, char* argv[])
 {
-	if (Config::isCUDAavailable() == 0)
+	if (Config::checkConfig() == false)
 	{
-		cout << "CUDA is not available on this PC! Exiting...";
-#ifdef _WIN32
-		Sleep(5 * 1000);
-#else
-		usleep(5 * 1000000);
-#endif
+		std::cout << "CUDA is not available on this PC! Press ENTER to exit...";
+		std::cin.get();
 		return 0;
 	}
-	UI mainInterface;
-	mainInterface.UIHandler();
+
+	Ui mainInterface;
+	mainInterface.uiHandler();
 	return 0;
 }

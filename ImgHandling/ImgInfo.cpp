@@ -9,11 +9,11 @@ Img::Img(cv::Mat img, std::string path) : image(img)
 	initiated = true;
 }
 
-Img::Img() : initiated(false), image(cv::Mat()), colorChannels(0), resolutionH(0), resolutionW(0)
+Img::Img() : resolutionH(0), resolutionW(0), colorChannels(0), image(cv::Mat()), initiated(false)
 {
 }
 
-Img &Img::operator=(const Img &other)
+Img& Img::operator=(const Img& other)
 {
 	this->colorChannels = other.colorChannels;
 	this->initiated = other.initiated;
@@ -28,45 +28,53 @@ std::string Img::getPath() const
 {
 	return path;
 }
+
 unsigned int Img::getResolutionH() const
 {
 	return resolutionH;
 }
+
 unsigned int Img::getResolutionW() const
 {
 	return resolutionW;
 }
+
 unsigned int Img::getChannelNum() const
 {
 	return colorChannels;
 }
-cv::Mat *Img::getImg()
+
+cv::Mat* Img::getImg()
 {
 	return &image;
 }
 
-void Img::setPath(std::string newPath)
+void Img::setPath(const std::string newPath)
 {
 	path = newPath;
 }
+
 void Img::setResolutionH(int newResH)
 {
 	resolutionH = newResH;
 }
+
 void Img::setResolutionW(int newResW)
 {
 	resolutionW = newResW;
 }
+
 void Img::setChannelNum(int newBitDepth)
 {
 	colorChannels = newBitDepth;
 }
-void Img::setImg(cv::Mat &newMat)
+
+void Img::setImg(cv::Mat& newMat)
 {
 	image = newMat;
 }
 
-void Img::updateAll(std::string newPath, cv::Mat &newMat)
+void Img::updateAll(std::string newPath, cv::Mat& newMat)
 {
 	setPath(newPath);
 	setImg(newMat);
@@ -76,7 +84,7 @@ void Img::updateAll(std::string newPath, cv::Mat &newMat)
 	initiated = true;
 }
 
-void Img::updateAll(cv::Mat &newMat)
+void Img::updateAll(cv::Mat& newMat)
 {
 	setImg(newMat);
 	setResolutionW(newMat.size().width);

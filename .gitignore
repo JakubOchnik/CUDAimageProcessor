@@ -3,6 +3,8 @@
 *.dll
 !screenshot.png
 x64/
-cuda_histogram.vcxproj
-cuda_histogram.vcxproj.filters
-cuda_histogram.vcxproj.user
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+.vs/
+*.sln

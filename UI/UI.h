@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../ImgHandling/ImgInfo.h"
-#include "../MainHandler/MainHandler.h"
-#include "../MainHandler/definitions.h"
+#include"../ImgHandling/ImgInfo.h"
+#include"../MainHandler/MainHandler.h"
+#include"../MainHandler/definitions.h"
 #include "../Actions/ActionHandler.h"
 #include "UIdefinitions.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -18,28 +18,33 @@
 #include <X11/Xlib.h>
 #endif
 
-class UI
+class Ui
 {
-private:
-	bool quit;
-	bool menu;
-	bool loaded;
+	bool quit = false;
+	bool menu = true;
+	bool loaded = false;
 
-	std::vector<int> eventQueue;
+	std::vector<Event> eventQueue;
 
 	std::string inputBuffer;
 
-	MainHandler master;
+	MainHandler master = MainHandler();
 	void helpScreen();
 	void draw();
-	bool keystrokeHandler();
-	const std::string printEvents() const;
-	void clearEvents();
-	void editHistoryScreen();
-	bool showPreview(unsigned int scale = 0);
+	void setWindowName(const std::string& newName) const;
+	void clearScreen() const;
 
+	bool isActionValid(Event result) const;
+
+	void keystrokeHandler();
+	[[nodiscard]] std::string printEvents() const;
+	void clearEvents();
+	void addEvent(Event& e);
+	void editHistoryScreen();
+	void showPreview(unsigned int scale = 0);
+	std::tuple<int, int> customScale(cv::Mat& inputImage, unsigned int scale);
+	std::tuple<int, int, float> autoScale(cv::Mat& inputImage, const std::tuple<int, int>& origSize,
+		const std::tuple<int, int>& screenSize);
 public:
-	UI();
-	void UIHandler();
-	~UI();
+	void uiHandler();
 };

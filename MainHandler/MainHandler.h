@@ -9,26 +9,26 @@
 
 class MainHandler
 {
-private:
 	Img srcImg;
 	Img dstImg;
-	std::vector<edit> history;
-	std::vector<edit> redoHistory;
+	std::vector<Edit> history;
+	std::vector<Edit> redoHistory;
 	GPUcontroller GPUControl;
 
 public:
 	MainHandler();
-	bool actionRedo();
-	bool actionUndo();
+	void actionRedo();
+	void actionUndo();
 
-	Img *getSrcImg();
-	Img *getDstImg();
-	GPUcontroller *getGPUController();
+	Img* getSrcImg();
+	Img* getDstImg();
+	GPUcontroller* getGPUController();
 
-	std::vector<edit> *getHistory();
+	std::vector<Edit>* getHistory();
+	void addToHistory(const std::string& value, Action type);
 
-	void updateDstImg(Img newImage);
-	bool updateSrcImg(std::string newPath, int mode);
+	void updateDstImg(const Img& newImage);
+	bool updateSrcImg(const std::string& newPath, int mode);
 
-	bool imgSave(std::string path);
+	bool imgSave(const std::string& path);
 };

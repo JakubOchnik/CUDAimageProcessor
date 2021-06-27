@@ -3,12 +3,11 @@
 bool ImgLoader::checkImgDims(int x, int y)
 {
 	int maxWidth, maxHeight;
-	tie(maxWidth, maxHeight) = GPUinfo::getMaxDimensions();
-	if (x > maxWidth || y > maxHeight)
-	{
-		return 0;
+	std::tie(maxWidth, maxHeight) = GpuInfo::getMaxDimensions();
+	if (x > maxWidth || y > maxHeight) {
+		return false;
 	}
-	return 1;
+	return true;
 }
 
 int ImgLoader::loadImg(std::string path, int type, Img &dst)
