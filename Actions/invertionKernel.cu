@@ -1,10 +1,5 @@
 ﻿#include "invertionKernel.h"
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
 
-#include <stdio.h>
-
-__global__ void invertImage(unsigned char* image, int channels);
 
 void executeInvertionKernel(Img* image, GPUcontroller* GPU) {
 	dim3 grid(image->getResolutionW(), image->getResolutionH());

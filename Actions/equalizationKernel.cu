@@ -1,18 +1,4 @@
 ﻿#include "equalizationKernel.h"
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
-
-#include <stdio.h>
-
-#ifdef __INTELLISENSE__
-#define atomicAdd();
-#define atomicMin();
-#define atomicMax();
-#endif
-
-__global__ void calculateEdgeBrightness(unsigned char* image, int channels, int* min, int* max);
-__global__ void calculateEqualization(unsigned char* image, int channels, int* min, int* max);
-__device__ int getEqualizedValue(unsigned char value, int min, int max);
 
 
 bool executeEqualizationKernel(Img* image, GPUcontroller* GPU) {
@@ -45,10 +31,10 @@ bool executeEqualizationKernel(Img* image, GPUcontroller* GPU) {
 	dim3 grid(width, height);
 
 	size_t size = channels * width * height * sizeof(unsigned char);
-	calculateEdgeBrightness<<<grid, 1 >>>(GPU->getImgPtr(), channels, dev_min, dev_max);
+	calculateEdgeBrightness << <grid, 1 >> > (GPU->getImgPtr(), channels, dev_min, dev_max);
 	cudaMemcpy(min, dev_min, channels * sizeof(int), cudaMemcpyDeviceToHost);
 	cudaMemcpy(max, dev_max, channels * sizeof(int), cudaMemcpyDeviceToHost);
-	calculateEqualization<<<grid,1>>>(GPU->getImgPtr(), channels, dev_min, dev_max);
+	calculateEqualization << <grid, 1 >> > (GPU->getImgPtr(), channels, dev_min, dev_max);
 
 	cudaMemcpy(image->getImg()->data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
 	cudaFree(dev_min);
