@@ -7,7 +7,8 @@
 
 #include <vector>
 
-class MainHandler {
+class MainHandler
+{
 	Img srcImg;
 	Img dstImg;
 	std::vector<Edit> history;
@@ -30,5 +31,4 @@ public:
 	bool updateSrcImg(const std::string& newPath, int mode);
 
 	bool imgSave(const std::string& path);
-
 };
