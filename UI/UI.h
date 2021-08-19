@@ -18,33 +18,16 @@
 #include <X11/Xlib.h>
 #endif
 
-class Ui
+namespace ui
 {
-	bool quit = false;
-	bool menu = true;
-	bool loaded = false;
-
-	std::vector<Event> eventQueue;
-
-	std::string inputBuffer;
-
-	MainHandler master = MainHandler();
-	void helpScreen();
-	void draw();
-	void setWindowName(const std::string& newName) const;
-	void clearScreen() const;
-
-	bool isActionValid(Event result) const;
-
-	void keystrokeHandler();
-	[[nodiscard]] std::string printEvents() const;
-	void clearEvents();
-	void addEvent(Event& e);
-	void editHistoryScreen();
-	void showPreview(unsigned int scale = 0);
-	std::tuple<int, int> customScale(cv::Mat& inputImage, unsigned int scale);
-	std::tuple<int, int, float> autoScale(cv::Mat& inputImage, const std::tuple<int, int>& origSize,
+	void clearScreen();
+	std::tuple<int, int> customScale(cv::Mat& inputImage, Img& dstImg, unsigned int scale);
+	std::tuple<int, int, float> autoScale(cv::Mat& inputImage, Img& dstImg, const std::tuple<int, int>& origSize,
 		const std::tuple<int, int>& screenSize);
-public:
-	void uiHandler();
+	void editHistoryScreen(const History& history);
+	void showPreview(Img& dstImg, unsigned int scale = 0);
+	void helpScreen();
+	void draw(const Img& dstImg, const EventHistory& events, bool loaded);
+	void setWindowName(const std::string& newName);
+	void printString(const std::string& output);
 };

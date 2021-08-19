@@ -1,18 +1,6 @@
-#include "Ui.h"
+#include "ui.h"
 
-void Ui::uiHandler()
-{
-	setWindowName(BASE_WINDOW_NAME);
-	// Main loop
-	while (!quit)
-	{
-		draw();
-		std::getline(std::cin, inputBuffer);
-		keystrokeHandler();
-	}
-}
-
-void Ui::setWindowName(const std::string& newName) const
+void ui::setWindowName(const std::string& newName)
 {
 #ifdef _WIN32
 	SetConsoleTitle(TEXT(newName.c_str()));
@@ -21,7 +9,7 @@ void Ui::setWindowName(const std::string& newName) const
 #endif
 }
 
-void Ui::clearScreen() const
+void ui::clearScreen()
 {
 #ifdef _WIN32
 	system("cls");
@@ -30,41 +18,40 @@ void Ui::clearScreen() const
 #endif
 }
 
-void Ui::draw()
+void ui::draw(const Img& dstImg, const EventHistory& events, bool loaded)
 {
 	using namespace std;
 	clearScreen();
 	// show menu and set window name
-	if (menu)
+
+	cout << HEADER_TEXT << '\n' << SEPARATOR_TEXT << '\n';
+	if (loaded)
 	{
-		cout << HEADER_TEXT << '\n' << SEPARATOR_TEXT << '\n';
-		if (loaded)
-		{
-			cout << "Target image info: " << '\n'
-				<< FILEPATH_TEXT << master.getDstImg()->getPath() << '\n'
-				<< RESOLUTION_TEXT << " "
-				<< master.getDstImg()->getResolutionW() << " x " << master.getDstImg()->getResolutionH() << '\n'
-				<< CHANNELS_TEXT << " " << master.getDstImg()->getChannelNum() << '\n';
-			const string title = master.getDstImg()->getPath() + " - " + BASE_WINDOW_NAME;
-			setWindowName(title);
-		}
-		else
-		{
-			cout << NOT_LOADED_TEXT << '\n';
-		}
-		if (!eventQueue.empty())
-		{
-			cout << SEPARATOR_TEXT << '\n'
-				<< "Notifications: " << '\n'
-				<< printEvents();
-		}
-		cout << SEPARATOR_TEXT << '\n'
-			<< PROMPT_TEXT;
+		cout << "Target image info: " << '\n'
+			<< FILEPATH_TEXT << dstImg.getPath() << '\n'
+			<< RESOLUTION_TEXT << " "
+			<< dstImg.getResolutionW() << " x " << dstImg.getResolutionH() << '\n'
+			<< CHANNELS_TEXT << " " << dstImg.getChannelNum() << '\n';
+		const string title = dstImg.getPath() + " - " + BASE_WINDOW_NAME;
+		setWindowName(title);
 	}
+	else
+	{
+		cout << NOT_LOADED_TEXT << '\n';
+	}
+	if (events.isEmpty())
+	{
+		cout << SEPARATOR_TEXT << '\n'
+			<< "Notifications: " << '\n'
+			<< events.getEvents();
+	}
+	cout << SEPARATOR_TEXT << '\n'
+		<< PROMPT_TEXT;
 }
 
 
 // TODO: Make this function shorter, possibly split into smaller ones
+/*X
 void Ui::keystrokeHandler()
 {
 	try
@@ -267,75 +254,34 @@ bool Ui::isActionValid(const Event result) const
 {
 	return result == Event::actionFail || result == Event::parameterFail || result == Event::noImage;
 }
-
-std::string [[nodiscard]] Ui::printEvents() const
-{
-	std::string out;
-	for (const auto& event : eventQueue)
-	{
-		out += EVENT_TEXT_PROMPTS.at(event);
-		out += "\n";
-	}
-	return out;
-}
-
-void Ui::clearEvents()
-{
-	eventQueue.clear();
-}
-
-void Ui::addEvent(Event& e)
-{
-	eventQueue.push_back(e);
-}
-
-void Ui::editHistoryScreen()
+*/
+void ui::editHistoryScreen(const History& history)
 {
 	using namespace std;
-#ifdef _WIN32
-	system("cls");
-#else
-	cout << "\033[2J\033[1;1H";
-#endif
-	cout << "-- EDIT HISTORY -- " << '\n';
-	if (master.getHistory()->empty())
-	{
-		cout << "History is empty." << '\n';
-	}
-	int i = 1;
-	for (const auto& userAction : *master.getHistory())
-	{
-		cout << "[" << i << "] " << ACTION_TEXT_NAMES.at(userAction.actionType) << " " << userAction.value << '\n';
-		i++;
-	}
+	clearScreen();
+	cout << history.getFormattedHistory() << "\n";
 	cout << "Press any key to return to main menu...";
 	cin.get();
-	draw();
 }
 
-void Ui::helpScreen()
+void ui::helpScreen()
 {
 	using namespace std;
-#ifdef _WIN32
-	system("cls");
-#else
-	std::cout << "\033[2J\033[1;1H";
-#endif
+	clearScreen();
 	cout << HELP_TEXT_CONTENT << '\n'
 		<< "Press ENTER to return to main menu...";
 	cin.get();
-	draw();
 }
 
-std::tuple<int, int> Ui::customScale(cv::Mat& inputImage, unsigned int scale)
+std::tuple<int, int> ui::customScale(cv::Mat& inputImage, Img& dstImg, unsigned int scale)
 {
-	const unsigned int width = master.getDstImg()->getResolutionW() * scale / 100;
-	const unsigned int height = master.getDstImg()->getResolutionH() * scale / 100;
-	resize(*master.getDstImg()->getImg(), inputImage, cv::Size(width, height));
+	const unsigned int width = dstImg.getResolutionW() * scale / 100;
+	const unsigned int height = dstImg.getResolutionH() * scale / 100;
+	resize(*dstImg.getImg(), inputImage, cv::Size(width, height));
 	return { width, height };
 }
 
-std::tuple<int, int, float> Ui::autoScale(cv::Mat& inputImage, const std::tuple<int, int>& origSize,
+std::tuple<int, int, float> ui::autoScale(cv::Mat& inputImage, Img& dstImg, const std::tuple<int, int>& origSize,
 	const std::tuple<int, int>& screenSize)
 {
 	int x, y, width, height;
@@ -345,7 +291,7 @@ std::tuple<int, int, float> Ui::autoScale(cv::Mat& inputImage, const std::tuple<
 	if (height > 0.8f * y)
 	{
 		height = 0.8f * y;
-		width = (static_cast<float>(master.getDstImg()->getResolutionW()) * 0.8f * y) / master.getDstImg()->
+		width = (static_cast<float>(dstImg.getResolutionW()) * 0.8f * y) / dstImg.
 			getResolutionH();
 		changed = true;
 	}
@@ -353,29 +299,29 @@ std::tuple<int, int, float> Ui::autoScale(cv::Mat& inputImage, const std::tuple<
 	if (width > 0.95f * x)
 	{
 		width = 0.95f * x;
-		height = (master.getDstImg()->getResolutionH() * 0.95f * x) / master.getDstImg()->getResolutionH();
+		height = (dstImg.getResolutionH() * 0.95f * x) / dstImg.getResolutionH();
 		changed = true;
 	}
 	float newScale = 0.0f;
 	if (changed)
 	{
-		resize(*master.getDstImg()->getImg(), inputImage, cv::Size(width, height));
-		newScale = static_cast<float>(width) / master.getDstImg()->getResolutionW() * 100;
+		resize(*dstImg.getImg(), inputImage, cv::Size(width, height));
+		newScale = static_cast<float>(width) / dstImg.getResolutionW() * 100;
 	}
 
 	return { width, height, newScale };
 }
 
-void Ui::showPreview(unsigned int scale)
+void ui::showPreview(Img& dstImg, unsigned int scale)
 {
 	using namespace std;
-	if (!master.getDstImg()->getStatus())
+	if (!dstImg.getStatus())
 	{
 		throw Event::noImage;
 	}
-	string windowName = master.getDstImg()->getPath() +
-		" (" + to_string(master.getDstImg()->getResolutionW()) + "x" +
-		to_string(master.getDstImg()->getResolutionH()) + ")";
+	string windowName = dstImg.getPath() +
+		" (" + to_string(dstImg.getResolutionW()) + "x" +
+		to_string(dstImg.getResolutionH()) + ")";
 	cout << "Press any key to close the window...";
 	// scale the image to fit to a current monitor height
 	cv::Mat tempImg;
@@ -384,7 +330,7 @@ void Ui::showPreview(unsigned int scale)
 	if (scale == 0)
 	{
 		int x, y;
-		int height = master.getDstImg()->getResolutionH(), width = master.getDstImg()->getResolutionW();
+		int height = dstImg.getResolutionH(), width = dstImg.getResolutionW();
 		// max 80% of height
 #ifdef _WIN32
 		x = GetSystemMetrics(SM_CXSCREEN);
@@ -399,7 +345,7 @@ void Ui::showPreview(unsigned int scale)
 		const std::tuple screenSize = std::make_pair(x, y);
 		int newWidth, newHeight;
 		float newScale;
-		std::tie(newWidth, newHeight, newScale) = autoScale(tempImg, origSize, screenSize);
+		std::tie(newWidth, newHeight, newScale) = autoScale(tempImg, dstImg, origSize, screenSize);
 		if (width != newWidth || height != newHeight)
 		{
 			std::stringstream stream;
@@ -409,18 +355,23 @@ void Ui::showPreview(unsigned int scale)
 		}
 		else
 		{
-			tempImg = *master.getDstImg()->getImg();
+			tempImg = *dstImg.getImg();
 			windowName = windowName + "@100%";
 		}
 	}
 	else
 	{
 		int width, height;
-		std::tie(width, height) = customScale(tempImg, scale);
+		std::tie(width, height) = customScale(tempImg, dstImg, scale);
 		windowName = windowName + "@" + to_string(scale) + "%";
 	}
 	windowName += (" - " + BASE_WINDOW_NAME);
 	imshow(windowName, tempImg);
 	cv::waitKey(0);
 	cv::destroyWindow(windowName);
+}
+
+void ui::printString(const std::string& output)
+{
+	std::cout << output;
 }

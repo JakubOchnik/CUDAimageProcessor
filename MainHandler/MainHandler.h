@@ -3,32 +3,38 @@
 #include "../ImgHandling/ImgLoader.h"
 #include "../MainHandler/definitions.h"
 #include "../Utilities/GPUcontrol.h"
-#include "../Actions/ActionHandler.h"
-
-#include <vector>
+#include "../Events/EventHistory.hpp"
+#include "../Events/History.hpp"
+#include "../UI/ui.h"
 
 class MainHandler
 {
 	Img srcImg;
 	Img dstImg;
-	std::vector<Edit> history;
-	std::vector<Edit> redoHistory;
 	GPUcontroller GPUControl;
+	EventHistory events;
+	History history;
+
+	bool quit = false;
+	bool loaded = false;
 
 public:
 	MainHandler();
-	void actionRedo();
-	void actionUndo();
 
 	Img* getSrcImg();
-	Img* getDstImg();
+	Img& getDstImg();
 	GPUcontroller* getGPUController();
 
-	std::vector<Edit>* getHistory();
-	void addToHistory(const std::string& value, Action type);
+	EventHistory& getEvents();
+	History& getHistory();
 
 	void updateDstImg(const Img& newImage);
 	bool updateSrcImg(const std::string& newPath, int mode);
+	void toggleLoaded();
 
 	bool imgSave(const std::string& path);
+
+	bool isQuit() const;
+	bool isLoaded() const;
+	void exitApp();
 };

@@ -33,5 +33,6 @@ enum class Event
 	noImage,
 	undoFail,
 	redoFail,
-	GPUmallocFail
+	GPUmallocFail,
+	notImplemented
 };

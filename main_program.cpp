@@ -1,6 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
-#include "UI/Ui.h"
+#include "UI/Program.hpp"
 #include "Utilities/configChecker.h"
 
 int main(int argc, char* argv[])
@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
-	Ui mainInterface;
-	mainInterface.uiHandler();
+	ProgramHandler prog;
+	prog.run();
 	return 0;
 }
