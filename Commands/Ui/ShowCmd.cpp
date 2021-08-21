@@ -1,6 +1,6 @@
 #include "ShowCmd.hpp"
 
-void ShowCmd::execute(MainHandler& master, const std::string& args)
+void ShowCmd::execute(const std::string& args)
 {
 	int scale = 0;
 	if (args.find(' ') != std::string::npos)

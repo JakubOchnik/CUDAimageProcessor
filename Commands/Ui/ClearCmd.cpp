@@ -1,6 +1,7 @@
 #include "ClearCmd.hpp"
 
-void ClearCmd::execute(MainHandler& master, const std::string& args)
+void ClearCmd::execute(const std::string& args)
 {
+
 	master.getEvents().clearEvents();
 }

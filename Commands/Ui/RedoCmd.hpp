@@ -2,7 +2,9 @@
 #include "../BaseGenericCmd.hpp"
 class RedoCmd : public BaseGenericCmd
 {
-	const std::string displayName = "RedoCommand";
+	using BaseGenericCmd::BaseGenericCmd;
 public:
-	void execute(MainHandler& master, const std::string& args) override;
+	static inline const std::string displayName = "RedoCommand";
+	static inline const std::string shortName = "redo";
+	void execute(const std::string& args) override;
 };

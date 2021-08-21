@@ -7,3 +7,4 @@
 #include "SaveCmd.hpp"
 #include "ShowCmd.hpp"
 #include "UndoCmd.hpp"
+#include "HelpCmd.hpp"

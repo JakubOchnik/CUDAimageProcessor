@@ -2,7 +2,9 @@
 #include "../BaseGenericCmd.hpp"
 class UndoCmd : public BaseGenericCmd
 {
-	const std::string displayName = "UndoCommand";
+	using BaseGenericCmd::BaseGenericCmd;
 public:
-	void execute(MainHandler& master, const std::string& args) override;
+	static inline const std::string displayName = "UndoCommand";
+	static inline const std::string shortName = "undo";
+	void execute(const std::string& args) override;
 };

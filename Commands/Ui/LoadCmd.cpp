@@ -1,6 +1,6 @@
 #include "LoadCmd.hpp"
 
-void LoadCmd::execute(MainHandler& master, const std::string& args)
+void LoadCmd::execute(const std::string& args)
 {
 	/*
 	if (args.length() < 2)

@@ -2,7 +2,9 @@
 #include "../BaseGenericCmd.hpp"
 class ShowCmd : public BaseGenericCmd
 {
-	const std::string displayName = "ShowCommand";
+	using BaseGenericCmd::BaseGenericCmd;
 public:
-	void execute(MainHandler& master, const std::string& args) override;
+	static inline const std::string displayName = "ShowCommand";
+	static inline const std::string shortName = "show";
+	void execute(const std::string& args) override;
 };

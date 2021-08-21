@@ -3,7 +3,9 @@
 #include "../../UI/UIdefinitions.h"
 class LoadCmd : public BaseGenericCmd
 {
-	const std::string displayName = "LoadCommand";
+	using BaseGenericCmd::BaseGenericCmd;
 public:
-	void execute(MainHandler& master, const std::string& args);
+	static inline const std::string displayName = "LoadCommand";
+	static inline const std::string shortName = "load";
+	void execute(const std::string& args);
 };

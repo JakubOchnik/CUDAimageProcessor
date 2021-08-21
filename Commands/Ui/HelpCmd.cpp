@@ -1,6 +1,7 @@
-#include "ClearCmd.hpp"
+#include "HelpCmd.hpp"
 
-void ClearCmd::execute(MainHandler& master, const std::string& args)
+void HelpCmd::execute(const std::string& args)
 {
-	//TODO: EventHandler
+	ui::helpScreen();
+
 }

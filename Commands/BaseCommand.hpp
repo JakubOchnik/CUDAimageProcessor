@@ -4,11 +4,9 @@
 class BaseCommand
 {
 protected:
-	MainHandler* handler = nullptr;
-	bool initialized = false;
+	MainHandler& master;
 public:
-	const std::string displayName = "base";
-	BaseCommand();
-	BaseCommand(MainHandler* handler);
-	std::string getDisplayName() const;
+	static inline const std::string displayName = "BaseCommand";
+	static inline const std::string shortName = "base";
+	BaseCommand(MainHandler& hdl);
 };

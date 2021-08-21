@@ -2,7 +2,9 @@
 #include "../BaseGenericCmd.hpp"
 class ClearCmd : public BaseGenericCmd
 {
-	const std::string displayName = "ClearCommand";
+	using BaseGenericCmd::BaseGenericCmd;
 public:
-	void execute(MainHandler& master, const std::string& args) override;
+	static inline const std::string displayName = "ClearCommand";
+	static inline const std::string shortName = "clear";
+	void execute(const std::string& args) override;
 };

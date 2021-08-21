@@ -1,6 +1,6 @@
 #include "SaveCmd.hpp"
 
-void SaveCmd::execute(MainHandler& master, const std::string& args)
+void SaveCmd::execute(const std::string& args)
 {
 	if (args.length() < 2)
 	{

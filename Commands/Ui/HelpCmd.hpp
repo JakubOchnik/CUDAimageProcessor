@@ -1,8 +1,10 @@
 #pragma once
 #include "../BaseGenericCmd.hpp"
-class ClearCmd : public BaseGenericCmd
+class HelpCmd : public BaseGenericCmd
 {
-	const std::string displayName = "ClearCommand";
+	using BaseGenericCmd::BaseGenericCmd;
 public:
-	void execute(MainHandler& master, const std::string& args) override;
+	static inline const std::string displayName = "HelpCommand";
+	static inline const std::string shortName = "help";
+	void execute(const std::string& args) override;
 };

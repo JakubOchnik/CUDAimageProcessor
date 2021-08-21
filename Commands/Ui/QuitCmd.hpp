@@ -2,7 +2,9 @@
 #include "../BaseGenericCmd.hpp"
 class QuitCmd : public BaseGenericCmd
 {
-	const std::string displayName = "QuitCommand";
+	using BaseGenericCmd::BaseGenericCmd;
 public:
-	void execute(MainHandler& master, const std::string& args) override;
+	static inline const std::string displayName = "QuitCommand";
+	static inline const std::string shortName = "quit";
+	void execute(const std::string& args) override;
 };

@@ -1,6 +1,8 @@
 #include "BaseGenericCmd.hpp"
 
-void BaseGenericCmd::execute(MainHandler& master, const std::string& args)
+/*
+void BaseGenericCmd::execute(const std::string& args)
 {
 	throw Event::notImplemented;
 }
+*/
