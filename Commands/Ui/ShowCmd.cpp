@@ -11,3 +11,13 @@ void ShowCmd::execute(const std::string& args)
 	}
 	ui::showPreview(master.getDstImg(), scale);
 }
+
+std::string ShowCmd::getDisplayName()
+{
+	return displayName;
+}
+
+std::string ShowCmd::getShortName()
+{
+	return shortName;
+}

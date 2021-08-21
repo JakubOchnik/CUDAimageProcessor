@@ -8,4 +8,7 @@ public:
 	static inline const std::string displayName = "BaseEditCommand";
 	static inline const std::string shortName = "edit";
 	virtual void execute(const std::string& args, MainHandler& master);
+
+	virtual std::string getShortName() = 0;
+	virtual std::string getDisplayName() = 0;
 };

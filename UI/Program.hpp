@@ -4,6 +4,7 @@
 #include "../Commands/BaseGenericCmd.hpp"
 #include "../MainHandler/MainHandler.h"
 #include "../Commands/Ui/AllCommands.hpp"
+#include "../CodeUtils/utils.hpp"
 #include <string>
 #include <exception>
 #include <memory>

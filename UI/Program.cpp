@@ -28,14 +28,20 @@ void ProgramHandler::run()
 void ProgramHandler::keystrokeHandler()
 {
 	using namespace std;
+	using GenericMapType = std::unordered_map<std::string, std::shared_ptr<BaseGenericCmd>>;
+	using EditMapType = std::unordered_map<std::string, std::shared_ptr<BaseGenericCmd>>;
+
+
+	const auto genericNames = Utils::keys<GenericMapType>(genericCmds);
+	const auto EditNames = Utils::keys<EditMapType>(genericCmds);
+
+
 	// GET THE COMMAND NAME FROM THE INPUT STRING
 	const auto command = inputBuffer.substr(0, inputBuffer.find(' '));
-	// check if the command involves editing an image. If so, get img pointer and GPU handle
-	std::set<std::string> val = { "quit", "load", "undo", "redo", "show", "help", "clear", "save", "history" };
-	//Img* dstImg;
-	//GPUcontroller* gpuControl;
-	if (val.find(command) != val.end())
+
+	if (find(genericNames.begin(), genericNames.end(), command) != genericNames.end())
 	{
+		// Execute generic command group
 		try {
 			genericCmds.at(command)->execute();
 		}

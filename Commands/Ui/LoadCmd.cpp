@@ -20,3 +20,14 @@ void LoadCmd::execute(const std::string& args)
 	*/
 	throw Event::openFail;
 }
+
+std::string LoadCmd::getDisplayName()
+{
+	return displayName;
+}
+
+std::string LoadCmd::getShortName()
+{
+	return shortName;
+}
+

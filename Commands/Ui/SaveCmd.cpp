@@ -15,3 +15,13 @@ void SaveCmd::execute(const std::string& args)
 		throw Event::saveFail;
 	}
 }
+
+std::string SaveCmd::getDisplayName()
+{
+	return displayName;
+}
+
+std::string SaveCmd::getShortName()
+{
+	return shortName;
+}
