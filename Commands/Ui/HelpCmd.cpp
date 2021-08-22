@@ -1,9 +1,8 @@
 #include "HelpCmd.hpp"
 
-void HelpCmd::execute(const std::string& args)
+void HelpCmd::execute(const std::vector<std::string>& args)
 {
 	ui::helpScreen();
-
 }
 
 std::string HelpCmd::getDisplayName()

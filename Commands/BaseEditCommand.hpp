@@ -5,10 +5,6 @@ class BaseEditCommand : public BaseCommand
 {
 	using BaseCommand::BaseCommand;
 public:
-	static inline const std::string displayName = "BaseEditCommand";
-	static inline const std::string shortName = "edit";
-	virtual void execute(const std::string& args, MainHandler& master);
+	virtual void execute(const std::vector<std::string>& args, MainHandler& master) = 0;
 
-	virtual std::string getShortName() = 0;
-	virtual std::string getDisplayName() = 0;
 };

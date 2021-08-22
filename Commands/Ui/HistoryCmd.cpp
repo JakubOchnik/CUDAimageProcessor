@@ -1,6 +1,6 @@
 #include "HistoryCmd.hpp"
 
-void HistoryCmd::execute(const std::string& args)
+void HistoryCmd::execute(const std::vector<std::string>& args)
 {
 	ui::printString(master.getHistory().getFormattedHistory());
 	std::cout << "Press ENTER to return to main menu...";

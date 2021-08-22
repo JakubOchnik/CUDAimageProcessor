@@ -6,6 +6,7 @@
 #include "../Events/EventHistory.hpp"
 #include "../Events/History.hpp"
 #include "../UI/ui.h"
+#include "../IO/IOhandler.hpp"
 
 class MainHandler
 {
@@ -29,10 +30,10 @@ public:
 	History& getHistory();
 
 	void updateDstImg(const Img& newImage);
-	bool updateSrcImg(const std::string& newPath, int mode);
+	void updateSrcImg(const std::string& newPath, int mode);
 	void toggleLoaded();
 
-	bool imgSave(const std::string& path);
+	void imgSave(const std::string& path);
 
 	bool isQuit() const;
 	bool isLoaded() const;

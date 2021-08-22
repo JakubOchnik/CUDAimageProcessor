@@ -8,6 +8,7 @@
 #include <string>
 #include <exception>
 #include <memory>
+#include <boost/algorithm/string/trim.hpp >
 
 class ProgramHandler
 {

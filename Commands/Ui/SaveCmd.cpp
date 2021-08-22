@@ -1,19 +1,22 @@
 #include "SaveCmd.hpp"
 
-void SaveCmd::execute(const std::string& args)
+void SaveCmd::execute(const std::vector<std::string>& args)
 {
-	if (args.length() < 2)
+	if (args.size() < 1)
 	{
 		throw Event::commandFail;
 	}
-	if (master.imgSave(args))
-	{
-		master.getEvents().addEvent(Event::saveSuccess);
+
+	try {
+		master.imgSave(args[0]);
 	}
-	else
+	catch (const std::exception& ex)
 	{
-		throw Event::saveFail;
+		// add negative event to events
+		master.getEvents().addEvent(Event::saveFail);
 	}
+	master.getHistory().resetHistory();
+	master.getEvents().addEvent(Event::saveSuccess);
 }
 
 std::string SaveCmd::getDisplayName()

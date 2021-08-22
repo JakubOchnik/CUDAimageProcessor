@@ -6,7 +6,7 @@ class RedoCmd : public BaseGenericCmd
 public:
 	static inline const std::string displayName = "RedoCommand";
 	static inline const std::string shortName = "redo";
-	void execute(const std::string& args) override;
+	void execute(const std::vector<std::string>& args) override;
 
 	std::string getShortName() override;
 	std::string getDisplayName() override;

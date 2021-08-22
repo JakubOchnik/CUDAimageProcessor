@@ -1,6 +1,6 @@
 #include "QuitCmd.hpp"
 
-void QuitCmd::execute(const std::string& args)
+void QuitCmd::execute(const std::vector<std::string>& args)
 {
 	master.exitApp();
 }

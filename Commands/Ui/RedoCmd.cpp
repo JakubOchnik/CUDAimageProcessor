@@ -1,6 +1,6 @@
 #include "RedoCmd.hpp"
 
-void RedoCmd::execute(const std::string& args)
+void RedoCmd::execute(const std::vector<std::string>& args)
 {
 	master.getHistory().actionRedo();
 }

@@ -1,6 +1,6 @@
 #include "UndoCmd.hpp"
 
-void UndoCmd::execute(const std::string& args)
+void UndoCmd::execute(const std::vector<std::string>& args)
 {
 	master.getHistory().actionUndo();
 }

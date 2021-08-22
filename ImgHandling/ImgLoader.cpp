@@ -10,33 +10,33 @@ bool ImgLoader::checkImgDims(int x, int y)
 	return true;
 }
 
-int ImgLoader::loadImg(std::string path, int type, Img &dst)
+Img ImgLoader::loadImg(const std::string& path, int type)
 {
 	cv::Mat img = cv::imread(path, type);
 	if (!checkImgDims(img.size().width, img.size().height))
-		return -1;
-	dst.updateAll(path, img);
-	return 0;
-}
-int ImgLoader::loadImg(std::string path, Img &dst)
-{
-	cv::Mat img = cv::imread(path, 0);
-	if (!checkImgDims(img.size().width, img.size().height))
-		return -1;
-	dst.updateAll(path, img);
-	return 0;
-}
-Img ImgLoader::loadImg(std::string path, int type)
-{
-	cv::Mat img = cv::imread(path, type);
-	if (!checkImgDims(img.size().width, img.size().height))
-		return Img();
+	{
+		std::string msg = "Incorrect image dimensions: ";
+		std::string dims = std::to_string(img.size().width) + "x" + std::to_string(img.size().height);
+		msg += dims;
+		throw std::exception(msg.c_str());
+	}
 	return Img(img, path);
 }
-Img ImgLoader::loadImg(std::string path)
+Img ImgLoader::loadImg(const std::string& path)
 {
 	cv::Mat img = cv::imread(path, 0);
+
+	if (img.data == nullptr)
+	{
+		std::string msg = "Could not load image from: " + path;
+		throw std::exception(msg.c_str());
+	}
 	if (!checkImgDims(img.size().width, img.size().height))
-		return Img();
+	{
+		std::string msg = "Incorrect image dimensions: ";
+		std::string dims = std::to_string(img.size().width) + "x" + std::to_string(img.size().height);
+		msg += dims;
+		throw std::exception(msg.c_str());
+	}
 	return Img(img, path);
 }

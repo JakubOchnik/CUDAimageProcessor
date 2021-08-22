@@ -24,27 +24,30 @@ void MainHandler::updateDstImg(const Img& newImage)
 	dstImg = newImage;
 }
 
-bool MainHandler::updateSrcImg(const std::string& newPath, int mode)
+void MainHandler::updateSrcImg(const std::string& newPath, int mode)
 {
-	Img newSrc = ImgLoader::loadImg(newPath, mode);
-	if (newSrc.getImg()->empty())
+	try
 	{
-		return false;
+		srcImg = IOHandler::loadImg(newPath, 1);
 	}
-	srcImg = newSrc;
+	catch (const std::exception& ex)
+	{
+		throw;
+	}
 	dstImg = srcImg;
-
-	return true;
+	loaded = true;
 }
 
-bool MainHandler::imgSave(const std::string& path)
+void MainHandler::imgSave(const std::string& path)
 {
-	if (dstImg.getStatus() && imwrite(path, *dstImg.getImg()))
+	try
 	{
-		dstImg.setPath(path);
-		return true;
+		IOHandler::saveImg(dstImg, path);
 	}
-	return false;
+	catch (const std::exception& ex)
+	{
+		throw;
+	}
 }
 
 bool MainHandler::isQuit() const

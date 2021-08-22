@@ -6,7 +6,7 @@ class HelpCmd : public BaseGenericCmd
 public:
 	static inline const std::string displayName = "HelpCommand";
 	static inline const std::string shortName = "help";
-	void execute(const std::string& args) override;
+	void execute(const std::vector<std::string>& args) override;
 
 	std::string getShortName() override;
 	std::string getDisplayName() override;

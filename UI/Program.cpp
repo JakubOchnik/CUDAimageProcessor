@@ -37,13 +37,25 @@ void ProgramHandler::keystrokeHandler()
 
 
 	// GET THE COMMAND NAME FROM THE INPUT STRING
-	const auto command = inputBuffer.substr(0, inputBuffer.find(' '));
+	std::string processedCmd;
+	std::vector<std::string> processedArgs;
+	try
+	{
+		const auto processedInput = TextUtils::processArgs(inputBuffer);
+		processedCmd = processedInput.first;
+		processedArgs = processedInput.second;
+	}
+	catch (const std::exception& ex)
+	{
+		master.getEvents().addEvent(Event::commandFail);
+		return;
+	}
 
-	if (find(genericNames.begin(), genericNames.end(), command) != genericNames.end())
+	if (find(genericNames.begin(), genericNames.end(), processedCmd) != genericNames.end())
 	{
 		// Execute generic command group
 		try {
-			genericCmds.at(command)->execute();
+			genericCmds.at(processedCmd)->execute(processedArgs);
 		}
 		catch (const std::exception& ex)
 		{

@@ -1,15 +1,24 @@
 #include "ShowCmd.hpp"
 
-void ShowCmd::execute(const std::string& args)
+void ShowCmd::execute(const std::vector<std::string>& args)
 {
-	int scale = 0;
-	if (args.find(' ') != std::string::npos)
+	if (args.empty())
 	{
-		auto value = args.substr(args.find(' '));
-		value.erase(0, 1);
-		scale = stoi(value);
+		ui::showPreview(master.getDstImg());
 	}
-	ui::showPreview(master.getDstImg(), scale);
+	else
+	{
+		using namespace boost;
+		try
+		{
+			const int scale = lexical_cast<int>(args[0]);
+			ui::showPreview(master.getDstImg(), scale);
+		}
+		catch (bad_lexical_cast&)
+		{
+			master.getEvents().addEvent(Event::commandFail);
+		}
+	}
 }
 
 std::string ShowCmd::getDisplayName()
