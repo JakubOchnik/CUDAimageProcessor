@@ -14,6 +14,7 @@ void SaveCmd::execute(const std::vector<std::string>& args)
 	{
 		// add negative event to events
 		master.getEvents().addEvent(Event::saveFail);
+		return;
 	}
 	master.getHistory().resetHistory();
 	master.getEvents().addEvent(Event::saveSuccess);

@@ -13,6 +13,10 @@ bool ImgLoader::checkImgDims(int x, int y)
 Img ImgLoader::loadImg(const std::string& path, int type)
 {
 	cv::Mat img = cv::imread(path, type);
+	if (img.data == nullptr)
+	{
+		throw std::exception("Incorrect path");
+	}
 	if (!checkImgDims(img.size().width, img.size().height))
 	{
 		std::string msg = "Incorrect image dimensions: ";

@@ -59,7 +59,8 @@ void ProgramHandler::keystrokeHandler()
 		}
 		catch (const std::exception& ex)
 		{
-			std::cout << "Error! " << ex.what() << "\n";
+			master.getEvents().addEvent(Event::commandFail);
+			std::cerr << "Error! " << ex.what() << "\n";
 		}
 	}
 }

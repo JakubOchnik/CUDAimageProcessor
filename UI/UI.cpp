@@ -39,7 +39,7 @@ void ui::draw(const Img& dstImg, const EventHistory& events, bool loaded)
 	{
 		cout << NOT_LOADED_TEXT << '\n';
 	}
-	if (events.isEmpty())
+	if (!events.isEmpty())
 	{
 		cout << SEPARATOR_TEXT << '\n'
 			<< "Notifications: " << '\n'

@@ -3,18 +3,19 @@
 void LoadCmd::execute(const std::vector<std::string>& args)
 {
 
-	if (args.size() < 1)
+	if (args.empty())
 	{
-		throw Event::commandFail;
+		throw std::exception("Command failed");
 	}
 	std::cout << FILE_LOADING_TEXT << '\n';
 	try {
 		master.updateSrcImg(args[0], 1);
 	}
-	catch (const std::exception& ex)
+	catch (const std::exception&)
 	{
 		// add negative event to events
 		master.getEvents().addEvent(Event::openFail);
+		return;
 	}
 	master.getHistory().resetHistory();
 	master.getEvents().addEvent(Event::openSuccess);

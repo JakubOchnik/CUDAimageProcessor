@@ -48,6 +48,7 @@ void MainHandler::imgSave(const std::string& path)
 	{
 		throw;
 	}
+	dstImg.setPath(path);
 }
 
 bool MainHandler::isQuit() const
