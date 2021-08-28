@@ -5,6 +5,7 @@
 #include "../Commands/BaseEditCmd.hpp"
 #include "../MainHandler/MainHandler.h"
 #include "../Commands/Ui/AllCommands.hpp"
+#include "../Commands/AllEditCmds.hpp"
 #include "../CodeUtils/utils.hpp"
 #include <string>
 #include <exception>

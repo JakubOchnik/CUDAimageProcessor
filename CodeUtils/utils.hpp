@@ -33,6 +33,41 @@ namespace Utils
 
 namespace TextUtils
 {
+	inline bool verifyNumber(std::string value)
+	{
+		const auto end_pos = std::remove(value.begin(), value.end(), ' ');
+		value.erase(end_pos, value.end());
+		if (value.empty())
+			return false;
+		std::stringstream ss;
+		ss << value;
+		int number;
+		ss >> number;
+		if (ss.good())
+		{
+			return false;
+		}
+		if (number == 0 && value[0] != '0')
+		{
+			return false;
+		}
+		return true;
+	}
+
+	inline std::vector<int> tokensToNumbers(const std::vector<std::string>& tokens)
+	{
+		std::vector<int> params;
+		for (auto& elem : tokens)
+		{
+			if (!verifyNumber(elem))
+			{
+				throw Event::parameterFail;
+			}
+			params.push_back(std::stoi(elem));
+		}
+		return params;
+	}
+
 	inline std::vector<std::string> tokenize(std::string line, const char* separator = " ")
 	{
 		using namespace boost;

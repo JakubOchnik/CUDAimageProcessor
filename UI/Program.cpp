@@ -11,6 +11,8 @@ ProgramHandler::ProgramHandler()
 	genericCmds.emplace(HistoryCmd::shortName, std::make_shared<HistoryCmd>(master));
 	genericCmds.emplace(HelpCmd::shortName, std::make_shared<HelpCmd>(master));
 	genericCmds.emplace(ClearCmd::shortName, std::make_shared<ClearCmd>(master));
+
+	editCmds.emplace(CropCmd::shortName, std::make_shared<CropCmd>(master));
 }
 
 void ProgramHandler::run()
@@ -56,6 +58,19 @@ void ProgramHandler::keystrokeHandler()
 		// Execute generic command group
 		try {
 			genericCmds.at(processedCmd)->execute(processedArgs);
+		}
+		catch (const std::exception& ex)
+		{
+			master.getEvents().addEvent(Event::commandFail);
+			std::cerr << "Error! " << ex.what() << "\n";
+		}
+	}
+
+	if (find(editNames.begin(), editNames.end(), processedCmd) != editNames.end())
+	{
+		// Execute generic command group
+		try {
+			editCmds.at(processedCmd)->execute(processedArgs);
 		}
 		catch (const std::exception& ex)
 		{

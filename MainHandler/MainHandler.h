@@ -22,7 +22,7 @@ class MainHandler
 public:
 	MainHandler();
 
-	Img* getSrcImg();
+	Img& getSrcImg();
 	Img& getDstImg();
 	GPUcontroller* getGPUController();
 

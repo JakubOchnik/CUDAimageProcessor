@@ -4,9 +4,9 @@ MainHandler::MainHandler() : srcImg(Img()), dstImg(Img())
 {
 }
 
-Img* MainHandler::getSrcImg()
+Img& MainHandler::getSrcImg()
 {
-	return &srcImg;
+	return srcImg;
 }
 
 Img& MainHandler::getDstImg()
