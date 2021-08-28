@@ -29,11 +29,11 @@ void ProgramHandler::keystrokeHandler()
 {
 	using namespace std;
 	using GenericMapType = std::unordered_map<std::string, std::shared_ptr<BaseGenericCmd>>;
-	using EditMapType = std::unordered_map<std::string, std::shared_ptr<BaseGenericCmd>>;
+	using EditMapType = std::unordered_map<std::string, std::shared_ptr<BaseEditCmd>>;
 
 
 	const auto genericNames = Utils::keys<GenericMapType>(genericCmds);
-	const auto EditNames = Utils::keys<EditMapType>(genericCmds);
+	const auto editNames = Utils::keys<EditMapType>(editCmds);
 
 
 	// GET THE COMMAND NAME FROM THE INPUT STRING
