@@ -317,7 +317,7 @@ void ui::showPreview(Img& dstImg, unsigned int scale)
 	using namespace std;
 	if (!dstImg.getStatus())
 	{
-		throw Event::noImage;
+		throw Error::NotLoadedFail();
 	}
 	string windowName = dstImg.getPath() +
 		" (" + to_string(dstImg.getResolutionW()) + "x" +

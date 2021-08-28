@@ -4,6 +4,7 @@
 #include"../MainHandler/MainHandler.h"
 #include"../MainHandler/definitions.h"
 #include "../Actions/ActionHandler.h"
+#include "../Events/History.hpp"
 #include "UIdefinitions.h"
 
 #include <cstdlib>

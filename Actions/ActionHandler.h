@@ -12,6 +12,7 @@
 #include <sstream>
 #include <algorithm>
 
+/*
 class ActionHandler
 {
 public:
@@ -23,3 +24,4 @@ public:
 	static bool updateGPUmem(Img* srcImg, GPUcontroller* GPU, bool forceUpdate = false);
 	static bool isNumber(std::string value);
 };
+*/

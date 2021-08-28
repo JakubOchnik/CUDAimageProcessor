@@ -55,15 +55,10 @@ void History::actionUndo()
 	history.pop_back();
 	*/
 }
-std::vector<Edit>& History::getHistory()
-{
-	return history;
-}
 
-//TODO: Action type, change to sth else
-void History::addToHistory(const std::string& value, Action type)
+void History::addToHistory(const std::string snm, const std::string lnm, const std::vector<std::string> args)
 {
-	history.push_back(Edit{ value, type });
+	history.emplace_back(Edit{ snm, lnm, args });
 }
 
 void History::resetHistory()
@@ -78,16 +73,23 @@ std::string History::getFormattedHistory() const
 	{
 		out += "History is empty. \n";
 	}
+
 	int i = 1;
-	for (const auto& userAction : history)
+	for (const auto& [snm, lnm, args] : history)
 	{
-		std::string line = "[" + std::to_string(i);
-		line += "] ";
-		line += ACTION_TEXT_NAMES.at(userAction.actionType) + " ";
-		line += " " + userAction.value;
-		line += "\n";
+		const std::string line = "[" + std::to_string(i) + "] " + lnm + " " + tokensToLine(args) + "\n";
 		out += line;
 		++i;
 	}
 	return out;
+}
+
+std::string History::tokensToLine(const std::vector<std::string>& tokens)
+{
+	std::string line;
+	for (const auto& token : tokens)
+	{
+		line += (token + " ");
+	}
+	return line;
 }

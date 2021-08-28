@@ -53,29 +53,34 @@ void ProgramHandler::keystrokeHandler()
 		return;
 	}
 
-	if (find(genericNames.begin(), genericNames.end(), processedCmd) != genericNames.end())
+	if (find(genericNames.begin(), genericNames.end(), processedCmd) != genericNames.end()
+		)
 	{
+		std::shared_ptr<BaseGenericCmd> cmd = genericCmds.at(processedCmd);
 		// Execute generic command group
 		try {
-			genericCmds.at(processedCmd)->execute(processedArgs);
+			cmd->execute(processedArgs);
 		}
 		catch (const std::exception& ex)
 		{
 			master.getEvents().addEvent(Event::commandFail);
 			std::cerr << "Error! " << ex.what() << "\n";
 		}
+		master.getHistory().addToHistory(cmd->getShortName(), cmd->getDisplayName(), processedArgs);
 	}
 
 	if (find(editNames.begin(), editNames.end(), processedCmd) != editNames.end())
 	{
+		std::shared_ptr<BaseEditCmd> cmd = editCmds.at(processedCmd);
 		// Execute generic command group
 		try {
-			editCmds.at(processedCmd)->execute(processedArgs);
+			cmd->execute(processedArgs);
 		}
 		catch (const std::exception& ex)
 		{
 			master.getEvents().addEvent(Event::commandFail);
 			std::cerr << "Error! " << ex.what() << "\n";
 		}
+		master.getHistory().addToHistory(cmd->getShortName(), cmd->getDisplayName(), processedArgs);
 	}
 }

@@ -1,18 +1,27 @@
 #pragma once
 #include "../MainHandler/definitions.h"
 #include "../UI/UIdefinitions.h"
+#include <memory>
 #include <vector>
 #include <iostream>
 class History
 {
+	struct Edit
+	{
+		const std::string shortName;
+		const std::string longerName;
+		const std::vector<std::string> args;
+	};
+
 	std::vector<Edit> history;
 	std::vector<Edit> redoHistory;
+
+	static std::string tokensToLine(const std::vector<std::string>& tokens);
+
 public:
 	void actionRedo();
 	void actionUndo();
-	std::vector<Edit>& getHistory();
-	//TODO: Action type, change to sth else
-	void addToHistory(const std::string& value, Action type);
+	void addToHistory(std::string snm, std::string lnm, std::vector<std::string> args);
 	void resetHistory();
-	std::string getFormattedHistory() const;
+	[[nodiscard]] std::string getFormattedHistory() const;
 };

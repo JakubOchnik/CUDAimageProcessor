@@ -7,6 +7,7 @@
 #include "../Commands/Ui/AllCommands.hpp"
 #include "../Commands/AllEditCmds.hpp"
 #include "../CodeUtils/utils.hpp"
+#include "../MainHandler/Errors.hpp"
 #include <string>
 #include <exception>
 #include <memory>

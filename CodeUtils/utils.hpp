@@ -61,7 +61,7 @@ namespace TextUtils
 		{
 			if (!verifyNumber(elem))
 			{
-				throw Event::parameterFail;
+				throw Error::ParamFail();
 			}
 			params.push_back(std::stoi(elem));
 		}
