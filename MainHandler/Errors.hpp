@@ -4,74 +4,48 @@
 
 namespace Error
 {
-	struct IOopenFail : std::exception
+	struct IOopenFail : std::runtime_error
 	{
-		[[nodiscard]] const char* what() const override
-		{
-			return "Failed to open file.";
-		}
+		IOopenFail() : std::runtime_error("Failed to open file.") {};
 	};
-	struct IOsaveFail : std::exception
+	struct IOsaveFail : std::runtime_error
 	{
-		[[nodiscard]] const char* what() const override
-		{
-			return "Failed to save file.";
-		}
+		IOsaveFail() : std::runtime_error("Failed to save file.") {};
 	};
-	struct CommandFail : std::exception
+	struct CommandFail : std::runtime_error
 	{
-		[[nodiscard]] const char* what() const override
-		{
-			return "Failed to execute the command.";
-		}
+		CommandFail() : std::runtime_error("Failed to execute the command.") {};
 	};
-	struct ActionFail : std::exception
+	struct ActionFail : std::runtime_error
 	{
-		[[nodiscard]] const char* what() const override
-		{
-			return "Failed to perform the action.";
-		}
+		ActionFail() : std::runtime_error("Failed to perform the action.") {};
 	};
-	struct ParamFail : std::exception
+	struct ParamFail : std::runtime_error
 	{
-		[[nodiscard]] const char* what() const override
-		{
-			return "Incorrect command parameters.";
-		}
+		ParamFail() : std::runtime_error("Incorrect command parameters.") {};
 	};
-	struct NotLoadedFail : std::exception
+	struct NotLoadedFail : std::runtime_error
 	{
-		[[nodiscard]] const char* what() const override
-		{
-			return "Image has not been loaded yet.";
-		}
+		NotLoadedFail() : std::runtime_error("Image has not been loaded yet.") {};
 	};
-	struct UndoFail : std::exception
+	struct UndoFail : std::runtime_error
 	{
-		[[nodiscard]] const char* what() const override
-		{
-			return "The history is empty.";
-		}
+		UndoFail() : std::runtime_error("The history is empty.") {};
 	};
-	struct RedoFail : std::exception
+	struct RedoFail : std::runtime_error
 	{
-		[[nodiscard]] const char* what() const override
-		{
-			return "There are no newer history entries.";
-		}
+		RedoFail() : std::runtime_error("There are no newer history entries.") {};
 	};
-	struct GpuMallocFail : std::exception
+	struct GpuMallocFail : std::runtime_error
 	{
-		[[nodiscard]] const char* what() const override
-		{
-			return "Insufficient GPU memory.";
-		}
+		GpuMallocFail() : std::runtime_error("Insufficient GPU memory.") {};
 	};
-	struct NotImplementedFail : std::exception
+	struct MemoryFail : std::runtime_error
 	{
-		[[nodiscard]] const char* what() const override
-		{
-			return "Command is not implemented.";
-		}
+		MemoryFail() : std::runtime_error("Insufficient memory.") {};
+	};
+	struct NotImplementedFail : std::runtime_error
+	{
+		NotImplementedFail() : std::runtime_error("Function is not implemented.") {};
 	};
 }

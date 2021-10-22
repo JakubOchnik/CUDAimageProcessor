@@ -1,4 +1,4 @@
-#include "ConfigChecker.h"
+#include "ConfigChecker.hpp"
 
 bool Config::isCUDActive()
 {
