@@ -66,7 +66,6 @@ void ProgramHandler::keystrokeHandler()
 			master.getEvents().addEvent(Event::commandFail);
 			std::cerr << "Error! " << ex.what() << "\n";
 		}
-		master.getHistory().addToHistory(cmd->getShortName(), cmd->getDisplayName(), processedArgs);
 	}
 
 	if (find(editNames.begin(), editNames.end(), processedCmd) != editNames.end())
