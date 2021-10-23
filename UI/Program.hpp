@@ -25,6 +25,7 @@ class ProgramHandler
 	std::unordered_map<std::string, std::shared_ptr<BaseEditCmd>> editCmds;
 	void keystrokeHandler();
 	void undoAction();
+	void redoAction();
 
 	template<typename T>
 	void executeCommand(std::shared_ptr<T>& cmd, const std::vector<std::string>& processedArgs)

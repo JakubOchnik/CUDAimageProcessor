@@ -65,12 +65,6 @@ void ProgramHandler::keystrokeHandler()
 		executeCommand<BaseEditCmd>(cmd, processedArgs);
 		master.getHistory().addToHistory(cmd->getShortName(), cmd->getDisplayName(), processedArgs);
 	}
-	else if (processedCmd == consts::cmd::REDO_CMD)
-	{
-		// Dispatch undo/redo commands
-		// They cannot be implemented as regular commands in order to avoid circular dependency
-		master.getHistory().actionRedo();
-	}
 	else if (processedCmd == consts::cmd::UNDO_CMD)
 	{
 		try
@@ -80,20 +74,30 @@ void ProgramHandler::keystrokeHandler()
 		catch (const std::runtime_error& ex)
 		{
 			master.getEvents().addEvent(ex);
-			//std::cerr << "Error! " << ex.what() << "\n";
+		}
+	}
+	else if (processedCmd == consts::cmd::REDO_CMD)
+	{
+		// Dispatch undo/redo commands
+		// They cannot be implemented as regular commands in order to avoid circular dependency
+		try
+		{
+			redoAction();
+		}
+		catch (const std::runtime_error& ex)
+		{
+			master.getEvents().addEvent(ex);
 		}
 	}
 	else
 	{
-		master.getEvents().addEvent(GenericEvent::commandFail);
+		master.getEvents().addEvent(Error::CommandFail());
 	}
 }
 
 
 void ProgramHandler::undoAction()
 {
-	//Img newImg;
-	//newImg = master.getSrcImg();
 	master.updateDstImg(master.getSrcImg());
 	// perform all of the operations on source image besides from the latest one
 	auto& history = master.getHistory();
@@ -102,7 +106,6 @@ void ProgramHandler::undoAction()
 		size_t i{ 0 };
 		for (const Edit& edit : history.getHistory())
 		{
-
 			std::shared_ptr<BaseEditCmd> cmd = editCmds.at(edit.shortName);
 			// Execute edit command group
 			executeCommand<BaseEditCmd>(cmd, edit.args);
@@ -116,16 +119,36 @@ void ProgramHandler::undoAction()
 	}
 	else if (history.getHistory().empty())
 	{
-		throw std::runtime_error("History is empty.");//Event::undoFail;
+		throw std::runtime_error("History is empty.");
 	}
 
-	//master.getDstImg() = newImg;
 	history.actionUndo();
 
+	// TODO after implementing GPU commands
 	/*
 	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true))
 	{
 		throw Event::GPUmallocFail;
+	}
+	*/
+}
+
+void ProgramHandler::redoAction()
+{
+	auto& history = master.getHistory();
+	if (history.getRedoHistory().empty())
+	{
+		throw Error::RedoFail();
+	}
+
+	std::shared_ptr<BaseEditCmd> cmd = editCmds.at(history.getRedoHistory().front().shortName);
+	// Execute edit command group
+	executeCommand<BaseEditCmd>(cmd, history.getRedoHistory().front().args);
+	history.actionRedo();
+	/*
+	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true))
+	{
+		throw Event::redoFail;
 	}
 	*/
 }

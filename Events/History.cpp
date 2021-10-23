@@ -27,39 +27,6 @@ void History::actionUndo()
 	redoHistory.insert(redoHistory.begin(), history.back());
 	// remove the latest operation from the history
 	history.pop_back();
-	/*
-	Img newImg;
-	newImg = srcImg;
-	// perform all of the operations on source image besides from the latest one
-	if (history.size() > 1)
-	{
-		int i{ 0 };
-		for (const Edit& edit : history)
-		{
-			ActionHandler::actionSelector(edit.actionType, &newImg, edit.value, &GPUControl, true);
-
-			i++;
-			if (i >= history.size() - 1)
-			{
-				break;
-			}
-		}
-	}
-	else if (history.empty())
-	{
-		throw Event::undoFail;
-	}
-
-	dstImg = newImg;
-
-	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true))
-	{
-		throw Event::GPUmallocFail;
-	}
-	redoHistory.insert(redoHistory.begin(), history.back());
-	// remove the latest operation from the history
-	history.pop_back();
-	*/
 }
 
 void History::addToHistory(const std::string snm, const std::string lnm, const std::vector<std::string> args)
