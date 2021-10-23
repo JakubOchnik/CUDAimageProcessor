@@ -1,7 +1,7 @@
 #pragma once
 #include "../ImgHandling/ImgInfo.h"
 #include "../ImgHandling/ImgLoader.h"
-#include "Errors.hpp"
+#include "../Consts/Errors.hpp"
 #include "../Utilities/GPUcontrol.h"
 #include "../Events/EventHistory.hpp"
 #include "../Events/History.hpp"

@@ -1,6 +1,7 @@
 #pragma once
 #include "ImgInfo.h"
 #include "../Utilities/GpuInfo.h"
+#include "../Consts/Errors.hpp"
 
 #include <opencv2/opencv.hpp>
 #include <tuple>

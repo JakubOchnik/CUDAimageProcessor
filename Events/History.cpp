@@ -1,7 +1,10 @@
 #include "History.hpp"
 
+
 void History::actionRedo()
 {
+	history.push_back(redoHistory.front());
+	redoHistory.erase(redoHistory.begin());
 	/*
 	if (redoHistory.empty())
 	{
@@ -21,6 +24,9 @@ void History::actionRedo()
 }
 void History::actionUndo()
 {
+	redoHistory.insert(redoHistory.begin(), history.back());
+	// remove the latest operation from the history
+	history.pop_back();
 	/*
 	Img newImg;
 	newImg = srcImg;
@@ -92,4 +98,23 @@ std::string History::tokensToLine(const std::vector<std::string>& tokens)
 		line += (token + " ");
 	}
 	return line;
+}
+
+size_t History::size() const
+{
+	return history.size();
+}
+
+size_t History::sizeRd() const
+{
+	return redoHistory.size();
+}
+
+const std::vector<Edit>& History::getHistory() const
+{
+	return history;
+}
+const std::vector<Edit>& History::getRedoHistory() const
+{
+	return redoHistory;
 }

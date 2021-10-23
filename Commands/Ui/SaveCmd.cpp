@@ -4,7 +4,7 @@ void SaveCmd::execute(const std::vector<std::string>& args)
 {
 	if (args.size() < 1)
 	{
-		throw Event::commandFail;
+		throw GenericEvent::commandFail;
 	}
 
 	try {
@@ -13,11 +13,11 @@ void SaveCmd::execute(const std::vector<std::string>& args)
 	catch (const std::exception& ex)
 	{
 		// add negative event to events
-		master.getEvents().addEvent(Event::saveFail);
+		master.getEvents().addEvent(GenericEvent::saveFail);
 		return;
 	}
 	master.getHistory().resetHistory();
-	master.getEvents().addEvent(Event::saveSuccess);
+	master.getEvents().addEvent(GenericEvent::saveSuccess);
 }
 
 std::string SaveCmd::getDisplayName()

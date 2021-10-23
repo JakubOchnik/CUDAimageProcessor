@@ -16,6 +16,10 @@ namespace Error
 	{
 		CommandFail() : std::runtime_error("Failed to execute the command.") {};
 	};
+	struct IncorrectCommand : std::runtime_error
+	{
+		IncorrectCommand() : std::runtime_error("Incorrect command.") {};
+	};
 	struct ActionFail : std::runtime_error
 	{
 		ActionFail() : std::runtime_error("Failed to perform the action.") {};

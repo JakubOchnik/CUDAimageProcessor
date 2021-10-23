@@ -4,14 +4,16 @@
 #include <memory>
 #include <vector>
 #include <iostream>
+
+struct Edit
+{
+	std::string shortName;
+	std::string longerName;
+	std::vector<std::string> args;
+};
+
 class History
 {
-	struct Edit
-	{
-		const std::string shortName;
-		const std::string longerName;
-		const std::vector<std::string> args;
-	};
 
 	std::vector<Edit> history;
 	std::vector<Edit> redoHistory;
@@ -23,5 +25,11 @@ public:
 	void actionUndo();
 	void addToHistory(std::string snm, std::string lnm, std::vector<std::string> args);
 	void resetHistory();
+
+	[[nodiscard]] const std::vector<Edit>& getHistory() const;
+	[[nodiscard]] const std::vector<Edit>& getRedoHistory() const;
+
+	[[nodiscard]] size_t size() const;
+	[[nodiscard]] size_t sizeRd() const;
 	[[nodiscard]] std::string getFormattedHistory() const;
 };

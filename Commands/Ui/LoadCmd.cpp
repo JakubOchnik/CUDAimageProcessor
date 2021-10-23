@@ -14,11 +14,11 @@ void LoadCmd::execute(const std::vector<std::string>& args)
 	catch (const std::exception&)
 	{
 		// add negative event to events
-		master.getEvents().addEvent(Event::openFail);
+		master.getEvents().addEvent(GenericEvent::openFail);
 		return;
 	}
 	master.getHistory().resetHistory();
-	master.getEvents().addEvent(Event::openSuccess);
+	master.getEvents().addEvent(GenericEvent::openSuccess);
 }
 
 std::string LoadCmd::getDisplayName()

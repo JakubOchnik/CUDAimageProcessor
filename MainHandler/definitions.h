@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-enum class Event
+enum class GenericEvent
 {
 	openSuccess,
 	openFail,

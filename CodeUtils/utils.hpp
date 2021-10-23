@@ -2,7 +2,8 @@
 #include <unordered_map>
 #include <vector>
 #include <boost/tokenizer.hpp>
-#include <boost/algorithm/string/trim.hpp >
+#include <boost/algorithm/string/trim.hpp>
+#include "../Consts/Errors.hpp"
 
 namespace Utils
 {
@@ -94,12 +95,12 @@ namespace TextUtils
 		using namespace boost;
 		if (input.empty())
 		{
-			throw std::exception("Invalid command");
+			throw Error::IncorrectCommand();
 		}
 		trim(input);
 		if (input.empty())
 		{
-			throw std::exception("Invalid command");
+			throw Error::IncorrectCommand();
 		}
 		std::string command = input.substr(0, input.find(' '));
 		std::string args;

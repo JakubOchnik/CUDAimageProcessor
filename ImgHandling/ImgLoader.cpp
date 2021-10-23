@@ -22,7 +22,7 @@ Img ImgLoader::loadImg(const std::string& path, int type)
 		std::string msg = "Incorrect image dimensions: ";
 		std::string dims = std::to_string(img.size().width) + "x" + std::to_string(img.size().height);
 		msg += dims;
-		throw std::exception(msg.c_str());
+		throw std::runtime_error(msg.c_str());
 	}
 	return Img(img, path);
 }
@@ -40,7 +40,7 @@ Img ImgLoader::loadImg(const std::string& path)
 		std::string msg = "Incorrect image dimensions: ";
 		std::string dims = std::to_string(img.size().width) + "x" + std::to_string(img.size().height);
 		msg += dims;
-		throw std::exception(msg.c_str());
+		throw std::runtime_error(msg.c_str());
 	}
 	return Img(img, path);
 }

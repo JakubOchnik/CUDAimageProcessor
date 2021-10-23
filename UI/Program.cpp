@@ -2,10 +2,8 @@
 
 ProgramHandler::ProgramHandler()
 {
-	genericCmds.emplace(UndoCmd::shortName, std::make_shared<UndoCmd>(master));
 	genericCmds.emplace(ShowCmd::shortName, std::make_shared<ShowCmd>(master));
 	genericCmds.emplace(SaveCmd::shortName, std::make_shared<SaveCmd>(master));
-	genericCmds.emplace(RedoCmd::shortName, std::make_shared<RedoCmd>(master));
 	genericCmds.emplace(QuitCmd::shortName, std::make_shared<QuitCmd>(master));
 	genericCmds.emplace(LoadCmd::shortName, std::make_shared<LoadCmd>(master));
 	genericCmds.emplace(HistoryCmd::shortName, std::make_shared<HistoryCmd>(master));
@@ -47,9 +45,9 @@ void ProgramHandler::keystrokeHandler()
 		processedCmd = processedInput.first;
 		processedArgs = processedInput.second;
 	}
-	catch (const std::exception& ex)
+	catch (const std::runtime_error& ex)
 	{
-		master.getEvents().addEvent(Event::commandFail);
+		master.getEvents().addEvent(ex);
 		return;
 	}
 
@@ -58,28 +56,76 @@ void ProgramHandler::keystrokeHandler()
 	{
 		std::shared_ptr<BaseGenericCmd> cmd = genericCmds.at(processedCmd);
 		// Execute generic command group
-		try {
-			cmd->execute(processedArgs);
-		}
-		catch (const std::exception& ex)
-		{
-			master.getEvents().addEvent(Event::commandFail);
-			std::cerr << "Error! " << ex.what() << "\n";
-		}
+		executeCommand<BaseGenericCmd>(cmd, processedArgs);
 	}
-
-	if (find(editNames.begin(), editNames.end(), processedCmd) != editNames.end())
+	else if (find(editNames.begin(), editNames.end(), processedCmd) != editNames.end())
 	{
 		std::shared_ptr<BaseEditCmd> cmd = editCmds.at(processedCmd);
 		// Execute generic command group
-		try {
-			cmd->execute(processedArgs);
-		}
-		catch (const std::exception& ex)
-		{
-			master.getEvents().addEvent(Event::commandFail);
-			std::cerr << "Error! " << ex.what() << "\n";
-		}
+		executeCommand<BaseEditCmd>(cmd, processedArgs);
 		master.getHistory().addToHistory(cmd->getShortName(), cmd->getDisplayName(), processedArgs);
 	}
+	else if (processedCmd == consts::cmd::REDO_CMD)
+	{
+		// Dispatch undo/redo commands
+		// They cannot be implemented as regular commands in order to avoid circular dependency
+		master.getHistory().actionRedo();
+	}
+	else if (processedCmd == consts::cmd::UNDO_CMD)
+	{
+		try
+		{
+			undoAction();
+		}
+		catch (const std::runtime_error& ex)
+		{
+			master.getEvents().addEvent(ex);
+			//std::cerr << "Error! " << ex.what() << "\n";
+		}
+	}
+	else
+	{
+		master.getEvents().addEvent(GenericEvent::commandFail);
+	}
+}
+
+
+void ProgramHandler::undoAction()
+{
+	//Img newImg;
+	//newImg = master.getSrcImg();
+	master.updateDstImg(master.getSrcImg());
+	// perform all of the operations on source image besides from the latest one
+	auto& history = master.getHistory();
+	if (history.size() > 1)
+	{
+		size_t i{ 0 };
+		for (const Edit& edit : history.getHistory())
+		{
+
+			std::shared_ptr<BaseEditCmd> cmd = editCmds.at(edit.shortName);
+			// Execute edit command group
+			executeCommand<BaseEditCmd>(cmd, edit.args);
+
+			i++;
+			if (i >= history.size() - 1)
+			{
+				break;
+			}
+		}
+	}
+	else if (history.getHistory().empty())
+	{
+		throw std::runtime_error("History is empty.");//Event::undoFail;
+	}
+
+	//master.getDstImg() = newImg;
+	history.actionUndo();
+
+	/*
+	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true))
+	{
+		throw Event::GPUmallocFail;
+	}
+	*/
 }

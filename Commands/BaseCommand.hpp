@@ -1,7 +1,7 @@
 #pragma once
 #include "../MainHandler/definitions.h"
 #include "../MainHandler/MainHandler.h"
-#include "../MainHandler/Errors.hpp"
+#include "../Consts/Errors.hpp"
 class BaseCommand
 {
 protected:
