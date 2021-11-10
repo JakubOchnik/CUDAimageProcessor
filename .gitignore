@@ -1,10 +1,9 @@
 *.jpg
 *.png
-*.dll
 !screenshot.png
-x64/
-*.vcxproj
-*.vcxproj.filters
-*.vcxproj.user
-.vs/
-*.sln
+*.bmp
+
+*.dll
+
+.vscode/
+build/

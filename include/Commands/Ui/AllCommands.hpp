@@ -1,0 +1,10 @@
+#pragma once
+#include <Commands/Ui/ClearCmd.hpp>
+#include <Commands/Ui/HistoryCmd.hpp>
+#include <Commands/Ui/LoadCmd.hpp>
+#include <Commands/Ui/QuitCmd.hpp>
+#include <Commands/Ui/RedoCmd.hpp>
+#include <Commands/Ui/SaveCmd.hpp>
+#include <Commands/Ui/ShowCmd.hpp>
+#include <Commands/Ui/UndoCmd.hpp>
+#include <Commands/Ui/HelpCmd.hpp>
