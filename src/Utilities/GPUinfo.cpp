@@ -15,7 +15,7 @@ bool GpuInfo::isCompatible()
 std::tuple<int, int> GpuInfo::getMaxDimensions()
 {
 	cudaDeviceProp prop;
-	int devCount = 0;
+	int devCount{};
 	cudaGetDeviceCount(&devCount);
 	if (devCount < 1)
 	{
@@ -25,11 +25,9 @@ std::tuple<int, int> GpuInfo::getMaxDimensions()
 	{
 		return { -1, -1 };
 	}
-	if (prop.major >= 3)
-	{
-		return { INT_MAX, 65535 };
-	}
-	return { 65535, 65535 };
+	// INT_MAX x 65535 in compute capability 3.x+
+	// 65535 x 65535 in previous compute capabilities
+	return { prop.maxGridSize[0], prop.maxGridSize[1] };
 }
 
 void GpuInfo::showGpuInfo()
