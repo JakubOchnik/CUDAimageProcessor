@@ -2,7 +2,7 @@
 
 void CropCmd::execute(const std::vector<std::string>& args)
 {
-	Img& dstImg = master.getDstImg();
+	Img& dstImg{master.getDstImg()};
 	if (!master.isLoaded())
 	{
 		throw Error::NotLoadedFail();
@@ -12,9 +12,7 @@ void CropCmd::execute(const std::vector<std::string>& args)
 		throw Error::ParamFail();
 	}
 
-	std::vector<int> parsedArgs;
-
-	parsedArgs = TextUtils::tokensToNumbers(args);
+	std::vector<int> parsedArgs{TextUtils::tokensToNumbers(args)};
 
 	const int x{ parsedArgs[0] }, y{ parsedArgs[1] }, w{ parsedArgs[2] }, h{ parsedArgs[3] };
 	if (x < 0 || y < 0 || w <= 0 || h <= 0)
@@ -35,7 +33,7 @@ void CropCmd::execute(const std::vector<std::string>& args)
 
 void CropCmd::cropAction(cv::Rect& area)
 {
-	Img& dstImg = master.getDstImg();
+	Img& dstImg{master.getDstImg()};
 	cv::Mat newImg(*dstImg.getImg());
 	newImg = newImg(area);
 	dstImg.updateAll(newImg);

@@ -51,8 +51,7 @@ void ProgramHandler::keystrokeHandler()
 		return;
 	}
 
-	if (find(genericNames.begin(), genericNames.end(), processedCmd) != genericNames.end()
-		)
+	if (find(genericNames.begin(), genericNames.end(), processedCmd) != genericNames.end())
 	{
 		std::shared_ptr<BaseGenericCmd> cmd = genericCmds.at(processedCmd);
 		// Execute generic command group

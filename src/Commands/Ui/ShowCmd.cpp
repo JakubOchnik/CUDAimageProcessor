@@ -11,7 +11,7 @@ void ShowCmd::execute(const std::vector<std::string>& args)
 		using namespace boost;
 		try
 		{
-			const int scale = lexical_cast<int>(args[0]);
+			const int scale{lexical_cast<int>(args[0])};
 			ui::showPreview(master.getDstImg(), scale);
 		}
 		catch (bad_lexical_cast&)

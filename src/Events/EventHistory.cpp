@@ -8,13 +8,13 @@ std::string [[nodiscard]] EventHistory::getEvents() const
 		if (event.content.index() == 0)
 		{
 			// Holds GenericEvent
-			GenericEvent ev = std::get<GenericEvent>(event.content);
+			GenericEvent ev{std::get<GenericEvent>(event.content)};
 			out += EVENT_TEXT_PROMPTS.at(ev);
 		}
 		else
 		{
 			// Holds exception
-			std::runtime_error ex = std::get<std::runtime_error>(event.content);
+			std::runtime_error ex{std::get<std::runtime_error>(event.content)};
 			out += ex.what();
 		}
 		out += "\n";

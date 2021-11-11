@@ -69,8 +69,8 @@ void ui::helpScreen()
 
 std::tuple<int, int> ui::customScale(cv::Mat& inputImage, Img& dstImg, unsigned int scale)
 {
-	const unsigned int width = dstImg.getResolutionW() * scale / 100;
-	const unsigned int height = dstImg.getResolutionH() * scale / 100;
+	const unsigned int width{dstImg.getResolutionW() * scale / 100};
+	const unsigned int height{dstImg.getResolutionH() * scale / 100};
 	resize(*dstImg.getImg(), inputImage, cv::Size(width, height));
 	return { width, height };
 }
@@ -85,8 +85,7 @@ std::tuple<int, int, float> ui::autoScale(cv::Mat& inputImage, Img& dstImg, cons
 	if (height > 0.8f * y)
 	{
 		height = 0.8f * y;
-		width = (static_cast<float>(dstImg.getResolutionW()) * 0.8f * y) / dstImg.
-			getResolutionH();
+		width = (static_cast<float>(dstImg.getResolutionW()) * 0.8f * y) / dstImg.getResolutionH();
 		changed = true;
 	}
 
@@ -135,8 +134,8 @@ void ui::showPreview(Img& dstImg, unsigned int scale)
 		x = s->width;
 		y = s->height;
 #endif
-		const std::tuple origSize = std::make_pair(width, height);
-		const std::tuple screenSize = std::make_pair(x, y);
+		const std::tuple origSize{std::make_pair(width, height)};
+		const std::tuple screenSize{std::make_pair(x, y)};
 		int newWidth, newHeight;
 		float newScale;
 		std::tie(newWidth, newHeight, newScale) = autoScale(tempImg, dstImg, origSize, screenSize);

@@ -12,7 +12,7 @@ void SaveCmd::execute(const std::vector<std::string>& args)
 	}
 	catch (const std::exception& ex)
 	{
-		// add negative event to events
+		// add error to events
 		master.getEvents().addEvent(GenericEvent::saveFail);
 		return;
 	}
