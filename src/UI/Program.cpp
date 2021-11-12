@@ -11,6 +11,7 @@ ProgramHandler::ProgramHandler()
 	genericCmds.emplace(ClearCmd::shortName, std::make_shared<ClearCmd>(master));
 
 	editCmds.emplace(CropCmd::shortName, std::make_shared<CropCmd>(master));
+	editCmds.emplace(ResizeCmd::shortName, std::make_shared<ResizeCmd>(master));
 }
 
 void ProgramHandler::run()

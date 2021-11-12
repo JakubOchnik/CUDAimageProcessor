@@ -2,7 +2,6 @@
 
 void CropCmd::execute(const std::vector<std::string>& args)
 {
-	Img& dstImg{master.getDstImg()};
 	if (!master.isLoaded())
 	{
 		throw Error::NotLoadedFail();
@@ -19,6 +18,8 @@ void CropCmd::execute(const std::vector<std::string>& args)
 	{
 		throw Error::ParamFail();
 	}
+
+	Img& dstImg{master.getDstImg()};
 
 	if (x + w > dstImg.getResolutionW() || y + h > dstImg.getResolutionH())
 	{

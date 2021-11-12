@@ -30,4 +30,5 @@ public:
 
 	void updateAll(std::string newPath, cv::Mat& newMat);
 	void updateAll(cv::Mat& newMat);
+	void refreshDims();
 };

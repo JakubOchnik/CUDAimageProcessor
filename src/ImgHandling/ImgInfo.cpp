@@ -71,6 +71,12 @@ void Img::setChannelNum(int newBitDepth)
 
 void Img::setImg(cv::Mat& newMat)
 {
+	// This function is probably invoked by a command. After leaving it,
+	// the original scope of newMat will be gone.
+	// ...dangling reference?
+	// Apparently not, as cv::Mat uses reference counting.
+	// Technically you don't even have to pass it by reference!
+	// There's some crazy magic happening there.
 	image = newMat;
 }
 

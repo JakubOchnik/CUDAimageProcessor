@@ -1,5 +1,6 @@
 #pragma once
 #include <Commands/BaseEditCmd.hpp>
+
 class ResizeCmd : public BaseEditCmd
 {
 	using BaseEditCmd::BaseEditCmd;
@@ -8,7 +9,7 @@ public:
 	static inline const std::string shortName = "resize";
 
 	void execute(const std::vector<std::string>& args) override;
-	void resizeAction(cv::Rect& area);
+	void resizeAction(cv::Size& size);
 
 	std::string getShortName() override;
 	std::string getDisplayName() override;
