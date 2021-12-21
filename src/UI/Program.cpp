@@ -1,6 +1,11 @@
 #include <UI/Program.hpp>
 
-ProgramHandler::ProgramHandler()
+ProgramHandler::ProgramHandler(bool gpu): master(MainHandler(gpu))
+{
+	initializeCommands();
+}
+
+void ProgramHandler::initializeCommands()
 {
 	genericCmds.emplace(ShowCmd::shortName, std::make_shared<ShowCmd>(master));
 	genericCmds.emplace(SaveCmd::shortName, std::make_shared<SaveCmd>(master));
@@ -12,6 +17,8 @@ ProgramHandler::ProgramHandler()
 
 	editCmds.emplace(CropCmd::shortName, std::make_shared<CropCmd>(master));
 	editCmds.emplace(ResizeCmd::shortName, std::make_shared<ResizeCmd>(master));
+	// TODO: Find a way to distinguish between gpu edit commands and cpu edit commands
+	editCmds.emplace(BrightnessCmd::shortName, std::make_shared<BrightnessCmd>(master));
 }
 
 void ProgramHandler::run()

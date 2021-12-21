@@ -16,11 +16,12 @@ class MainHandler
 	EventHistory events;
 	History history;
 
-	bool quit = false;
-	bool loaded = false;
+	bool quit{false};
+	bool loaded{false};
+	bool gpuEnabled{false};
 
 public:
-	MainHandler();
+	MainHandler(bool gpu);
 
 	Img& getSrcImg();
 	Img& getDstImg();

@@ -1,6 +1,7 @@
 #include <MainHandler/MainHandler.hpp>
 
-MainHandler::MainHandler() : srcImg(Img()), dstImg(Img())
+
+MainHandler::MainHandler(bool gpu) : srcImg(Img()), dstImg(Img()), gpuEnabled(gpu)
 {
 }
 
@@ -36,6 +37,19 @@ void MainHandler::updateSrcImg(const std::string& newPath, int mode)
 	}
 	dstImg = srcImg;
 	loaded = true;
+	// TODO: Use unified memory (huge performance improvement)
+	if(gpuEnabled)
+	{
+		if(!GPUControl.getGPUmemStatus())
+		{
+			// mem is allocated, update ptr
+			GPUControl.GPUmalloc(&srcImg);
+		}
+		else
+		{
+			GPUControl.updatePtr(&srcImg);
+		}
+	}
 }
 
 void MainHandler::imgSave(const std::string& path)

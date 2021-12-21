@@ -12,7 +12,9 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
-	ProgramHandler prog;
+	bool enableGpu{true};
+
+	ProgramHandler prog(enableGpu);
 	prog.run();
 	return 0;
 }

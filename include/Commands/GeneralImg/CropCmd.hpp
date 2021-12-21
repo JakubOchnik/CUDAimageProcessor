@@ -1,6 +1,5 @@
 #pragma once
 #include <Commands/BaseEditCmd.hpp>
-#include <ImgHandling/ImgInfo.hpp>
 
 class CropCmd : public BaseEditCmd
 {

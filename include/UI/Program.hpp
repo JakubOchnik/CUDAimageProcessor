@@ -23,6 +23,14 @@ class ProgramHandler
 
 	std::unordered_map<std::string, std::shared_ptr<BaseGenericCmd>> genericCmds;
 	std::unordered_map<std::string, std::shared_ptr<BaseEditCmd>> editCmds;
+
+	// if mode == gpu
+	// std::unordered_map<std::string, std::shared_ptr<BaseEditCmd>> gpuEditCmds;
+	// if mode == cpu
+	// std::unordered_map<std::string, std::shared_ptr<BaseEditCmd>> CpuEditCmds;
+
+	void initializeCommands();
+
 	void keystrokeHandler();
 	void undoAction();
 	void redoAction();
@@ -39,6 +47,6 @@ class ProgramHandler
 		}
 	}
 public:
-	ProgramHandler();
+	ProgramHandler(bool gpu);
 	void run();
 };

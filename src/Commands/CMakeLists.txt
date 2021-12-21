@@ -8,6 +8,6 @@ target_sources(${PROJECT_NAME} PUBLIC
 
 #add_subdirectory(${SOURCE_DIR}/Commands/CpuImg)
 add_subdirectory(${SOURCE_DIR}/Commands/GeneralImg)
-#add_subdirectory(${SOURCE_DIR}/Commands/GpuImg)
+add_subdirectory(${SOURCE_DIR}/Commands/GpuImg)
 add_subdirectory(${SOURCE_DIR}/Commands/Ui)
 #add_subdirectory(${SOURCE_DIR}/Commands/Utils)
