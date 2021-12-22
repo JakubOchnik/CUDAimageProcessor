@@ -105,7 +105,7 @@ void ProgramHandler::keystrokeHandler()
 
 void ProgramHandler::undoAction()
 {
-	master.updateDstImg(master.getSrcImg());
+	master.updateDstImg(master.getSourceFilePath(), 1);
 	// perform all of the operations on source image besides from the latest one
 	auto& history = master.getHistory();
 	if (history.size() > 1)

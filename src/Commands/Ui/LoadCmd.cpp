@@ -9,7 +9,7 @@ void LoadCmd::execute(const std::vector<std::string>& args)
 	}
 	std::cout << FILE_LOADING_TEXT << '\n';
 	try {
-		master.updateSrcImg(args[0], 1);
+		master.updateDstImg(args[0], 1);
 	}
 	catch (const std::exception&)
 	{

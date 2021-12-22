@@ -17,14 +17,12 @@ void IOHandler::saveImg(Img& img, const std::string& path)
 
 Img IOHandler::loadImg(const std::string& path, const int mode)
 {
-	Img newSrc;
 	try
 	{
-		newSrc = ImgLoader::loadImg(path, mode);
+		return ImgLoader::loadImg(path, mode);
 	}
 	catch (const std::exception& ex)
 	{
 		throw;
 	}
-	return newSrc;
 }

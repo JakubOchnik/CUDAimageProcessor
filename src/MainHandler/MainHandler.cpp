@@ -1,13 +1,8 @@
 #include <MainHandler/MainHandler.hpp>
 
 
-MainHandler::MainHandler(bool gpu) : srcImg(Img()), dstImg(Img()), gpuEnabled(gpu)
+MainHandler::MainHandler(bool gpu) : dstImg(Img()), gpuEnabled(gpu)
 {
-}
-
-Img& MainHandler::getSrcImg()
-{
-	return srcImg;
 }
 
 Img& MainHandler::getDstImg()
@@ -25,17 +20,17 @@ void MainHandler::updateDstImg(const Img& newImage)
 	dstImg = newImage;
 }
 
-void MainHandler::updateSrcImg(const std::string& newPath, int mode)
+void MainHandler::updateDstImg(const std::string& newPath, int mode)
 {
+	sourcePath = newPath;
 	try
 	{
-		srcImg = IOHandler::loadImg(newPath, 1);
+		dstImg = IOHandler::loadImg(newPath, 1);
 	}
 	catch (const std::exception& ex)
 	{
 		throw;
 	}
-	dstImg = srcImg;
 	loaded = true;
 	// TODO: Use unified memory (huge performance improvement)
 	if(gpuEnabled)
@@ -43,11 +38,11 @@ void MainHandler::updateSrcImg(const std::string& newPath, int mode)
 		if(!GPUControl.getGPUmemStatus())
 		{
 			// mem is allocated, update ptr
-			GPUControl.GPUmalloc(&srcImg);
+			GPUControl.GPUmalloc(&dstImg);
 		}
 		else
 		{
-			GPUControl.updatePtr(&srcImg);
+			GPUControl.updatePtr(&dstImg);
 		}
 	}
 }
@@ -93,4 +88,9 @@ EventHistory& MainHandler::getEvents()
 History& MainHandler::getHistory()
 {
 	return history;
+}
+
+std::string MainHandler::getSourceFilePath() const
+{
+	return sourcePath;
 }

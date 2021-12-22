@@ -10,7 +10,7 @@
 
 class MainHandler
 {
-	Img srcImg;
+	std::string sourcePath;
 	Img dstImg;
 	GPUcontroller GPUControl;
 	EventHistory events;
@@ -23,7 +23,6 @@ class MainHandler
 public:
 	MainHandler(bool gpu);
 
-	Img& getSrcImg();
 	Img& getDstImg();
 	GPUcontroller* getGPUController();
 
@@ -31,10 +30,12 @@ public:
 	History& getHistory();
 
 	void updateDstImg(const Img& newImage);
-	void updateSrcImg(const std::string& newPath, int mode);
+	void updateDstImg(const std::string& newPath, int mode);
 	void toggleLoaded();
 
 	void imgSave(const std::string& path);
+
+	std::string getSourceFilePath() const;
 
 	bool isQuit() const;
 	bool isLoaded() const;
