@@ -14,6 +14,7 @@ find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS} ${INCLUDE_DIR} ${CUDA_INCLUDE_DIRS})
 
 add_executable(${PROJECT_NAME} main_program.cpp)
+set_target_properties(${PROJECT_NAME} PROPERTIES CUDA_ARCHITECTURES "35;37;50;52;53;72")
 add_subdirectory(src)
 
 target_link_libraries( 
