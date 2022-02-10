@@ -35,18 +35,20 @@ class ProgramHandler
 	void undoAction();
 	void redoAction();
 
-	template<typename T>
-	void executeCommand(std::shared_ptr<T>& cmd, const std::vector<std::string>& processedArgs)
+	template <typename T>
+	void executeCommand(std::shared_ptr<T> &cmd, const std::vector<std::string> &processedArgs)
 	{
-		try {
+		try
+		{
 			cmd->execute(processedArgs);
 		}
-		catch (const std::runtime_error& ex)
+		catch (const std::runtime_error &ex)
 		{
 			master.getEvents().addEvent(ex);
 		}
 	}
+
 public:
-	ProgramHandler(bool gpu);
+	ProgramHandler();
 	void run();
 };

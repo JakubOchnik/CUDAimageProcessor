@@ -7,6 +7,7 @@
 #include <Events/History.hpp>
 #include <UI/ui.hpp>
 #include <IO/IOhandler.hpp>
+#include <Utilities/UnifiedPtr.hpp>
 
 class MainHandler
 {
@@ -18,10 +19,9 @@ class MainHandler
 
 	bool quit{false};
 	bool loaded{false};
-	bool gpuEnabled{false};
 
 public:
-	MainHandler(bool gpu);
+	MainHandler();
 
 	Img& getDstImg();
 	GPUcontroller* getGPUController();

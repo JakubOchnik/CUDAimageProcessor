@@ -3,7 +3,7 @@
 #include <UI/Program.hpp>
 #include <Utilities/configChecker.hpp>
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 	if (Config::checkConfig() == false)
 	{
@@ -12,9 +12,9 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
-	bool enableGpu{true};
+	//bool enableGpu{true};
 
-	ProgramHandler prog(enableGpu);
+	ProgramHandler prog;
 	prog.run();
 	return 0;
 }

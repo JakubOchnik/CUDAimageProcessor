@@ -1,6 +1,6 @@
 #include <UI/Program.hpp>
 
-ProgramHandler::ProgramHandler(bool gpu): master(MainHandler(gpu))
+ProgramHandler::ProgramHandler() : master(MainHandler())
 {
 	initializeCommands();
 }
@@ -39,10 +39,8 @@ void ProgramHandler::keystrokeHandler()
 	using GenericMapType = std::unordered_map<std::string, std::shared_ptr<BaseGenericCmd>>;
 	using EditMapType = std::unordered_map<std::string, std::shared_ptr<BaseEditCmd>>;
 
-
 	const auto genericNames = Utils::keys<GenericMapType>(genericCmds);
 	const auto editNames = Utils::keys<EditMapType>(editCmds);
-
 
 	// GET THE COMMAND NAME FROM THE INPUT STRING
 	std::string processedCmd;
@@ -53,7 +51,7 @@ void ProgramHandler::keystrokeHandler()
 		processedCmd = processedInput.first;
 		processedArgs = processedInput.second;
 	}
-	catch (const std::runtime_error& ex)
+	catch (const std::runtime_error &ex)
 	{
 		master.getEvents().addEvent(ex);
 		return;
@@ -78,7 +76,7 @@ void ProgramHandler::keystrokeHandler()
 		{
 			undoAction();
 		}
-		catch (const std::runtime_error& ex)
+		catch (const std::runtime_error &ex)
 		{
 			master.getEvents().addEvent(ex);
 		}
@@ -91,7 +89,7 @@ void ProgramHandler::keystrokeHandler()
 		{
 			redoAction();
 		}
-		catch (const std::runtime_error& ex)
+		catch (const std::runtime_error &ex)
 		{
 			master.getEvents().addEvent(ex);
 		}
@@ -102,16 +100,15 @@ void ProgramHandler::keystrokeHandler()
 	}
 }
 
-
 void ProgramHandler::undoAction()
 {
 	master.updateDstImg(master.getSourceFilePath(), 1);
 	// perform all of the operations on source image besides from the latest one
-	auto& history = master.getHistory();
+	auto &history = master.getHistory();
 	if (history.size() > 1)
 	{
-		size_t i{ 0 };
-		for (const Edit& edit : history.getHistory())
+		size_t i{0};
+		for (const Edit &edit : history.getHistory())
 		{
 			std::shared_ptr<BaseEditCmd> cmd = editCmds.at(edit.shortName);
 			// Execute edit command group
@@ -142,7 +139,7 @@ void ProgramHandler::undoAction()
 
 void ProgramHandler::redoAction()
 {
-	auto& history = master.getHistory();
+	auto &history = master.getHistory();
 	if (history.getRedoHistory().empty())
 	{
 		throw Error::RedoFail();

@@ -3,10 +3,7 @@
 
 GPUcontroller::GPUcontroller()
 {
-	isMemAlloc = false;
 	sizeUpdate = false;
-	devImgPtr = nullptr;
-	memSize = 0;
 }
 
 bool GPUcontroller::sizeUpdateStatus() const
@@ -16,70 +13,47 @@ bool GPUcontroller::sizeUpdateStatus() const
 
 bool GPUcontroller::getGPUmemStatus() const
 {
-	return isMemAlloc;
+	return data.isAlloc();
 }
 
-bool GPUcontroller::GPUmalloc(Img* srcImg)
+UnifiedPtr &GPUcontroller::createGpuPointer(unsigned char *inputData, size_t dataSize)
 {
-	if (isMemAlloc == true)
-	{
-		return false;
-	}
-	size_t dataSize = srcImg->getResolutionH() * srcImg->getResolutionW() * srcImg->getChannelNum() * sizeof(unsigned
-		char);
-	if (cudaMalloc((void**)&devImgPtr, dataSize) != cudaSuccess)
-	{
-		memSize = 0;
-		devImgPtr = nullptr;
-		return false;
-	}
-	// devImgPtr is allocated
-	memSize = dataSize;
-	cudaMemcpy(devImgPtr, srcImg->getImg()->data, dataSize, cudaMemcpyHostToDevice);
-	isMemAlloc = true;
-	sizeUpdate = false;
-	return true;
+	data = std::move(UnifiedPtr(inputData, dataSize));
+	return data;
 }
 
-void GPUcontroller::GPUfree()
+bool GPUcontroller::updatePtr(Img *newImg)
 {
-	cudaFree(devImgPtr);
-	isMemAlloc = false;
-	sizeUpdate = false;
-	devImgPtr = nullptr;
-	memSize = 0;
-}
-
-bool GPUcontroller::updatePtr(Img* newImg)
-{
-	size_t newSize = newImg->getResolutionH() * newImg->getResolutionW() * newImg->getChannelNum() * sizeof(unsigned
-		char);
-	if (memSize != newSize)
+	size_t newSize = newImg->getResolutionH() * newImg->getResolutionW() * newImg->getChannelNum() * sizeof(unsigned char);
+	if (data.size() != newSize)
 	{
-		GPUfree();
-		if (!GPUmalloc(newImg))
+		try
 		{
+			data = std::move(UnifiedPtr(newImg->getImg()->data, newSize));
+		}
+		catch (const std::exception &e)
+		{
+			std::cerr << e.what() << '\n';
 			return false;
 		}
 	}
 	else
 	{
-		cudaMemcpy(devImgPtr, newImg->getImg()->data, newSize, cudaMemcpyHostToDevice);
+		std::memcpy(data.getPtr(), newImg->getImg()->data, newSize);
 	}
 	return true;
 }
 
-unsigned char* GPUcontroller::getImgPtr()
+UnifiedPtr &GPUcontroller::getImgPtr()
 {
-	return devImgPtr;
+	return data;
 }
 
 GPUcontroller::~GPUcontroller()
 {
-	if (isMemAlloc)
+	if (data.isAlloc())
 	{
-		printf("Freeing memory allocated on GPU (%d KB)...", memSize / 1024);
+		printf("Freeing memory allocated on GPU (%zd KB)...", data.size() / 1024);
 		// Sleep(1000); for debug
-		GPUfree();
 	}
 }

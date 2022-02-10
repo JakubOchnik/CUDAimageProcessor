@@ -10,7 +10,7 @@ std::string ResizeCmd::getShortName()
 	return shortName;
 }
 
-void ResizeCmd::execute(const std::vector<std::string>& args)
+void ResizeCmd::execute(const std::vector<std::string> &args)
 {
 	if (!master.isLoaded())
 	{
@@ -24,20 +24,20 @@ void ResizeCmd::execute(const std::vector<std::string>& args)
 
 	std::vector<int> parsedArgs{TextUtils::tokensToNumbers(args)};
 
-	const int w{ parsedArgs[0] }, h{ parsedArgs[1] };
+	const int w{parsedArgs[0]}, h{parsedArgs[1]};
 	if (w < 0 || h < 0)
 	{
 		throw Error::ParamFail();
 	}
 
 	// Execute the resize action
-	resizeAction(cv::Size(w,h));
-
+	resizeAction(cv::Size(w, h));
 }
 
-void ResizeCmd::resizeAction(cv::Size& size)
+void ResizeCmd::resizeAction(cv::Size &size)
 {
-	Img& dstImg{master.getDstImg()};
+	// TODO: NOT WORKING!
+	Img &dstImg{master.getDstImg()};
 
 	cv::Mat newImg(*dstImg.getImg());
 
