@@ -4,7 +4,8 @@ bool ImgLoader::checkImgDims(int x, int y)
 {
 	int maxWidth, maxHeight;
 	std::tie(maxWidth, maxHeight) = GpuInfo::getMaxDimensions();
-	if (x > maxWidth || y > maxHeight) {
+	if (x > maxWidth || y > maxHeight)
+	{
 		return false;
 	}
 	return true;
@@ -20,7 +21,8 @@ Img ImgLoader::loadImg(const std::string& path, int type)
 	if (!checkImgDims(img.size().width, img.size().height))
 	{
 		std::string msg{"Incorrect image dimensions: "};
-		std::string dims{std::to_string(img.size().width) + "x" + std::to_string(img.size().height)};
+		std::string dims{std::to_string(img.size().width) + "x"
+						 + std::to_string(img.size().height)};
 		msg += dims;
 		throw std::runtime_error(msg.c_str());
 	}
@@ -38,7 +40,8 @@ Img ImgLoader::loadImg(const std::string& path)
 	if (!checkImgDims(img.size().width, img.size().height))
 	{
 		std::string msg{"Incorrect image dimensions: "};
-		std::string dims{std::to_string(img.size().width) + "x" + std::to_string(img.size().height)};
+		std::string dims{std::to_string(img.size().width) + "x"
+						 + std::to_string(img.size().height)};
 		msg += dims;
 		throw std::runtime_error(msg.c_str());
 	}

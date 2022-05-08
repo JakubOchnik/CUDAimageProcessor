@@ -1,14 +1,14 @@
 #pragma once
 #include <Commands/BaseEditCmd.hpp>
-
 #include <Commands/GpuImg/Kernels/InvertionKernel.cuh>
 
 class InvertionCmd : public BaseEditCmd
 {
-    using BaseEditCmd::BaseEditCmd;
+	using BaseEditCmd::BaseEditCmd;
+
 public:
-    static inline const std::string displayName = "invertionCommand";
-	static inline const std::string shortName = "invert";
+	static inline const std::string displayName = "invertionCommand";
+	static inline const std::string shortName	= "invert";
 
 	void execute(const std::vector<std::string>& args) override;
 

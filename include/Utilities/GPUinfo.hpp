@@ -1,13 +1,12 @@
 #pragma once
 #include <cuda_runtime.h>
-
-#include <tuple>
 #include <iostream>
+#include <tuple>
 
 class GpuInfo
 {
 public:
 	static std::tuple<int, int> getMaxDimensions();
-	static void showGpuInfo();
-	static bool isCompatible();
+	static void					showGpuInfo();
+	static bool					isCompatible();
 };

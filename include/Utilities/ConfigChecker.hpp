@@ -1,6 +1,5 @@
 #pragma once
 #include <Utilities/GPUinfo.hpp>
-
 #include <iostream>
 #ifdef _WIN32
 #include <windows.h>

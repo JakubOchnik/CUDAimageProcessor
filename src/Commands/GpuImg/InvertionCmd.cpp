@@ -12,7 +12,7 @@ void InvertionCmd::execute(const std::vector<std::string>& args)
 	}
 	Img& dstImg{master.getDstImg()};
 
-    executeInvertionKernel(dstImg, master.getGPUController());
+	executeInvertionKernel(dstImg, master.getGPUController());
 }
 
 std::string InvertionCmd::getDisplayName()

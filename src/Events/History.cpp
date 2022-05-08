@@ -10,7 +10,8 @@ void History::actionRedo()
 		throw Event::redoFail;
 	}
 	//TODO:Perform all the previous actions
-	//ActionHandler::actionSelector(redoHistory.front().actionType, &dstImg, redoHistory.front().value, &GPUControl,
+	//ActionHandler::actionSelector(redoHistory.front().actionType, &dstImg,
+	redoHistory.front().value, &GPUControl,
 		//true);
 	//if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true))
 	//{
@@ -28,9 +29,11 @@ void History::actionUndo()
 	history.pop_back();
 }
 
-void History::addToHistory(const std::string snm, const std::string lnm, const std::vector<std::string> args)
+void History::addToHistory(const std::string			  snm,
+						   const std::string			  lnm,
+						   const std::vector<std::string> args)
 {
-	history.emplace_back(Edit{ snm, lnm, args });
+	history.emplace_back(Edit{snm, lnm, args});
 }
 
 void History::resetHistory()
@@ -49,7 +52,8 @@ std::string History::getFormattedHistory() const
 	int i = 1;
 	for (const auto& [snm, lnm, args] : history)
 	{
-		const std::string line = "[" + std::to_string(i) + "] " + lnm + " " + tokensToLine(args) + "\n";
+		const std::string line = "[" + std::to_string(i) + "] " + lnm + " "
+								 + tokensToLine(args) + "\n";
 		out += line;
 		++i;
 	}

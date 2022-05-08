@@ -13,8 +13,8 @@ void BrightnessCmd::execute(const std::vector<std::string>& args)
 
 	std::vector<int> parsedArgs{TextUtils::tokensToNumbers(args)};
 
-	const int shift{ parsedArgs[0] };
-	Img& dstImg{master.getDstImg()};
+	const int shift{parsedArgs[0]};
+	Img&	  dstImg{master.getDstImg()};
 
 	executeBrightnessKernel(dstImg, shift, master.getGPUController());
 }

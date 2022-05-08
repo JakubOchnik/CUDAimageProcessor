@@ -1,6 +1,6 @@
 #include <UI/Program.hpp>
 
-ProgramHandler::ProgramHandler(bool gpu): master(MainHandler(gpu))
+ProgramHandler::ProgramHandler(bool gpu) : master(MainHandler(gpu))
 {
 	initializeCommands();
 }
@@ -11,17 +11,22 @@ void ProgramHandler::initializeCommands()
 	genericCmds.emplace(SaveCmd::shortName, std::make_shared<SaveCmd>(master));
 	genericCmds.emplace(QuitCmd::shortName, std::make_shared<QuitCmd>(master));
 	genericCmds.emplace(LoadCmd::shortName, std::make_shared<LoadCmd>(master));
-	genericCmds.emplace(HistoryCmd::shortName, std::make_shared<HistoryCmd>(master));
+	genericCmds.emplace(HistoryCmd::shortName,
+						std::make_shared<HistoryCmd>(master));
 	genericCmds.emplace(HelpCmd::shortName, std::make_shared<HelpCmd>(master));
 	genericCmds.emplace(ClearCmd::shortName, std::make_shared<ClearCmd>(master));
 
 	editCmds.emplace(CropCmd::shortName, std::make_shared<CropCmd>(master));
 	editCmds.emplace(ResizeCmd::shortName, std::make_shared<ResizeCmd>(master));
 	// TODO: Find a way to distinguish between gpu edit commands and cpu edit commands
-	editCmds.emplace(BrightnessCmd::shortName, std::make_shared<BrightnessCmd>(master));
-	editCmds.emplace(ContrastCmd::shortName, std::make_shared<ContrastCmd>(master));
-	editCmds.emplace(EqualizationCmd::shortName, std::make_shared<EqualizationCmd>(master));
-	editCmds.emplace(InvertionCmd::shortName, std::make_shared<InvertionCmd>(master));
+	editCmds.emplace(BrightnessCmd::shortName,
+					 std::make_shared<BrightnessCmd>(master));
+	editCmds.emplace(ContrastCmd::shortName,
+					 std::make_shared<ContrastCmd>(master));
+	editCmds.emplace(EqualizationCmd::shortName,
+					 std::make_shared<EqualizationCmd>(master));
+	editCmds.emplace(InvertionCmd::shortName,
+					 std::make_shared<InvertionCmd>(master));
 }
 
 void ProgramHandler::run()
@@ -39,22 +44,22 @@ void ProgramHandler::run()
 void ProgramHandler::keystrokeHandler()
 {
 	using namespace std;
-	using GenericMapType = std::unordered_map<std::string, std::shared_ptr<BaseGenericCmd>>;
-	using EditMapType = std::unordered_map<std::string, std::shared_ptr<BaseEditCmd>>;
-
+	using GenericMapType =
+		std::unordered_map<std::string, std::shared_ptr<BaseGenericCmd>>;
+	using EditMapType =
+		std::unordered_map<std::string, std::shared_ptr<BaseEditCmd>>;
 
 	const auto genericNames = Utils::keys<GenericMapType>(genericCmds);
-	const auto editNames = Utils::keys<EditMapType>(editCmds);
-
+	const auto editNames	= Utils::keys<EditMapType>(editCmds);
 
 	// GET THE COMMAND NAME FROM THE INPUT STRING
-	std::string processedCmd;
+	std::string				 processedCmd;
 	std::vector<std::string> processedArgs;
 	try
 	{
 		const auto processedInput = TextUtils::processArgs(inputBuffer);
-		processedCmd = processedInput.first;
-		processedArgs = processedInput.second;
+		processedCmd			  = processedInput.first;
+		processedArgs			  = processedInput.second;
 	}
 	catch (const std::runtime_error& ex)
 	{
@@ -62,18 +67,21 @@ void ProgramHandler::keystrokeHandler()
 		return;
 	}
 
-	if (find(genericNames.begin(), genericNames.end(), processedCmd) != genericNames.end())
+	if (find(genericNames.begin(), genericNames.end(), processedCmd)
+		!= genericNames.end())
 	{
 		std::shared_ptr<BaseGenericCmd> cmd = genericCmds.at(processedCmd);
 		// Execute generic command group
 		executeCommand<BaseGenericCmd>(cmd, processedArgs);
 	}
-	else if (find(editNames.begin(), editNames.end(), processedCmd) != editNames.end())
+	else if (find(editNames.begin(), editNames.end(), processedCmd)
+			 != editNames.end())
 	{
 		std::shared_ptr<BaseEditCmd> cmd = editCmds.at(processedCmd);
 		// Execute generic command group
 		executeCommand<BaseEditCmd>(cmd, processedArgs);
-		master.getHistory().addToHistory(cmd->getShortName(), cmd->getDisplayName(), processedArgs);
+		master.getHistory().addToHistory(cmd->getShortName(),
+										 cmd->getDisplayName(), processedArgs);
 	}
 	else if (processedCmd == consts::cmd::UNDO_CMD)
 	{
@@ -89,7 +97,8 @@ void ProgramHandler::keystrokeHandler()
 	else if (processedCmd == consts::cmd::REDO_CMD)
 	{
 		// Dispatch undo/redo commands
-		// They cannot be implemented as regular commands in order to avoid circular dependency
+		// They cannot be implemented as regular commands in order to avoid
+		// circular dependency
 		try
 		{
 			redoAction();
@@ -105,7 +114,6 @@ void ProgramHandler::keystrokeHandler()
 	}
 }
 
-
 void ProgramHandler::undoAction()
 {
 	master.updateDstImg(master.getSrcImg());
@@ -113,7 +121,7 @@ void ProgramHandler::undoAction()
 	auto& history = master.getHistory();
 	if (history.size() > 1)
 	{
-		size_t i{ 0 };
+		size_t i{0};
 		for (const Edit& edit : history.getHistory())
 		{
 			std::shared_ptr<BaseEditCmd> cmd = editCmds.at(edit.shortName);
@@ -151,7 +159,8 @@ void ProgramHandler::redoAction()
 		throw Error::RedoFail();
 	}
 
-	std::shared_ptr<BaseEditCmd> cmd = editCmds.at(history.getRedoHistory().front().shortName);
+	std::shared_ptr<BaseEditCmd> cmd =
+		editCmds.at(history.getRedoHistory().front().shortName);
 	// Execute edit command group
 	executeCommand<BaseEditCmd>(cmd, history.getRedoHistory().front().args);
 	history.actionRedo();

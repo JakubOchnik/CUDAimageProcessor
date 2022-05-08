@@ -1,14 +1,14 @@
 #pragma once
 #include <Commands/BaseEditCmd.hpp>
-
 #include <Commands/GpuImg/Kernels/EqualizationKernel.cuh>
 
 class EqualizationCmd : public BaseEditCmd
 {
-    using BaseEditCmd::BaseEditCmd;
+	using BaseEditCmd::BaseEditCmd;
+
 public:
-    static inline const std::string displayName = "equalizationCommand";
-	static inline const std::string shortName = "equalize";
+	static inline const std::string displayName = "equalizationCommand";
+	static inline const std::string shortName	= "equalize";
 
 	void execute(const std::vector<std::string>& args) override;
 

@@ -2,25 +2,30 @@
 
 Img::Img(cv::Mat img, std::string path) : image(img)
 {
-	this->path = path;
-	resolutionH = img.size().height;
-	resolutionW = img.size().width;
+	this->path	  = path;
+	resolutionH	  = img.size().height;
+	resolutionW	  = img.size().width;
 	colorChannels = img.channels();
-	initiated = true;
+	initiated	  = true;
 }
 
-Img::Img() : resolutionH(0), resolutionW(0), colorChannels(0), image(cv::Mat()), initiated(false)
+Img::Img()
+	: resolutionH(0)
+	, resolutionW(0)
+	, colorChannels(0)
+	, image(cv::Mat())
+	, initiated(false)
 {
 }
 
 Img& Img::operator=(const Img& other)
 {
 	this->colorChannels = other.colorChannels;
-	this->initiated = other.initiated;
-	this->resolutionH = other.resolutionH;
-	this->resolutionW = other.resolutionW;
-	this->path = other.path;
-	this->image = other.image.clone();
+	this->initiated		= other.initiated;
+	this->resolutionH	= other.resolutionH;
+	this->resolutionW	= other.resolutionW;
+	this->path			= other.path;
+	this->image			= other.image.clone();
 	return *this;
 }
 

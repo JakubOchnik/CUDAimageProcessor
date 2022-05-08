@@ -24,15 +24,14 @@ void ResizeCmd::execute(const std::vector<std::string>& args)
 
 	std::vector<int> parsedArgs{TextUtils::tokensToNumbers(args)};
 
-	const int w{ parsedArgs[0] }, h{ parsedArgs[1] };
+	const int w{parsedArgs[0]}, h{parsedArgs[1]};
 	if (w < 0 || h < 0)
 	{
 		throw Error::ParamFail();
 	}
 
 	// Execute the resize action
-	resizeAction(cv::Size(w,h));
-
+	resizeAction(cv::Size(w, h));
 }
 
 void ResizeCmd::resizeAction(const cv::Size& size)

@@ -4,8 +4,8 @@ GPUcontroller::GPUcontroller()
 {
 	isMemAlloc = false;
 	sizeUpdate = false;
-	devImgPtr = nullptr;
-	memSize = 0;
+	devImgPtr  = nullptr;
+	memSize	   = 0;
 }
 
 bool GPUcontroller::sizeUpdateStatus() const
@@ -24,17 +24,18 @@ bool GPUcontroller::GPUmalloc(Img* srcImg)
 	{
 		return false;
 	}
-	size_t dataSize = srcImg->getResolutionH() * srcImg->getResolutionW() * srcImg->getChannelNum() * sizeof(unsigned
-		char);
+	size_t dataSize = srcImg->getResolutionH() * srcImg->getResolutionW()
+					  * srcImg->getChannelNum() * sizeof(unsigned char);
 	if (cudaMalloc((void**)&devImgPtr, dataSize) != cudaSuccess)
 	{
-		memSize = 0;
+		memSize	  = 0;
 		devImgPtr = nullptr;
 		return false;
 	}
 	// devImgPtr is allocated
 	memSize = dataSize;
-	cudaMemcpy(devImgPtr, srcImg->getImg()->data, dataSize, cudaMemcpyHostToDevice);
+	cudaMemcpy(devImgPtr, srcImg->getImg()->data, dataSize,
+			   cudaMemcpyHostToDevice);
 	isMemAlloc = true;
 	sizeUpdate = false;
 	return true;
@@ -45,14 +46,14 @@ void GPUcontroller::GPUfree()
 	cudaFree(devImgPtr);
 	isMemAlloc = false;
 	sizeUpdate = false;
-	devImgPtr = nullptr;
-	memSize = 0;
+	devImgPtr  = nullptr;
+	memSize	   = 0;
 }
 
 bool GPUcontroller::updatePtr(Img* newImg)
 {
-	size_t newSize = newImg->getResolutionH() * newImg->getResolutionW() * newImg->getChannelNum() * sizeof(unsigned
-		char);
+	size_t newSize = newImg->getResolutionH() * newImg->getResolutionW()
+					 * newImg->getChannelNum() * sizeof(unsigned char);
 	if (memSize != newSize)
 	{
 		GPUfree();
@@ -63,7 +64,8 @@ bool GPUcontroller::updatePtr(Img* newImg)
 	}
 	else
 	{
-		cudaMemcpy(devImgPtr, newImg->getImg()->data, newSize, cudaMemcpyHostToDevice);
+		cudaMemcpy(devImgPtr, newImg->getImg()->data, newSize,
+				   cudaMemcpyHostToDevice);
 	}
 	return true;
 }

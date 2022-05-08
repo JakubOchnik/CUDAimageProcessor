@@ -1,8 +1,7 @@
 #pragma once
+#include <Consts/Errors.hpp>
 #include <ImgHandling/ImgInfo.hpp>
 #include <Utilities/GPUinfo.hpp>
-#include <Consts/Errors.hpp>
-
 #include <opencv2/opencv.hpp>
 #include <tuple>
 

@@ -9,7 +9,8 @@ bool Config::isCUDActive()
 		return false;
 	}
 #else
-	if (dlopen("libcuda.so", RTLD_NOW) == nullptr) {
+	if (dlopen("libcuda.so", RTLD_NOW) == nullptr)
+	{
 		return false;
 	}
 #endif
