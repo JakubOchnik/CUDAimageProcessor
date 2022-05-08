@@ -35,7 +35,7 @@ void ResizeCmd::execute(const std::vector<std::string>& args)
 
 }
 
-void ResizeCmd::resizeAction(cv::Size& size)
+void ResizeCmd::resizeAction(const cv::Size& size)
 {
 	Img& dstImg{master.getDstImg()};
 

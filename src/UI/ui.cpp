@@ -5,7 +5,7 @@ void ui::setWindowName(const std::string& newName)
 #ifdef _WIN32
 	SetConsoleTitle(TEXT(newName.c_str()));
 #else
-	cout << "\033]0;" << newName << "\007";
+	std::cout << "\033]0;" << newName << "\007";
 #endif
 }
 
@@ -28,10 +28,10 @@ void ui::draw(const Img& dstImg, const EventHistory& events, bool loaded)
 	if (loaded)
 	{
 		cout << "Target image info: " << '\n'
-			<< FILEPATH_TEXT << dstImg.getPath() << '\n'
-			<< RESOLUTION_TEXT << " "
-			<< dstImg.getResolutionW() << " x " << dstImg.getResolutionH() << '\n'
-			<< CHANNELS_TEXT << " " << dstImg.getChannelNum() << '\n';
+			 << FILEPATH_TEXT << dstImg.getPath() << '\n'
+			 << RESOLUTION_TEXT << " " << dstImg.getResolutionW() << " x "
+			 << dstImg.getResolutionH() << '\n'
+			 << CHANNELS_TEXT << " " << dstImg.getChannelNum() << '\n';
 		const string title = dstImg.getPath() + " - " + BASE_WINDOW_NAME;
 		setWindowName(title);
 	}
@@ -42,11 +42,10 @@ void ui::draw(const Img& dstImg, const EventHistory& events, bool loaded)
 	if (!events.isEmpty())
 	{
 		cout << SEPARATOR_TEXT << '\n'
-			<< "Notifications: " << '\n'
-			<< events.getEvents();
+			 << "Notifications: " << '\n'
+			 << events.getEvents();
 	}
-	cout << SEPARATOR_TEXT << '\n'
-		<< PROMPT_TEXT;
+	cout << SEPARATOR_TEXT << '\n' << PROMPT_TEXT;
 }
 
 void ui::editHistoryScreen(const History& history)
@@ -63,35 +62,39 @@ void ui::helpScreen()
 	using namespace std;
 	clearScreen();
 	cout << HELP_TEXT_CONTENT << '\n'
-		<< "Press ENTER to return to main menu...";
+		 << "Press ENTER to return to main menu...";
 	cin.get();
 }
 
-std::tuple<int, int> ui::customScale(cv::Mat& inputImage, Img& dstImg, unsigned int scale)
+std::tuple<int, int>
+ui::customScale(cv::Mat& inputImage, Img& dstImg, unsigned int scale)
 {
 	const unsigned int width{dstImg.getResolutionW() * scale / 100};
 	const unsigned int height{dstImg.getResolutionH() * scale / 100};
 	resize(*dstImg.getImg(), inputImage, cv::Size(width, height));
-	return { width, height };
+	return {width, height};
 }
 
-std::tuple<int, int, float> ui::autoScale(cv::Mat& inputImage, Img& dstImg, const std::tuple<int, int>& origSize,
-	const std::tuple<int, int>& screenSize)
+std::tuple<int, int, float> ui::autoScale(cv::Mat& inputImage,
+										  Img&	   dstImg,
+										  const std::tuple<int, int>& origSize,
+										  const std::tuple<int, int>& screenSize)
 {
 	int x, y, width, height;
-	std::tie(x, y) = screenSize;
+	std::tie(x, y)			= screenSize;
 	std::tie(width, height) = origSize;
-	bool changed = false;
+	bool changed			= false;
 	if (height > 0.8f * y)
 	{
 		height = 0.8f * y;
-		width = (static_cast<float>(dstImg.getResolutionW()) * 0.8f * y) / dstImg.getResolutionH();
+		width  = (static_cast<float>(dstImg.getResolutionW()) * 0.8f * y)
+				/ dstImg.getResolutionH();
 		changed = true;
 	}
 
 	if (width > 0.95f * x)
 	{
-		width = 0.95f * x;
+		width  = 0.95f * x;
 		height = (dstImg.getResolutionH() * 0.95f * x) / dstImg.getResolutionH();
 		changed = true;
 	}
@@ -102,7 +105,7 @@ std::tuple<int, int, float> ui::autoScale(cv::Mat& inputImage, Img& dstImg, cons
 		newScale = static_cast<float>(width) / dstImg.getResolutionW() * 100;
 	}
 
-	return { width, height, newScale };
+	return {width, height, newScale};
 }
 
 void ui::showPreview(Img& dstImg, unsigned int scale)
@@ -112,9 +115,9 @@ void ui::showPreview(Img& dstImg, unsigned int scale)
 	{
 		throw Error::NotLoadedFail();
 	}
-	string windowName = dstImg.getPath() +
-		" (" + to_string(dstImg.getResolutionW()) + "x" +
-		to_string(dstImg.getResolutionH()) + ")";
+	string windowName = dstImg.getPath() + " ("
+						+ to_string(dstImg.getResolutionW()) + "x"
+						+ to_string(dstImg.getResolutionH()) + ")";
 	cout << "Press any key to close the window...";
 	// scale the image to fit to a current monitor height
 	cv::Mat tempImg;
@@ -130,25 +133,26 @@ void ui::showPreview(Img& dstImg, unsigned int scale)
 		y = GetSystemMetrics(SM_CYSCREEN);
 #else
 		Display* d = XOpenDisplay(NULL);
-		Screen* s = DefaultScreenOfDisplay(d);
-		x = s->width;
-		y = s->height;
+		Screen*	 s = DefaultScreenOfDisplay(d);
+		x		   = s->width;
+		y		   = s->height;
 #endif
 		const std::tuple origSize{std::make_pair(width, height)};
 		const std::tuple screenSize{std::make_pair(x, y)};
-		int newWidth, newHeight;
-		float newScale;
-		std::tie(newWidth, newHeight, newScale) = autoScale(tempImg, dstImg, origSize, screenSize);
+		int				 newWidth, newHeight;
+		float			 newScale;
+		std::tie(newWidth, newHeight, newScale) =
+			autoScale(tempImg, dstImg, origSize, screenSize);
 		if (width != newWidth || height != newHeight)
 		{
 			std::stringstream stream;
 			stream << std::fixed << std::setprecision(2) << newScale;
 			const std::string s = stream.str();
-			windowName = windowName + "@" + s + "%";
+			windowName			= windowName + "@" + s + "%";
 		}
 		else
 		{
-			tempImg = *dstImg.getImg();
+			tempImg	   = *dstImg.getImg();
 			windowName = windowName + "@100%";
 		}
 	}
@@ -156,12 +160,13 @@ void ui::showPreview(Img& dstImg, unsigned int scale)
 	{
 		int width, height;
 		std::tie(width, height) = customScale(tempImg, dstImg, scale);
-		windowName = windowName + "@" + to_string(scale) + "%";
+		windowName				= windowName + "@" + to_string(scale) + "%";
 	}
 	windowName += (" - " + BASE_WINDOW_NAME);
 	imshow(windowName, tempImg);
 	cv::waitKey(0);
 	cv::destroyWindow(windowName);
+	cv::waitKey(1);
 }
 
 void ui::printString(const std::string& output)

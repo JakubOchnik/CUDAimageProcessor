@@ -4,20 +4,21 @@ void SaveCmd::execute(const std::vector<std::string>& args)
 {
 	if (args.size() < 1)
 	{
-		throw GenericEvent::commandFail;
+		throw GenericProgramEvent::commandFail;
 	}
 
-	try {
+	try
+	{
 		master.imgSave(args[0]);
 	}
 	catch (const std::exception& ex)
 	{
 		// add error to events
-		master.getEvents().addEvent(GenericEvent::saveFail);
+		master.getEvents().addEvent(GenericProgramEvent::saveFail);
 		return;
 	}
 	master.getHistory().resetHistory();
-	master.getEvents().addEvent(GenericEvent::saveSuccess);
+	master.getEvents().addEvent(GenericProgramEvent::saveSuccess);
 }
 
 std::string SaveCmd::getDisplayName()

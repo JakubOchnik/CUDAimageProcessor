@@ -19,6 +19,9 @@ void ProgramHandler::initializeCommands()
 	editCmds.emplace(ResizeCmd::shortName, std::make_shared<ResizeCmd>(master));
 	// TODO: Find a way to distinguish between gpu edit commands and cpu edit commands
 	editCmds.emplace(BrightnessCmd::shortName, std::make_shared<BrightnessCmd>(master));
+	editCmds.emplace(ContrastCmd::shortName, std::make_shared<ContrastCmd>(master));
+	editCmds.emplace(EqualizationCmd::shortName, std::make_shared<EqualizationCmd>(master));
+	editCmds.emplace(InvertionCmd::shortName, std::make_shared<InvertionCmd>(master));
 }
 
 void ProgramHandler::run()

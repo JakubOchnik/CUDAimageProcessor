@@ -13,6 +13,10 @@ message(STATUS ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS} ${INCLUDE_DIR} ${CUDA_INCLUDE_DIRS})
 
+if(UNIX)
+    find_package(X11 REQUIRED)
+endif(UNIX)
+
 add_executable(${PROJECT_NAME} main_program.cpp)
 add_subdirectory(src)
 
@@ -20,6 +24,10 @@ target_link_libraries(
     ${PROJECT_NAME} 
     PUBLIC ${OpenCV_LIBS} ${CUDA_LIBRARIES}
     )
+
+if(UNIX)
+    target_link_libraries(${PROJECT_NAME} PUBLIC X11)
+endif(UNIX)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

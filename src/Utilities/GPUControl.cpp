@@ -1,5 +1,4 @@
 #include <Utilities/GPUcontrol.hpp>
-#include <windows.h>
 
 GPUcontroller::GPUcontroller()
 {

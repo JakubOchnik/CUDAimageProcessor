@@ -9,7 +9,7 @@ public:
 	static inline const std::string shortName = "resize";
 
 	void execute(const std::vector<std::string>& args) override;
-	void resizeAction(cv::Size& size);
+	void resizeAction(const cv::Size& size);
 
 	std::string getShortName() override;
 	std::string getDisplayName() override;

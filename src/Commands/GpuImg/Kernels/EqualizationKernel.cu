@@ -1,10 +1,10 @@
-﻿#include "equalizationKernel.h"
+﻿#include <Commands/GpuImg/Kernels/EqualizationKernel.cuh>
 
-bool executeEqualizationKernel(Img* image, GPUcontroller* GPU)
+bool executeEqualizationKernel(Img& image, GPUcontroller* GPU)
 {
-	const unsigned int channels = image->getChannelNum();
-	const unsigned int width = image->getResolutionW();
-	const unsigned int height = image->getResolutionH();
+	const unsigned int channels = image.getChannelNum();
+	const unsigned int width = image.getResolutionW();
+	const unsigned int height = image.getResolutionH();
 	// memory allocation with error checking
 	auto min = new(std::nothrow) int[channels];
 	if (!min)
@@ -37,7 +37,7 @@ bool executeEqualizationKernel(Img* image, GPUcontroller* GPU)
 	cudaMemcpy(max, devMax, channels * sizeof(int), cudaMemcpyDeviceToHost);
 	calculateEqualization << <grid, 1 >> > (GPU->getImgPtr(), channels, devMin, devMax);
 
-	cudaMemcpy(image->getImg()->data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
+	cudaMemcpy(image.getImg()->data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
 	cudaFree(devMin);
 	cudaFree(devMax);
 	delete[] min;

@@ -5,20 +5,21 @@ void LoadCmd::execute(const std::vector<std::string>& args)
 
 	if (args.empty())
 	{
-		throw std::exception("Command failed");
+		throw std::runtime_error("Command failed");
 	}
 	std::cout << FILE_LOADING_TEXT << '\n';
-	try {
+	try
+	{
 		master.updateSrcImg(args[0], 1);
 	}
 	catch (const std::exception&)
 	{
 		// add negative event to events
-		master.getEvents().addEvent(GenericEvent::openFail);
+		master.getEvents().addEvent(GenericProgramEvent::openFail);
 		return;
 	}
 	master.getHistory().resetHistory();
-	master.getEvents().addEvent(GenericEvent::openSuccess);
+	master.getEvents().addEvent(GenericProgramEvent::openSuccess);
 }
 
 std::string LoadCmd::getDisplayName()
@@ -30,4 +31,3 @@ std::string LoadCmd::getShortName()
 {
 	return shortName;
 }
-

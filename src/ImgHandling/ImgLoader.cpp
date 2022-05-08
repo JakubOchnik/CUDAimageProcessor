@@ -15,7 +15,7 @@ Img ImgLoader::loadImg(const std::string& path, int type)
 	cv::Mat img{cv::imread(path, type)};
 	if (img.data == nullptr)
 	{
-		throw std::exception("Incorrect path");
+		throw std::runtime_error("Incorrect path");
 	}
 	if (!checkImgDims(img.size().width, img.size().height))
 	{
@@ -33,7 +33,7 @@ Img ImgLoader::loadImg(const std::string& path)
 	if (img.data == nullptr)
 	{
 		std::string msg{"Could not load image from: " + path};
-		throw std::exception(msg.c_str());
+		throw std::runtime_error(msg.c_str());
 	}
 	if (!checkImgDims(img.size().width, img.size().height))
 	{

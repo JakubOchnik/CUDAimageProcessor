@@ -19,11 +19,6 @@ void BrightnessCmd::execute(const std::vector<std::string>& args)
 	executeBrightnessKernel(dstImg, shift, master.getGPUController());
 }
 
-void BrightnessCmd::action(const int shift)
-{
-    
-}
-
 std::string BrightnessCmd::getDisplayName()
 {
 	return displayName;

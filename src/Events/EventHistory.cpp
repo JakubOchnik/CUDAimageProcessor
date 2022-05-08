@@ -1,14 +1,14 @@
 #include <Events/EventHistory.hpp>
 
-std::string [[nodiscard]] EventHistory::getEvents() const
+std::string EventHistory::getEvents() const
 {
 	std::string out;
 	for (const auto& event : eventQueue)
 	{
 		if (event.content.index() == 0)
 		{
-			// Holds GenericEvent
-			GenericEvent ev{std::get<GenericEvent>(event.content)};
+			// Holds GenericProgramEvent
+			GenericProgramEvent ev{std::get<GenericProgramEvent>(event.content)};
 			out += EVENT_TEXT_PROMPTS.at(ev);
 		}
 		else
@@ -27,7 +27,7 @@ void EventHistory::clearEvents()
 	eventQueue.clear();
 }
 
-void EventHistory::addEvent(const GenericEvent& e)
+void EventHistory::addEvent(const GenericProgramEvent& e)
 {
 	eventQueue.emplace_back(e);
 }

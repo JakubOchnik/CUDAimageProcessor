@@ -1,5 +1,5 @@
 #include <cuda_runtime.h>
-#include <Utilities/GPUControl.hpp>
+#include <Utilities/GPUcontrol.hpp>
 #include <ImgHandling/ImgInfo.hpp>
 
 void executeBrightnessKernel(Img& image, const int shift, GPUcontroller* GPU);
