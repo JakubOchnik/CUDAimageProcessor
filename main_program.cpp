@@ -1,7 +1,7 @@
-#include <opencv2/opencv.hpp>
+#include <UI/Program.hpp>
+#include <Utilities/ConfigChecker.hpp>
 #include <iostream>
-#include "UI/Ui.h"
-#include "Utilities/configChecker.h"
+#include <opencv2/opencv.hpp>
 
 int main(int argc, char* argv[])
 {
@@ -12,7 +12,9 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
-	Ui mainInterface;
-	mainInterface.uiHandler();
+	bool enableGpu{true};
+
+	ProgramHandler prog(enableGpu);
+	prog.run();
 	return 0;
 }
