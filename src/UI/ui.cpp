@@ -1,4 +1,24 @@
+#include <Consts/Errors.hpp>
+#include <Consts/GenericEvents.hpp>
+#include <Events/EventHistory.hpp>
+#include <Events/History.hpp>
+#include <ImgHandling/ImgInfo.hpp>
+#include <MainHandler/MainHandler.hpp>
+#include <UI/UIdefinitions.hpp>
 #include <UI/ui.hpp>
+#include <cstdlib>
+#include <iomanip>
+#include <iostream>
+#include <opencv2/opencv.hpp>
+#include <sstream>
+#include <string>
+#include <tuple>
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <X11/Xlib.h>
+#endif
 
 void ui::setWindowName(const std::string& newName)
 {

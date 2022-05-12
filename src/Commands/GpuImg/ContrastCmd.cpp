@@ -1,4 +1,5 @@
 #include <Commands/GpuImg/ContrastCmd.hpp>
+#include <Commands/GpuImg/Kernels/ContrastKernel.cuh>
 
 void ContrastCmd::execute(const std::vector<std::string>& args)
 {

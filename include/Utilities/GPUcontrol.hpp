@@ -1,7 +1,6 @@
 #pragma once
-#include <Consts/GenericEvents.hpp>
+
 #include <ImgHandling/ImgInfo.hpp>
-#include <cuda_runtime.h>
 
 class GPUcontroller
 {

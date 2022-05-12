@@ -1,8 +1,8 @@
 #pragma once
-#include <Consts/Errors.hpp>
+
 #include <Consts/GenericEvents.hpp>
-#include <UI/UIdefinitions.hpp>
 #include <stdexcept>
+#include <string>
 #include <variant>
 #include <vector>
 

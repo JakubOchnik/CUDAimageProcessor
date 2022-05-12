@@ -1,6 +1,5 @@
 #pragma once
 #include <Commands/BaseEditCmd.hpp>
-#include <Commands/GpuImg/Kernels/EqualizationKernel.cuh>
 
 class EqualizationCmd : public BaseEditCmd
 {

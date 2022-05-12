@@ -1,4 +1,6 @@
+#include <Consts/GenericEvents.hpp>
 #include <Utilities/GPUcontrol.hpp>
+#include <cuda_runtime.h>
 
 GPUcontroller::GPUcontroller()
 {

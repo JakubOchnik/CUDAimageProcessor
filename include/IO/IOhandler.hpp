@@ -1,8 +1,8 @@
 #pragma once
-#include <ImgHandling/ImgInfo.hpp>
+
 #include <ImgHandling/ImgLoader.hpp>
-#include <opencv2/opencv.hpp>
-#include <stdexcept>
+#include <string>
+
 class IOHandler
 {
 public:

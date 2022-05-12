@@ -1,6 +1,5 @@
 #pragma once
 #include <Commands/BaseEditCmd.hpp>
-#include <Commands/GpuImg/Kernels/ContrastKernel.cuh>
 
 class ContrastCmd : public BaseEditCmd
 {

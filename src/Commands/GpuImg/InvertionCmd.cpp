@@ -1,4 +1,5 @@
 #include <Commands/GpuImg/InvertionCmd.hpp>
+#include <Commands/GpuImg/Kernels/InvertionKernel.cuh>
 
 void InvertionCmd::execute(const std::vector<std::string>& args)
 {

@@ -1,4 +1,6 @@
 #include <Commands/Ui/ShowCmd.hpp>
+#include <UI/ui.hpp>
+#include <boost/lexical_cast.hpp>
 
 void ShowCmd::execute(const std::vector<std::string>& args)
 {

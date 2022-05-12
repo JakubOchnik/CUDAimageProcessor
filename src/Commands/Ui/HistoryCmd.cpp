@@ -1,4 +1,5 @@
 #include <Commands/Ui/HistoryCmd.hpp>
+#include <UI/ui.hpp>
 
 void HistoryCmd::execute(const std::vector<std::string>& args)
 {

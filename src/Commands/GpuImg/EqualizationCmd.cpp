@@ -1,4 +1,5 @@
 #include <Commands/GpuImg/EqualizationCmd.hpp>
+#include <Commands/GpuImg/Kernels/EqualizationKernel.cuh>
 
 void EqualizationCmd::execute(const std::vector<std::string>& args)
 {

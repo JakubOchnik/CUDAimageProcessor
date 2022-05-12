@@ -1,4 +1,11 @@
+#include <Consts/Errors.hpp>
+#include <Consts/GenericEvents.hpp>
 #include <Events/EventHistory.hpp>
+#include <UI/UIdefinitions.hpp>
+#include <stdexcept>
+#include <string>
+#include <variant>
+#include <vector>
 
 std::string EventHistory::getEvents() const
 {

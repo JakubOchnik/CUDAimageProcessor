@@ -1,4 +1,5 @@
 #include <Commands/GpuImg/BrightnessCmd.hpp>
+#include <Commands/GpuImg/Kernels/BrightnessKernel.cuh>
 
 void BrightnessCmd::execute(const std::vector<std::string>& args)
 {

@@ -1,4 +1,6 @@
 #include <Utilities/GPUinfo.hpp>
+#include <cuda_runtime.h>
+#include <iostream>
 
 bool GpuInfo::isCompatible()
 {

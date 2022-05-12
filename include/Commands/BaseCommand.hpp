@@ -1,7 +1,9 @@
 #pragma once
+
 #include <Consts/Errors.hpp>
 #include <Consts/GenericEvents.hpp>
 #include <MainHandler/MainHandler.hpp>
+
 class BaseCommand
 {
 protected:

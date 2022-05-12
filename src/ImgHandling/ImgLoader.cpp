@@ -1,4 +1,9 @@
+#include <Consts/Errors.hpp>
 #include <ImgHandling/ImgLoader.hpp>
+#include <Utilities/GPUinfo.hpp>
+#include <opencv2/opencv.hpp>
+#include <string>
+#include <tuple>
 
 bool ImgLoader::checkImgDims(int x, int y)
 {

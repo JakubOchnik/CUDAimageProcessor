@@ -1,4 +1,22 @@
+#include <CodeUtils/utils.hpp>
+#include <Commands/AllEditCmds.hpp>
+#include <Commands/BaseCommand.hpp>
+#include <Commands/BaseEditCmd.hpp>
+#include <Commands/BaseGenericCmd.hpp>
+#include <Commands/Ui/AllCommands.hpp>
+#include <Consts/Consts.hpp>
+#include <Consts/Errors.hpp>
+#include <Consts/GenericEvents.hpp>
+#include <MainHandler/MainHandler.hpp>
 #include <UI/Program.hpp>
+#include <UI/UIdefinitions.hpp>
+#include <UI/ui.hpp>
+#include <boost/algorithm/string/trim.hpp>
+#include <exception>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 ProgramHandler::ProgramHandler(bool gpu) : master(MainHandler(gpu))
 {

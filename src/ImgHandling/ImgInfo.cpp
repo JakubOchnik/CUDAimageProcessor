@@ -1,4 +1,6 @@
 #include <ImgHandling/ImgInfo.hpp>
+#include <opencv2/opencv.hpp>
+#include <string>
 
 Img::Img(cv::Mat img, std::string path) : image(img)
 {
