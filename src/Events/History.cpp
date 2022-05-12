@@ -1,4 +1,9 @@
+#include <Consts/GenericEvents.hpp>
 #include <Events/History.hpp>
+#include <UI/UIdefinitions.hpp>
+#include <iostream>
+#include <string>
+#include <vector>
 
 void History::actionRedo()
 {

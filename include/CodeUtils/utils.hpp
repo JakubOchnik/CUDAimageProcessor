@@ -63,7 +63,7 @@ inline std::vector<int> tokensToNumbers(const std::vector<std::string>& tokens)
 	{
 		if (!verifyNumber(elem))
 		{
-			throw Error::ParamFail();
+			throw event::error::ParamFail();
 		}
 		params.push_back(std::stoi(elem));
 	}
@@ -98,12 +98,12 @@ processArgs(std::string input)
 	using namespace boost;
 	if (input.empty())
 	{
-		throw Error::IncorrectCommand();
+		throw event::error::IncorrectCommand();
 	}
 	trim(input);
 	if (input.empty())
 	{
-		throw Error::IncorrectCommand();
+		throw event::error::IncorrectCommand();
 	}
 	std::string command = input.substr(0, input.find(' '));
 	std::string args;

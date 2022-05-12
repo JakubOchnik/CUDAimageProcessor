@@ -2,7 +2,9 @@
 #include <exception>
 #include <iostream>
 
-namespace Error
+namespace event
+{
+namespace error
 {
 struct IOopenFail : std::runtime_error
 {
@@ -52,4 +54,5 @@ struct NotImplementedFail : std::runtime_error
 {
 	NotImplementedFail() : std::runtime_error("Function is not implemented."){};
 };
-} // namespace Error
+} // namespace error
+} // namespace event

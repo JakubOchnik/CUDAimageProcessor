@@ -4,11 +4,11 @@ void CropCmd::execute(const std::vector<std::string>& args)
 {
 	if (!master.isLoaded())
 	{
-		throw Error::NotLoadedFail();
+		throw event::error::NotLoadedFail();
 	}
 	if (args.size() != 4)
 	{
-		throw Error::ParamFail();
+		throw event::error::ParamFail();
 	}
 
 	std::vector<int> parsedArgs{TextUtils::tokensToNumbers(args)};
@@ -17,14 +17,14 @@ void CropCmd::execute(const std::vector<std::string>& args)
 		h{parsedArgs[3]};
 	if (x < 0 || y < 0 || w <= 0 || h <= 0)
 	{
-		throw Error::ParamFail();
+		throw event::error::ParamFail();
 	}
 
 	Img& dstImg{master.getDstImg()};
 
 	if (x + w > dstImg.getResolutionW() || y + h > dstImg.getResolutionH())
 	{
-		throw Error::ParamFail();
+		throw event::error::ParamFail();
 	}
 	// calculate the crop area
 	cv::Rect area(x, y, w, h);

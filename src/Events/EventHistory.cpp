@@ -1,4 +1,11 @@
+#include <Consts/Errors.hpp>
+#include <Consts/GenericEvents.hpp>
 #include <Events/EventHistory.hpp>
+#include <UI/UIdefinitions.hpp>
+#include <stdexcept>
+#include <string>
+#include <variant>
+#include <vector>
 
 std::string EventHistory::getEvents() const
 {
@@ -8,8 +15,9 @@ std::string EventHistory::getEvents() const
 		if (event.content.index() == 0)
 		{
 			// Holds GenericProgramEvent
-			GenericProgramEvent ev{std::get<GenericProgramEvent>(event.content)};
-			out += EVENT_TEXT_PROMPTS.at(ev);
+			event::GenericProgramEvent ev{
+				std::get<event::GenericProgramEvent>(event.content)};
+			out += consts::ui::EVENT_TEXT_PROMPTS.at(ev);
 		}
 		else
 		{
@@ -27,7 +35,7 @@ void EventHistory::clearEvents()
 	eventQueue.clear();
 }
 
-void EventHistory::addEvent(const GenericProgramEvent& e)
+void EventHistory::addEvent(const event::GenericProgramEvent& e)
 {
 	eventQueue.emplace_back(e);
 }

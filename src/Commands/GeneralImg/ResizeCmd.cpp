@@ -14,12 +14,12 @@ void ResizeCmd::execute(const std::vector<std::string>& args)
 {
 	if (!master.isLoaded())
 	{
-		throw Error::NotLoadedFail();
+		throw event::error::NotLoadedFail();
 	}
 
 	if (args.size() != 2)
 	{
-		throw Error::ParamFail();
+		throw event::error::ParamFail();
 	}
 
 	std::vector<int> parsedArgs{TextUtils::tokensToNumbers(args)};
@@ -27,7 +27,7 @@ void ResizeCmd::execute(const std::vector<std::string>& args)
 	const int w{parsedArgs[0]}, h{parsedArgs[1]};
 	if (w < 0 || h < 0)
 	{
-		throw Error::ParamFail();
+		throw event::error::ParamFail();
 	}
 
 	// Execute the resize action

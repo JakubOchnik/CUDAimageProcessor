@@ -1,6 +1,8 @@
 #pragma once
+
 #include <Commands/BaseCommand.hpp>
 #include <MainHandler/MainHandler.hpp>
+
 class BaseGenericCmd : public BaseCommand
 {
 	using BaseCommand::BaseCommand;

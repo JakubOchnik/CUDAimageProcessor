@@ -1,4 +1,22 @@
+#include <CodeUtils/utils.hpp>
+#include <Commands/AllEditCmds.hpp>
+#include <Commands/BaseCommand.hpp>
+#include <Commands/BaseEditCmd.hpp>
+#include <Commands/BaseGenericCmd.hpp>
+#include <Commands/Ui/AllCommands.hpp>
+#include <Consts/Consts.hpp>
+#include <Consts/Errors.hpp>
+#include <Consts/GenericEvents.hpp>
+#include <MainHandler/MainHandler.hpp>
 #include <UI/Program.hpp>
+#include <UI/UIdefinitions.hpp>
+#include <UI/ui.hpp>
+#include <boost/algorithm/string/trim.hpp>
+#include <exception>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 ProgramHandler::ProgramHandler(bool gpu) : master(MainHandler(gpu))
 {
@@ -31,7 +49,7 @@ void ProgramHandler::initializeCommands()
 
 void ProgramHandler::run()
 {
-	ui::setWindowName(BASE_WINDOW_NAME);
+	ui::setWindowName(consts::ui::BASE_WINDOW_NAME);
 	// Main loop
 	while (!master.isQuit())
 	{
@@ -110,7 +128,7 @@ void ProgramHandler::keystrokeHandler()
 	}
 	else
 	{
-		master.getEvents().addEvent(Error::CommandFail());
+		master.getEvents().addEvent(event::error::CommandFail());
 	}
 }
 
@@ -141,14 +159,6 @@ void ProgramHandler::undoAction()
 	}
 
 	history.actionUndo();
-
-	// TODO after implementing GPU commands
-	/*
-	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true))
-	{
-		throw Event::GPUmallocFail;
-	}
-	*/
 }
 
 void ProgramHandler::redoAction()
@@ -156,7 +166,7 @@ void ProgramHandler::redoAction()
 	auto& history = master.getHistory();
 	if (history.getRedoHistory().empty())
 	{
-		throw Error::RedoFail();
+		throw event::error::RedoFail();
 	}
 
 	std::shared_ptr<BaseEditCmd> cmd =
@@ -164,10 +174,4 @@ void ProgramHandler::redoAction()
 	// Execute edit command group
 	executeCommand<BaseEditCmd>(cmd, history.getRedoHistory().front().args);
 	history.actionRedo();
-	/*
-	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true))
-	{
-		throw Event::redoFail;
-	}
-	*/
 }

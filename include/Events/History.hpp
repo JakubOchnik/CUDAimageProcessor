@@ -1,8 +1,5 @@
 #pragma once
-#include <MainHandler/definitions.hpp>
-#include <UI/UIdefinitions.hpp>
-#include <iostream>
-#include <memory>
+#include <string>
 #include <vector>
 
 struct Edit

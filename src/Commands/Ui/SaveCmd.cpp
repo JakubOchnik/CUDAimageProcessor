@@ -2,6 +2,7 @@
 
 void SaveCmd::execute(const std::vector<std::string>& args)
 {
+	using namespace event;
 	if (args.size() < 1)
 	{
 		throw GenericProgramEvent::commandFail;

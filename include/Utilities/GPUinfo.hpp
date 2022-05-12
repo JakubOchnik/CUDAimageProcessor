@@ -1,6 +1,5 @@
 #pragma once
-#include <cuda_runtime.h>
-#include <iostream>
+
 #include <tuple>
 
 class GpuInfo

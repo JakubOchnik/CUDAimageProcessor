@@ -1,4 +1,13 @@
+#include <Consts/Errors.hpp>
+#include <Events/EventHistory.hpp>
+#include <Events/History.hpp>
+#include <IO/IOhandler.hpp>
+#include <ImgHandling/ImgInfo.hpp>
+#include <ImgHandling/ImgLoader.hpp>
 #include <MainHandler/MainHandler.hpp>
+#include <UI/ui.hpp>
+#include <Utilities/GPUcontrol.hpp>
+#include <string>
 
 MainHandler::MainHandler(bool gpu)
 	: srcImg(Img()), dstImg(Img()), gpuEnabled(gpu)

@@ -1,6 +1,5 @@
 #pragma once
 #include <Commands/BaseGenericCmd.hpp>
-#include <boost/lexical_cast.hpp>
 
 class ShowCmd : public BaseGenericCmd
 {

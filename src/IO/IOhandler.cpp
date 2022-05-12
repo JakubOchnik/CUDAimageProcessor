@@ -1,4 +1,9 @@
 #include <IO/IOhandler.hpp>
+#include <ImgHandling/ImgInfo.hpp>
+#include <ImgHandling/ImgLoader.hpp>
+#include <opencv2/opencv.hpp>
+#include <stdexcept>
+#include <string>
 
 void IOHandler::saveImg(Img& img, const std::string& path)
 {

@@ -1,4 +1,6 @@
+#include <Consts/GenericEvents.hpp>
 #include <Utilities/GPUcontrol.hpp>
+#include <cuda_runtime.h>
 
 GPUcontroller::GPUcontroller()
 {
@@ -80,7 +82,6 @@ GPUcontroller::~GPUcontroller()
 	if (isMemAlloc)
 	{
 		printf("Freeing memory allocated on GPU (%d KB)...", memSize / 1024);
-		// Sleep(1000); for debug
 		GPUfree();
 	}
 }

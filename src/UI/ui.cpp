@@ -1,4 +1,24 @@
+#include <Consts/Errors.hpp>
+#include <Consts/GenericEvents.hpp>
+#include <Events/EventHistory.hpp>
+#include <Events/History.hpp>
+#include <ImgHandling/ImgInfo.hpp>
+#include <MainHandler/MainHandler.hpp>
+#include <UI/UIdefinitions.hpp>
 #include <UI/ui.hpp>
+#include <cstdlib>
+#include <iomanip>
+#include <iostream>
+#include <opencv2/opencv.hpp>
+#include <sstream>
+#include <string>
+#include <tuple>
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <X11/Xlib.h>
+#endif
 
 void ui::setWindowName(const std::string& newName)
 {
@@ -21,6 +41,7 @@ void ui::clearScreen()
 void ui::draw(const Img& dstImg, const EventHistory& events, bool loaded)
 {
 	using namespace std;
+	using namespace consts::ui;
 	clearScreen();
 	// show menu and set window name
 
@@ -60,6 +81,7 @@ void ui::editHistoryScreen(const History& history)
 void ui::helpScreen()
 {
 	using namespace std;
+	using namespace consts::ui;
 	clearScreen();
 	cout << HELP_TEXT_CONTENT << '\n'
 		 << "Press ENTER to return to main menu...";
@@ -111,9 +133,11 @@ std::tuple<int, int, float> ui::autoScale(cv::Mat& inputImage,
 void ui::showPreview(Img& dstImg, unsigned int scale)
 {
 	using namespace std;
+	using namespace consts::ui;
+
 	if (!dstImg.getStatus())
 	{
-		throw Error::NotLoadedFail();
+		throw event::error::NotLoadedFail();
 	}
 	string windowName = dstImg.getPath() + " ("
 						+ to_string(dstImg.getResolutionW()) + "x"
@@ -162,7 +186,7 @@ void ui::showPreview(Img& dstImg, unsigned int scale)
 		std::tie(width, height) = customScale(tempImg, dstImg, scale);
 		windowName				= windowName + "@" + to_string(scale) + "%";
 	}
-	windowName += (" - " + BASE_WINDOW_NAME);
+	windowName += (" - " + std::string(BASE_WINDOW_NAME));
 	imshow(windowName, tempImg);
 	cv::waitKey(0);
 	cv::destroyWindow(windowName);

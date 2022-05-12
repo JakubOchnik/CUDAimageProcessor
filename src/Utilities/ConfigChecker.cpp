@@ -1,4 +1,11 @@
 #include <Utilities/ConfigChecker.hpp>
+#include <Utilities/GPUinfo.hpp>
+#include <iostream>
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <dlfcn.h>
+#endif
 
 bool Config::isCUDActive()
 {
@@ -15,11 +22,7 @@ bool Config::isCUDActive()
 	}
 #endif
 	// if CUDA driver is available, proceed to checking if the GPU is compatible
-	if (!GpuInfo::isCompatible())
-	{
-		return false;
-	}
-	return true;
+	return GpuInfo::isCompatible();
 }
 
 bool Config::checkConfig()

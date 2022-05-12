@@ -1,4 +1,5 @@
 #include <Commands/Ui/HelpCmd.hpp>
+#include <UI/ui.hpp>
 
 void HelpCmd::execute(const std::vector<std::string>& args)
 {

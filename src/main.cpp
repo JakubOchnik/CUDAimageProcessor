@@ -1,7 +1,6 @@
 #include <UI/Program.hpp>
 #include <Utilities/ConfigChecker.hpp>
 #include <iostream>
-#include <opencv2/opencv.hpp>
 
 int main(int argc, char* argv[])
 {

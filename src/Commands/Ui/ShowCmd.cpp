@@ -1,4 +1,6 @@
 #include <Commands/Ui/ShowCmd.hpp>
+#include <UI/ui.hpp>
+#include <boost/lexical_cast.hpp>
 
 void ShowCmd::execute(const std::vector<std::string>& args)
 {
@@ -16,7 +18,7 @@ void ShowCmd::execute(const std::vector<std::string>& args)
 		}
 		catch (bad_lexical_cast&)
 		{
-			throw Error::ParamFail();
+			throw event::error::ParamFail();
 		}
 	}
 }
