@@ -4,11 +4,11 @@ void BrightnessCmd::execute(const std::vector<std::string>& args)
 {
 	if (!master.isLoaded())
 	{
-		throw Error::NotLoadedFail();
+		throw event::error::NotLoadedFail();
 	}
 	if (args.size() != 1)
 	{
-		throw Error::ParamFail();
+		throw event::error::ParamFail();
 	}
 
 	std::vector<int> parsedArgs{TextUtils::tokensToNumbers(args)};

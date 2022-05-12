@@ -7,8 +7,8 @@
 #include <Commands/Ui/AllCommands.hpp>
 #include <Consts/Consts.hpp>
 #include <Consts/Errors.hpp>
+#include <Consts/GenericEvents.hpp>
 #include <MainHandler/MainHandler.hpp>
-#include <MainHandler/definitions.hpp>
 #include <UI/UIdefinitions.hpp>
 #include <UI/ui.hpp>
 #include <boost/algorithm/string/trim.hpp>

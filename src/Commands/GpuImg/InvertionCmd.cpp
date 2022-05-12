@@ -4,11 +4,11 @@ void InvertionCmd::execute(const std::vector<std::string>& args)
 {
 	if (!master.isLoaded())
 	{
-		throw Error::NotLoadedFail();
+		throw event::error::NotLoadedFail();
 	}
 	if (!args.empty())
 	{
-		throw Error::ParamFail();
+		throw event::error::ParamFail();
 	}
 	Img& dstImg{master.getDstImg()};
 

@@ -117,7 +117,7 @@ void ui::showPreview(Img& dstImg, unsigned int scale)
 
 	if (!dstImg.getStatus())
 	{
-		throw Error::NotLoadedFail();
+		throw event::error::NotLoadedFail();
 	}
 	string windowName = dstImg.getPath() + " ("
 						+ to_string(dstImg.getResolutionW()) + "x"

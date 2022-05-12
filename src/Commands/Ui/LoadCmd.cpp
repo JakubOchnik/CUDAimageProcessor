@@ -2,7 +2,7 @@
 
 void LoadCmd::execute(const std::vector<std::string>& args)
 {
-
+	using namespace event;
 	if (args.empty())
 	{
 		throw std::runtime_error("Command failed");

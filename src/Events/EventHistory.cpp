@@ -8,7 +8,8 @@ std::string EventHistory::getEvents() const
 		if (event.content.index() == 0)
 		{
 			// Holds GenericProgramEvent
-			GenericProgramEvent ev{std::get<GenericProgramEvent>(event.content)};
+			event::GenericProgramEvent ev{
+				std::get<event::GenericProgramEvent>(event.content)};
 			out += consts::ui::EVENT_TEXT_PROMPTS.at(ev);
 		}
 		else
@@ -27,7 +28,7 @@ void EventHistory::clearEvents()
 	eventQueue.clear();
 }
 
-void EventHistory::addEvent(const GenericProgramEvent& e)
+void EventHistory::addEvent(const event::GenericProgramEvent& e)
 {
 	eventQueue.emplace_back(e);
 }

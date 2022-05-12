@@ -16,7 +16,7 @@ void ShowCmd::execute(const std::vector<std::string>& args)
 		}
 		catch (bad_lexical_cast&)
 		{
-			throw Error::ParamFail();
+			throw event::error::ParamFail();
 		}
 	}
 }

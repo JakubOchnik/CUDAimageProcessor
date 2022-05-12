@@ -110,7 +110,7 @@ void ProgramHandler::keystrokeHandler()
 	}
 	else
 	{
-		master.getEvents().addEvent(Error::CommandFail());
+		master.getEvents().addEvent(event::error::CommandFail());
 	}
 }
 
@@ -156,7 +156,7 @@ void ProgramHandler::redoAction()
 	auto& history = master.getHistory();
 	if (history.getRedoHistory().empty())
 	{
-		throw Error::RedoFail();
+		throw event::error::RedoFail();
 	}
 
 	std::shared_ptr<BaseEditCmd> cmd =

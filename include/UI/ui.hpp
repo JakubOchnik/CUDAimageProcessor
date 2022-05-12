@@ -1,9 +1,9 @@
 #pragma once
 
+#include <Consts/GenericEvents.hpp>
 #include <Events/History.hpp>
 #include <ImgHandling/ImgInfo.hpp>
 #include <MainHandler/MainHandler.hpp>
-#include <MainHandler/definitions.hpp>
 #include <UI/UIdefinitions.hpp>
 #include <cstdlib>
 #include <iomanip>

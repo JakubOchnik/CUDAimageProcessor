@@ -19,23 +19,24 @@ constexpr const char* const SEPARATOR_TEXT =
 constexpr const char* const BASE_WINDOW_NAME = "imgEditor";
 constexpr const char* const CONSOLE_NAME	 = "imgEditor";
 
-const std::map<GenericProgramEvent, const char*> EVENT_TEXT_PROMPTS = {
-	{GenericProgramEvent::openSuccess, "File opened successfully"},
-	{GenericProgramEvent::openFail,
+const std::map<event::GenericProgramEvent, const char*> EVENT_TEXT_PROMPTS = {
+	{event::GenericProgramEvent::openSuccess, "File opened successfully"},
+	{event::GenericProgramEvent::openFail,
 	 "File open failed. Check the path, extension or dimensions (they cannot "
 	 "exceed 65535x65535)."},
-	{GenericProgramEvent::saveSuccess, "File saved successfully"},
-	{GenericProgramEvent::saveFail, "File save failed"},
-	{GenericProgramEvent::commandFail, "Invalid command"},
-	{GenericProgramEvent::actionSuccess, "Action performed successfully"},
-	{GenericProgramEvent::actionFail, "Action failed"},
-	{GenericProgramEvent::parameterFail, "Invalid action parameters"},
-	{GenericProgramEvent::noImage, "Image has not been imported yet"},
-	{GenericProgramEvent::undoFail,
+	{event::GenericProgramEvent::saveSuccess, "File saved successfully"},
+	{event::GenericProgramEvent::saveFail, "File save failed"},
+	{event::GenericProgramEvent::commandFail, "Invalid command"},
+	{event::GenericProgramEvent::actionSuccess,
+	 "Action performed successfully"},
+	{event::GenericProgramEvent::actionFail, "Action failed"},
+	{event::GenericProgramEvent::parameterFail, "Invalid action parameters"},
+	{event::GenericProgramEvent::noImage, "Image has not been imported yet"},
+	{event::GenericProgramEvent::undoFail,
 	 "Can't undo - there are no performed operations yet"},
-	{GenericProgramEvent::redoFail,
+	{event::GenericProgramEvent::redoFail,
 	 "Can't redo - there are no newer operations"},
-	{GenericProgramEvent::GPUmallocFail,
+	{event::GenericProgramEvent::GPUmallocFail,
 	 "Cannot perform operation - insufficient video memory"},
 };
 

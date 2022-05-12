@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+namespace event
+{
 enum class GenericProgramEvent
 {
 	openSuccess,
@@ -17,3 +19,4 @@ enum class GenericProgramEvent
 	GPUmallocFail,
 	notImplemented
 };
+} // namespace event
