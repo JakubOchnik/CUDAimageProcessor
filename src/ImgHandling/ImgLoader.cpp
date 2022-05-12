@@ -9,17 +9,13 @@ bool ImgLoader::checkImgDims(int x, int y)
 {
 	int maxWidth, maxHeight;
 	std::tie(maxWidth, maxHeight) = GpuInfo::getMaxDimensions();
-	if (x > maxWidth || y > maxHeight)
-	{
-		return false;
-	}
-	return true;
+	return !(x > maxWidth || y > maxHeight);
 }
 
 Img ImgLoader::loadImg(const std::string& path, int type)
 {
 	cv::Mat img{cv::imread(path, type)};
-	if (img.data == nullptr)
+	if (!img.data)
 	{
 		throw std::runtime_error("Incorrect path");
 	}
@@ -37,7 +33,7 @@ Img ImgLoader::loadImg(const std::string& path)
 {
 	cv::Mat img{cv::imread(path, 0)};
 
-	if (img.data == nullptr)
+	if (!img.data)
 	{
 		std::string msg{"Could not load image from: " + path};
 		throw std::runtime_error(msg.c_str());

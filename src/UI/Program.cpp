@@ -159,14 +159,6 @@ void ProgramHandler::undoAction()
 	}
 
 	history.actionUndo();
-
-	// TODO after implementing GPU commands
-	/*
-	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true))
-	{
-		throw Event::GPUmallocFail;
-	}
-	*/
 }
 
 void ProgramHandler::redoAction()
@@ -182,10 +174,4 @@ void ProgramHandler::redoAction()
 	// Execute edit command group
 	executeCommand<BaseEditCmd>(cmd, history.getRedoHistory().front().args);
 	history.actionRedo();
-	/*
-	if (!ActionHandler::updateGPUmem(&dstImg, &GPUControl, true))
-	{
-		throw Event::redoFail;
-	}
-	*/
 }

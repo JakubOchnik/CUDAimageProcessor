@@ -22,11 +22,7 @@ bool Config::isCUDActive()
 	}
 #endif
 	// if CUDA driver is available, proceed to checking if the GPU is compatible
-	if (!GpuInfo::isCompatible())
-	{
-		return false;
-	}
-	return true;
+	return GpuInfo::isCompatible();
 }
 
 bool Config::checkConfig()
