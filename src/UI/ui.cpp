@@ -21,6 +21,7 @@ void ui::clearScreen()
 void ui::draw(const Img& dstImg, const EventHistory& events, bool loaded)
 {
 	using namespace std;
+	using namespace consts::ui;
 	clearScreen();
 	// show menu and set window name
 
@@ -60,6 +61,7 @@ void ui::editHistoryScreen(const History& history)
 void ui::helpScreen()
 {
 	using namespace std;
+	using namespace consts::ui;
 	clearScreen();
 	cout << HELP_TEXT_CONTENT << '\n'
 		 << "Press ENTER to return to main menu...";
@@ -111,6 +113,8 @@ std::tuple<int, int, float> ui::autoScale(cv::Mat& inputImage,
 void ui::showPreview(Img& dstImg, unsigned int scale)
 {
 	using namespace std;
+	using namespace consts::ui;
+
 	if (!dstImg.getStatus())
 	{
 		throw Error::NotLoadedFail();
@@ -162,7 +166,7 @@ void ui::showPreview(Img& dstImg, unsigned int scale)
 		std::tie(width, height) = customScale(tempImg, dstImg, scale);
 		windowName				= windowName + "@" + to_string(scale) + "%";
 	}
-	windowName += (" - " + BASE_WINDOW_NAME);
+	windowName += (" - " + std::string(BASE_WINDOW_NAME));
 	imshow(windowName, tempImg);
 	cv::waitKey(0);
 	cv::destroyWindow(windowName);

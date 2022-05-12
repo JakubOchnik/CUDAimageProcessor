@@ -7,7 +7,7 @@ void LoadCmd::execute(const std::vector<std::string>& args)
 	{
 		throw std::runtime_error("Command failed");
 	}
-	std::cout << FILE_LOADING_TEXT << '\n';
+	std::cout << consts::ui::FILE_LOADING_TEXT << '\n';
 	try
 	{
 		master.updateSrcImg(args[0], 1);

@@ -1,21 +1,25 @@
 #pragma once
 
 #include <map>
-#include <string>
+namespace consts
+{
+namespace ui
+{
 
-const std::string HEADER_TEXT		= "CUDA IMAGE PROCESSOR\nJakub Ochnik 2021";
-const std::string RESOLUTION_TEXT	= "Image resolution:";
-const std::string CHANNELS_TEXT		= "Image color channels:";
-const std::string FILEPATH_TEXT		= "File path: ";
-const std::string PROMPT_TEXT		= "IP>";
-const std::string FILE_LOADING_TEXT = "Loading image, please wait...";
-const std::string NOT_LOADED_TEXT	= "Image not loaded";
-const std::string SEPARATOR_TEXT =
+constexpr const char* const HEADER_TEXT =
+	"CUDA IMAGE PROCESSOR\nJakub Ochnik 2021";
+constexpr const char* const RESOLUTION_TEXT	  = "Image resolution:";
+constexpr const char* const CHANNELS_TEXT	  = "Image color channels:";
+constexpr const char* const FILEPATH_TEXT	  = "File path: ";
+constexpr const char* const PROMPT_TEXT		  = "IP>";
+constexpr const char* const FILE_LOADING_TEXT = "Loading image, please wait...";
+constexpr const char* const NOT_LOADED_TEXT	  = "Image not loaded";
+constexpr const char* const SEPARATOR_TEXT =
 	"--------------------------------------------------";
-const std::string BASE_WINDOW_NAME = "imgEditor";
-const std::string CONSOLE_NAME	   = BASE_WINDOW_NAME;
+constexpr const char* const BASE_WINDOW_NAME = "imgEditor";
+constexpr const char* const CONSOLE_NAME	 = "imgEditor";
 
-const std::map<GenericProgramEvent, std::string> EVENT_TEXT_PROMPTS = {
+const std::map<GenericProgramEvent, const char*> EVENT_TEXT_PROMPTS = {
 	{GenericProgramEvent::openSuccess, "File opened successfully"},
 	{GenericProgramEvent::openFail,
 	 "File open failed. Check the path, extension or dimensions (they cannot "
@@ -35,7 +39,7 @@ const std::map<GenericProgramEvent, std::string> EVENT_TEXT_PROMPTS = {
 	 "Cannot perform operation - insufficient video memory"},
 };
 
-const std::string HELP_TEXT_CONTENT =
+constexpr const char* const HELP_TEXT_CONTENT =
 	"-- HELP --\n\nGENERAL FUNCTIONS:\n- quit - Exits the program\n- load "
 	"[file_path] - Loads the image from the selected path\n- save [file_path] "
 	"- Saves the edited image to the selected path\n- undo - Reverts the "
@@ -53,3 +57,5 @@ const std::string HELP_TEXT_CONTENT =
 	"full height.\n- resize [width] [height] - Resizes the image to the "
 	"specified size\n- equalize - Performs histogram equalization\n\n(~- "
 	"optional)";
+} // namespace ui
+} // namespace consts

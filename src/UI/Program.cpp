@@ -31,7 +31,7 @@ void ProgramHandler::initializeCommands()
 
 void ProgramHandler::run()
 {
-	ui::setWindowName(BASE_WINDOW_NAME);
+	ui::setWindowName(consts::ui::BASE_WINDOW_NAME);
 	// Main loop
 	while (!master.isQuit())
 	{

@@ -9,7 +9,7 @@ std::string EventHistory::getEvents() const
 		{
 			// Holds GenericProgramEvent
 			GenericProgramEvent ev{std::get<GenericProgramEvent>(event.content)};
-			out += EVENT_TEXT_PROMPTS.at(ev);
+			out += consts::ui::EVENT_TEXT_PROMPTS.at(ev);
 		}
 		else
 		{
