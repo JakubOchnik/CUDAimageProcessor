@@ -38,8 +38,8 @@ void ResizeCmd::resizeAction(const cv::Size& size)
 {
 	Img& dstImg{master.getDstImg()};
 
-	cv::Mat newImg(*dstImg.getImg());
+	cv::Mat newImg(dstImg.getImg());
 
-	cv::resize(*dstImg.getImg(), newImg, size);
+	cv::resize(dstImg.getImg(), newImg, size);
 	dstImg.updateAll(newImg);
 }

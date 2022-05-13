@@ -18,20 +18,20 @@ public:
 	// = operator returns a deep copy of the Img class
 	Img& operator=(const Img& other);
 
-	std::string	 getPath() const;
-	unsigned int getResolutionH() const;
-	unsigned int getResolutionW() const;
-	unsigned int getChannelNum() const;
-	cv::Mat*	 getImg();
-	bool		 getStatus() const;
+	std::string	   getPath() const;
+	unsigned int   getResolutionH() const;
+	unsigned int   getResolutionW() const;
+	unsigned int   getChannelNum() const;
+	const cv::Mat& getImg() const;
+	bool		   getStatus() const;
 
-	void setPath(std::string newPath);
+	void setPath(const std::string& newPath);
 	void setResolutionH(int newResH);
 	void setResolutionW(int newResW);
 	void setChannelNum(int newBitDepth);
 	void setImg(cv::Mat& newMat);
 
-	void updateAll(std::string newPath, cv::Mat& newMat);
+	void updateAll(const std::string& newPath, cv::Mat& newMat);
 	void updateAll(cv::Mat& newMat);
 	void refreshDims();
 };

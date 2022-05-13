@@ -37,7 +37,7 @@ bool executeEqualizationKernel(Img& image, GPUcontroller* GPU)
 	cudaMemcpy(max, devMax, channels * sizeof(int), cudaMemcpyDeviceToHost);
 	calculateEqualization << <grid, 1 >> > (GPU->getImgPtr(), channels, devMin, devMax);
 
-	cudaMemcpy(image.getImg()->data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
+	cudaMemcpy(image.getImg().data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
 	cudaFree(devMin);
 	cudaFree(devMax);
 	delete[] min;

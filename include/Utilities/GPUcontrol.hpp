@@ -17,9 +17,9 @@ public:
 	bool		   getGPUmemStatus() const;
 	bool		   sizeUpdateStatus() const;
 
-	bool updatePtr(Img* newImg);
+	bool updatePtr(const Img& newImg);
 
-	bool GPUmalloc(Img* srcImg);
+	bool GPUmalloc(const Img& srcImg);
 	void GPUfree();
 
 	~GPUcontroller();

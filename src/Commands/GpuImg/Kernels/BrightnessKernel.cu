@@ -9,7 +9,7 @@ void executeBrightnessKernel(Img& image, const int shift, GPUcontroller* GPU)
 	const size_t size = channels * width * height * sizeof(unsigned char);
 	calculateBrightness <<<grid, 1 >>> (GPU->getImgPtr(), channels, shift);
 
-	cudaMemcpy(image.getImg()->data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
+	cudaMemcpy(image.getImg().data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
 }
 
 __global__ void calculateBrightness(unsigned char* image, int channels, int shift)

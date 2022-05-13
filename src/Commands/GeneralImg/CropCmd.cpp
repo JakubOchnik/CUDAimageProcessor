@@ -36,7 +36,7 @@ void CropCmd::execute(const std::vector<std::string>& args)
 void CropCmd::cropAction(cv::Rect& area)
 {
 	Img&	dstImg{master.getDstImg()};
-	cv::Mat newImg(*dstImg.getImg());
+	cv::Mat newImg(dstImg.getImg());
 	newImg = newImg(area);
 	dstImg.updateAll(newImg);
 }

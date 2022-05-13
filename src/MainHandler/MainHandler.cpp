@@ -52,11 +52,11 @@ void MainHandler::updateSrcImg(const std::string& newPath, int mode)
 		if (!GPUControl.getGPUmemStatus())
 		{
 			// mem is allocated, update ptr
-			GPUControl.GPUmalloc(&srcImg);
+			GPUControl.GPUmalloc(srcImg);
 		}
 		else
 		{
-			GPUControl.updatePtr(&srcImg);
+			GPUControl.updatePtr(srcImg);
 		}
 	}
 }

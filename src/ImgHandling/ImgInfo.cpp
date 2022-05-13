@@ -51,12 +51,15 @@ unsigned int Img::getChannelNum() const
 	return colorChannels;
 }
 
-cv::Mat* Img::getImg()
+const cv::Mat& Img::getImg() const
 {
-	return &image;
+	// image.data can be modified, as it
+	// becomes char* const (data can be modified,
+	// but the address can't)
+	return image;
 }
 
-void Img::setPath(const std::string newPath)
+void Img::setPath(const std::string& newPath)
 {
 	path = newPath;
 }
@@ -87,7 +90,7 @@ void Img::setImg(cv::Mat& newMat)
 	image = newMat;
 }
 
-void Img::updateAll(std::string newPath, cv::Mat& newMat)
+void Img::updateAll(const std::string& newPath, cv::Mat& newMat)
 {
 	setPath(newPath);
 	setImg(newMat);
