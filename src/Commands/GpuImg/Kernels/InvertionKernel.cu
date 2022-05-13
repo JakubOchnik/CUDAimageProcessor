@@ -1,7 +1,7 @@
 ﻿#include <Commands/GpuImg/Kernels/InvertionKernel.cuh>
 
 
-void executeInvertionKernel(Img& image, GPUcontroller* GPU)
+void executeInvertionKernel(Img& image, const std::shared_ptr<GPUcontroller>& GPU)
 {
 	dim3 grid(image.getResolutionW(), image.getResolutionH());
 	const int channels = image.getChannelNum();
@@ -9,7 +9,8 @@ void executeInvertionKernel(Img& image, GPUcontroller* GPU)
 	const int height = image.getResolutionH();
 	const size_t size = channels * width * height * sizeof(unsigned char);
 	invertImage << <grid, 1 >> > (GPU->getImgPtr(), channels);
-	cudaMemcpy(image.getImg()->data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
+
+	cudaMemcpy(image.getImg().data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
 }
 
 __global__ void invertImage(unsigned char* image, int channels)

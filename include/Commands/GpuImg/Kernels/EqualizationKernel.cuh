@@ -2,6 +2,7 @@
 #include <cuda_runtime.h>
 #include <Utilities/GPUcontrol.hpp>
 #include <ImgHandling/ImgInfo.hpp>
+#include <memory>
 
 #ifdef __INTELLISENSE__
 #define atomicAdd();
@@ -9,7 +10,7 @@
 #define atomicMax();
 #endif
 
-bool executeEqualizationKernel(Img& image, GPUcontroller* GPU);
+bool executeEqualizationKernel(Img& image, const std::shared_ptr<GPUcontroller>& GPU);
 
 __global__ void calculateEdgeBrightness(unsigned char* image, int channels, int* min, int* max);
 

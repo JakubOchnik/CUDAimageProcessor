@@ -7,10 +7,14 @@
 #include <MainHandler/MainHandler.hpp>
 #include <UI/ui.hpp>
 #include <Utilities/GPUcontrol.hpp>
+#include <memory>
 #include <string>
 
 MainHandler::MainHandler(bool gpu)
-	: srcImg(Img()), dstImg(Img()), gpuEnabled(gpu)
+	: srcImg(Img())
+	, dstImg(Img())
+	, gpuEnabled(gpu)
+	, GPUControl(std::make_shared<GPUcontroller>())
 {
 }
 
@@ -24,9 +28,9 @@ Img& MainHandler::getDstImg()
 	return dstImg;
 }
 
-GPUcontroller* MainHandler::getGPUController()
+std::shared_ptr<GPUcontroller> MainHandler::getGPUController()
 {
-	return &GPUControl;
+	return GPUControl;
 }
 
 void MainHandler::updateDstImg(const Img& newImage)
@@ -49,14 +53,14 @@ void MainHandler::updateSrcImg(const std::string& newPath, int mode)
 	// TODO: Use unified memory (huge performance improvement)
 	if (gpuEnabled)
 	{
-		if (!GPUControl.getGPUmemStatus())
+		if (!GPUControl->getGPUmemStatus())
 		{
 			// mem is allocated, update ptr
-			GPUControl.GPUmalloc(&srcImg);
+			GPUControl->GPUmalloc(srcImg);
 		}
 		else
 		{
-			GPUControl.updatePtr(&srcImg);
+			GPUControl->updatePtr(srcImg);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 #include <Commands/GpuImg/Kernels/BrightnessKernel.cuh>
+#include <memory>
 
-void executeBrightnessKernel(Img& image, const int shift, GPUcontroller* GPU)
+void executeBrightnessKernel(Img& image, const int shift, const std::shared_ptr<GPUcontroller>& GPU)
 {
 	dim3 grid(image.getResolutionW(), image.getResolutionH());
 	const int channels = image.getChannelNum();
@@ -9,7 +10,7 @@ void executeBrightnessKernel(Img& image, const int shift, GPUcontroller* GPU)
 	const size_t size = channels * width * height * sizeof(unsigned char);
 	calculateBrightness <<<grid, 1 >>> (GPU->getImgPtr(), channels, shift);
 
-	cudaMemcpy(image.getImg()->data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
+	cudaMemcpy(image.getImg().data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
 }
 
 __global__ void calculateBrightness(unsigned char* image, int channels, int shift)

@@ -93,7 +93,7 @@ ui::customScale(cv::Mat& inputImage, Img& dstImg, unsigned int scale)
 {
 	const unsigned int width{dstImg.getResolutionW() * scale / 100};
 	const unsigned int height{dstImg.getResolutionH() * scale / 100};
-	resize(*dstImg.getImg(), inputImage, cv::Size(width, height));
+	resize(dstImg.getImg(), inputImage, cv::Size(width, height));
 	return {width, height};
 }
 
@@ -123,7 +123,7 @@ std::tuple<int, int, float> ui::autoScale(cv::Mat& inputImage,
 	float newScale = 0.0f;
 	if (changed)
 	{
-		resize(*dstImg.getImg(), inputImage, cv::Size(width, height));
+		resize(dstImg.getImg(), inputImage, cv::Size(width, height));
 		newScale = static_cast<float>(width) / dstImg.getResolutionW() * 100;
 	}
 
@@ -176,7 +176,7 @@ void ui::showPreview(Img& dstImg, unsigned int scale)
 		}
 		else
 		{
-			tempImg	   = *dstImg.getImg();
+			tempImg	   = dstImg.getImg();
 			windowName = windowName + "@100%";
 		}
 	}

@@ -13,7 +13,7 @@ void IOHandler::saveImg(Img& img, const std::string& path)
 		throw std::runtime_error(msg.c_str());
 	}
 
-	if (!imwrite(path, *img.getImg()))
+	if (!imwrite(path, img.getImg()))
 	{
 		std::string msg{"Could not save file at: " + path};
 		throw std::runtime_error(msg.c_str());

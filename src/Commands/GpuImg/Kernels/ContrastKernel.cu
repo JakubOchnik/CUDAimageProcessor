@@ -1,6 +1,6 @@
 ﻿#include <Commands/GpuImg/Kernels/ContrastKernel.cuh>
 
-void executeContrastKernel(Img& image, const int value, GPUcontroller* GPU)
+void executeContrastKernel(Img& image, const int value, const std::shared_ptr<GPUcontroller>& GPU)
 {
 	dim3 grid(image.getResolutionW(), image.getResolutionH());
 	const int channels = image.getChannelNum();
@@ -9,7 +9,7 @@ void executeContrastKernel(Img& image, const int value, GPUcontroller* GPU)
 	const size_t size = channels * width * height * sizeof(unsigned char);
 	const float factor = 259 * (value + 255) / static_cast<float>(255 * (259 - value));
 	calculateContrast << <grid, 1 >> > (GPU->getImgPtr(), channels, factor);
-	cudaMemcpy(image.getImg()->data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
+	cudaMemcpy(image.getImg().data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
 }
 
 __global__ void calculateContrast(unsigned char* image, int channels, float factor)

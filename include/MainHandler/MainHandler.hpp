@@ -4,15 +4,16 @@
 #include <Events/History.hpp>
 #include <ImgHandling/ImgInfo.hpp>
 #include <Utilities/GPUcontrol.hpp>
+#include <memory>
 #include <string>
 
 class MainHandler
 {
-	Img			  srcImg;
-	Img			  dstImg;
-	GPUcontroller GPUControl;
-	EventHistory  events;
-	History		  history;
+	Img							   srcImg;
+	Img							   dstImg;
+	std::shared_ptr<GPUcontroller> GPUControl;
+	EventHistory				   events;
+	History						   history;
 
 	bool quit{false};
 	bool loaded{false};
@@ -21,9 +22,9 @@ class MainHandler
 public:
 	MainHandler(bool gpu);
 
-	Img&		   getSrcImg();
-	Img&		   getDstImg();
-	GPUcontroller* getGPUController();
+	Img&						   getSrcImg();
+	Img&						   getDstImg();
+	std::shared_ptr<GPUcontroller> getGPUController();
 
 	EventHistory& getEvents();
 	History&	  getHistory();

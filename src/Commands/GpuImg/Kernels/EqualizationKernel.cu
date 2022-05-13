@@ -1,6 +1,7 @@
 ﻿#include <Commands/GpuImg/Kernels/EqualizationKernel.cuh>
+#include <memory>
 
-bool executeEqualizationKernel(Img& image, GPUcontroller* GPU)
+bool executeEqualizationKernel(Img& image, const std::shared_ptr<GPUcontroller>& GPU)
 {
 	const unsigned int channels = image.getChannelNum();
 	const unsigned int width = image.getResolutionW();
@@ -37,7 +38,7 @@ bool executeEqualizationKernel(Img& image, GPUcontroller* GPU)
 	cudaMemcpy(max, devMax, channels * sizeof(int), cudaMemcpyDeviceToHost);
 	calculateEqualization << <grid, 1 >> > (GPU->getImgPtr(), channels, devMin, devMax);
 
-	cudaMemcpy(image.getImg()->data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
+	cudaMemcpy(image.getImg().data, GPU->getImgPtr(), size, cudaMemcpyDeviceToHost);
 	cudaFree(devMin);
 	cudaFree(devMax);
 	delete[] min;
