@@ -1,6 +1,7 @@
 ﻿#include <Commands/GpuImg/Kernels/EqualizationKernel.cuh>
+#include <memory>
 
-bool executeEqualizationKernel(Img& image, GPUcontroller* GPU)
+bool executeEqualizationKernel(Img& image, const std::shared_ptr<GPUcontroller>& GPU)
 {
 	const unsigned int channels = image.getChannelNum();
 	const unsigned int width = image.getResolutionW();

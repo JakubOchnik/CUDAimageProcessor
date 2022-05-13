@@ -13,7 +13,7 @@ private:
 public:
 	GPUcontroller();
 
-	unsigned char* getImgPtr();
+	unsigned char* getImgPtr() const;
 	bool		   getGPUmemStatus() const;
 	bool		   sizeUpdateStatus() const;
 

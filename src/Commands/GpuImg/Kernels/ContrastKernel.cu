@@ -1,6 +1,6 @@
 ﻿#include <Commands/GpuImg/Kernels/ContrastKernel.cuh>
 
-void executeContrastKernel(Img& image, const int value, GPUcontroller* GPU)
+void executeContrastKernel(Img& image, const int value, const std::shared_ptr<GPUcontroller>& GPU)
 {
 	dim3 grid(image.getResolutionW(), image.getResolutionH());
 	const int channels = image.getChannelNum();

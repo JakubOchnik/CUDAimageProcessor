@@ -72,7 +72,7 @@ bool GPUcontroller::updatePtr(const Img& newImg)
 	return true;
 }
 
-unsigned char* GPUcontroller::getImgPtr()
+unsigned char* GPUcontroller::getImgPtr() const
 {
 	return devImgPtr;
 }

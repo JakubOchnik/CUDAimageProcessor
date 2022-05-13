@@ -1,6 +1,7 @@
 #include <Commands/GpuImg/Kernels/BrightnessKernel.cuh>
+#include <memory>
 
-void executeBrightnessKernel(Img& image, const int shift, GPUcontroller* GPU)
+void executeBrightnessKernel(Img& image, const int shift, const std::shared_ptr<GPUcontroller>& GPU)
 {
 	dim3 grid(image.getResolutionW(), image.getResolutionH());
 	const int channels = image.getChannelNum();
