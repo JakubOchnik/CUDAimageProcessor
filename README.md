@@ -4,6 +4,7 @@ A simple GPU-accelerated command-line image processor. Image processing features
 ## External libraries used:
 - NVIDIA CUDA (a capable GPU is required)
 - OpenCV
+- Boost
 ## Features:
 - Command-line UI
 - Edit history (with undo and redo functions)
